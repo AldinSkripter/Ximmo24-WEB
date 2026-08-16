@@ -1,0 +1,75 @@
+2026-08-09T17:03:20: ▲ Next.js 16.2.10
+2026-08-09T17:03:20: - Local:         http://localhost:8001
+2026-08-09T17:03:20: - Network:       http://0.0.0.0:8001
+2026-08-09T17:03:20: ✓ Ready in 0ms
+2026-08-09T17:33:24: ▲ Next.js 16.2.10
+2026-08-09T17:33:24: - Local:         http://localhost:8001
+2026-08-09T17:33:24: - Network:       http://0.0.0.0:8001
+2026-08-09T17:33:24: ✓ Ready in 0ms
+2026-08-13T11:29:03: ▲ Next.js 16.2.10
+2026-08-13T11:29:03: - Local:         http://localhost:8001
+2026-08-13T11:29:03: - Network:       http://0.0.0.0:8001
+2026-08-13T11:29:03: ✓ Ready in 0ms
+2026-08-13T22:27:08: ▲ Next.js 16.2.10
+2026-08-13T22:27:08: - Local:         http://localhost:8001
+2026-08-13T22:27:08: - Network:       http://0.0.0.0:8001
+2026-08-13T22:27:08: ✓ Ready in 0ms
+2026-08-14T00:44:11: ▲ Next.js 16.2.10
+2026-08-14T00:44:11: - Local:         http://localhost:8001
+2026-08-14T00:44:11: - Network:       http://0.0.0.0:8001
+2026-08-14T00:44:11: ✓ Ready in 0ms
+2026-08-14T00:53:03: ▲ Next.js 16.2.10
+2026-08-14T00:53:03: - Local:         http://localhost:8001
+2026-08-14T00:53:03: - Network:       http://0.0.0.0:8001
+2026-08-14T00:53:03: ✓ Ready in 0ms
+2026-08-14T01:18:04: ▲ Next.js 16.2.10
+2026-08-14T01:18:04: - Local:         http://localhost:8001
+2026-08-14T01:18:04: - Network:       http://0.0.0.0:8001
+2026-08-14T01:18:04: ✓ Ready in 0ms
+2026-08-14T01:24:23: ▲ Next.js 16.2.10
+2026-08-14T01:24:23: - Local:         http://localhost:8001
+2026-08-14T01:24:23: - Network:       http://0.0.0.0:8001
+2026-08-14T01:24:23: ✓ Ready in 0ms
+2026-08-14T01:37:15: ▲ Next.js 16.2.10
+2026-08-14T01:37:15: - Local:         http://localhost:8001
+2026-08-14T01:37:15: - Network:       http://0.0.0.0:8001
+2026-08-14T01:37:15: ✓ Ready in 0ms
+2026-08-14T01:43:13: ▲ Next.js 16.2.10
+2026-08-14T01:43:13: - Local:         http://localhost:8001
+2026-08-14T01:43:13: - Network:       http://0.0.0.0:8001
+2026-08-14T01:43:13: ✓ Ready in 0ms
+2026-08-14T01:44:13: ▲ Next.js 16.2.10
+2026-08-14T01:44:13: - Local:         http://localhost:8001
+2026-08-14T01:44:13: - Network:       http://0.0.0.0:8001
+2026-08-14T01:44:13: ✓ Ready in 0ms
+2026-08-14T18:21:40: ▲ Next.js 16.2.10
+2026-08-14T18:21:40: - Local:         http://localhost:8001
+2026-08-14T18:21:40: - Network:       http://0.0.0.0:8001
+2026-08-14T18:21:40: ✓ Ready in 0ms
+2026-08-14T18:43:07: ▲ Next.js 16.2.10
+2026-08-14T18:43:07: - Local:         http://localhost:8001
+2026-08-14T18:43:07: - Network:       http://0.0.0.0:8001
+2026-08-14T18:43:07: ✓ Ready in 0ms
+2026-08-14T18:47:15: ▲ Next.js 16.2.10
+2026-08-14T18:47:15: - Local:         http://localhost:8001
+2026-08-14T18:47:15: - Network:       http://0.0.0.0:8001
+2026-08-14T18:47:15: ✓ Ready in 0ms
+2026-08-14T19:00:55: ▲ Next.js 16.2.10
+2026-08-14T19:00:55: - Local:         http://localhost:8001
+2026-08-14T19:00:55: - Network:       http://0.0.0.0:8001
+2026-08-14T19:00:55: ✓ Ready in 0ms
+2026-08-14T19:16:46: ▲ Next.js 16.2.10
+2026-08-14T19:16:46: - Local:         http://localhost:8001
+2026-08-14T19:16:46: - Network:       http://0.0.0.0:8001
+2026-08-14T19:16:46: ✓ Ready in 0ms
+2026-08-14T19:32:38: ▲ Next.js 16.2.10
+2026-08-14T19:32:38: - Local:         http://localhost:8001
+2026-08-14T19:32:38: - Network:       http://0.0.0.0:8001
+2026-08-14T19:32:38: ✓ Ready in 0ms
+2026-08-16T07:17:49: ◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+2026-08-16T07:17:49: Fetching Properties...
+2026-08-16T07:17:50: ✓ Added 16 Properties
+2026-08-16T07:17:50: Fetching Projects...
+2026-08-16T07:17:51: Fetching Articles...
+2026-08-16T07:17:51: Fetching Agents...
+2026-08-16T07:17:52: ✓ Added 1 Agents

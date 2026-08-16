@@ -1,0 +1,36 @@
+const fs = require("fs");
+const path = require("path");
+
+const rootDir = path.resolve(__dirname, "..");
+const htaccessPath = path.join(rootDir, ".htaccess");
+const port = process.argv[2] || process.env.PORT || "8001";
+
+const content = `<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    RewriteRule ^favicon\\.ico$ - [L]
+
+    # Allow SSL certificate verification
+    RewriteRule ^.well-known/acme-challenge/(.*) /.well-known/acme-challenge/$1 [L]
+
+    # Serve Next.js STATIC files directly from filesystem (JS/CSS bundles)
+    # IMPORTANT: Only match _next/static/, NOT all _next/ requests!
+    RewriteRule ^_next/static/(.*) /.next/static/$1 [L]
+
+    # Proxy Next.js DATA requests to Node.js server (required for client-side navigation)
+    RewriteRule ^_next/data/(.*) http://127.0.0.1:${port}/_next/data/$1 [P,L]
+
+    # Serve public folder static files directly
+    RewriteCond %{REQUEST_URI} \\.(js|css|svg|jpg|jpeg|png|gif|ico|woff|woff2|ttf|eot|webp|mp4|webm)$
+    RewriteRule ^ - [L]
+
+    # Forward all other requests to Node.js server
+    RewriteRule ^index.html http://127.0.0.1:${port}/$1 [P]
+    RewriteRule ^index.php http://127.0.0.1:${port}/$1 [P]
+    RewriteRule ^/?(.*)$ http://127.0.0.1:${port}/$1 [P]
+</IfModule>
+`;
+
+fs.writeFileSync(htaccessPath, content);
+console.log(`[standalone] Wrote ${path.relative(rootDir, htaccessPath)} for port ${port}.`);

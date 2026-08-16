@@ -1,0 +1,817 @@
+2026-08-13T08:29:19: Error fetching data: Error [AxiosError]: Request failed with status code 500
+2026-08-13T08:29:19:     at async j (pages/index.jsx:8:22)
+2026-08-13T08:29:19:     at async k (pages/index.jsx:46:21) {
+2026-08-13T08:29:19:   isAxiosError: true,
+2026-08-13T08:29:19:   code: 'ERR_BAD_RESPONSE',
+2026-08-13T08:29:19:   config: [Object: null prototype] {
+2026-08-13T08:29:19:     transitional: {
+2026-08-13T08:29:19:       silentJSONParsing: true,
+2026-08-13T08:29:19:       forcedJSONParsing: true,
+2026-08-13T08:29:19:       clarifyTimeoutError: false,
+2026-08-13T08:29:19:       legacyInterceptorReqResOrdering: true,
+2026-08-13T08:29:19:       advertiseZstdAcceptEncoding: false,
+2026-08-13T08:29:19:       validateStatusUndefinedResolves: true
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     adapter: [ 'xhr', 'http', 'fetch' ],
+2026-08-13T08:29:19:     transformRequest: [ [Function: transformRequest] ],
+2026-08-13T08:29:19:     transformResponse: [ [Function: transformResponse] ],
+2026-08-13T08:29:19:     timeout: 0,
+2026-08-13T08:29:19:     xsrfCookieName: 'XSRF-TOKEN',
+2026-08-13T08:29:19:     xsrfHeaderName: 'X-XSRF-TOKEN',
+2026-08-13T08:29:19:     maxContentLength: -1,
+2026-08-13T08:29:19:     maxBodyLength: -1,
+2026-08-13T08:29:19:     env: { FormData: [Function], Blob: [class Blob] },
+2026-08-13T08:29:19:     validateStatus: [Function: validateStatus],
+2026-08-13T08:29:19:     headers: Object [AxiosHeaders] {
+2026-08-13T08:29:19:       Accept: 'application/json, text/plain, */*',
+2026-08-13T08:29:19:       'Content-Type': undefined,
+2026-08-13T08:29:19:       'User-Agent': 'axios/1.18.1',
+2026-08-13T08:29:19:       'Accept-Encoding': 'gzip, compress, deflate, br'
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     method: 'get',
+2026-08-13T08:29:19:     url: 'https://admin.ximmo24.de/api/get_seo_settings',
+2026-08-13T08:29:19:     allowAbsoluteUrls: true,
+2026-08-13T08:29:19:     data: undefined
+2026-08-13T08:29:19:   },
+2026-08-13T08:29:19:   request: <ref *1> ClientRequest {
+2026-08-13T08:29:19:     _events: [Object: null prototype] {
+2026-08-13T08:29:19:       abort: [Function (anonymous)],
+2026-08-13T08:29:19:       aborted: [Function (anonymous)],
+2026-08-13T08:29:19:       connect: [Function (anonymous)],
+2026-08-13T08:29:19:       error: [Function (anonymous)],
+2026-08-13T08:29:19:       socket: [Function (anonymous)],
+2026-08-13T08:29:19:       timeout: [Function (anonymous)],
+2026-08-13T08:29:19:       finish: [Function: requestOnFinish]
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     _eventsCount: 7,
+2026-08-13T08:29:19:     _maxListeners: undefined,
+2026-08-13T08:29:19:     outputData: [],
+2026-08-13T08:29:19:     outputSize: 0,
+2026-08-13T08:29:19:     writable: true,
+2026-08-13T08:29:19:     destroyed: true,
+2026-08-13T08:29:19:     _last: true,
+2026-08-13T08:29:19:     chunkedEncoding: false,
+2026-08-13T08:29:19:     shouldKeepAlive: true,
+2026-08-13T08:29:19:     maxRequestsOnConnectionReached: false,
+2026-08-13T08:29:19:     _defaultKeepAlive: true,
+2026-08-13T08:29:19:     useChunkedEncodingByDefault: false,
+2026-08-13T08:29:19:     sendDate: false,
+2026-08-13T08:29:19:     _removedConnection: false,
+2026-08-13T08:29:19:     _removedContLen: false,
+2026-08-13T08:29:19:     _removedTE: false,
+2026-08-13T08:29:19:     strictContentLength: false,
+2026-08-13T08:29:19:     _contentLength: 0,
+2026-08-13T08:29:19:     _hasBody: true,
+2026-08-13T08:29:19:     _trailer: '',
+2026-08-13T08:29:19:     finished: true,
+2026-08-13T08:29:19:     _headerSent: true,
+2026-08-13T08:29:19:     _closed: true,
+2026-08-13T08:29:19:     _header: 'GET /api/get_seo_settings HTTP/1.1\r\n' +
+2026-08-13T08:29:19:       'Accept: application/json, text/plain, */*\r\n' +
+2026-08-13T08:29:19:       'User-Agent: axios/1.18.1\r\n' +
+2026-08-13T08:29:19:       'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+2026-08-13T08:29:19:       'Host: admin.ximmo24.de\r\n' +
+2026-08-13T08:29:19:       'Connection: keep-alive\r\n' +
+2026-08-13T08:29:19:       '\r\n',
+2026-08-13T08:29:19:     _keepAliveTimeout: 0,
+2026-08-13T08:29:19:     _onPendingData: [Function: nop],
+2026-08-13T08:29:19:     agent: Agent {
+2026-08-13T08:29:19:       _events: [Object: null prototype],
+2026-08-13T08:29:19:       _eventsCount: 2,
+2026-08-13T08:29:19:       _maxListeners: undefined,
+2026-08-13T08:29:19:       options: [Object: null prototype],
+2026-08-13T08:29:19:       defaultPort: 443,
+2026-08-13T08:29:19:       protocol: 'https:',
+2026-08-13T08:29:19:       requests: [Object: null prototype] {},
+2026-08-13T08:29:19:       sockets: [Object: null prototype] {},
+2026-08-13T08:29:19:       freeSockets: [Object: null prototype],
+2026-08-13T08:29:19:       keepAliveMsecs: 1000,
+2026-08-13T08:29:19:       keepAlive: true,
+2026-08-13T08:29:19:       maxSockets: Infinity,
+2026-08-13T08:29:19:       maxFreeSockets: 256,
+2026-08-13T08:29:19:       scheduling: 'lifo',
+2026-08-13T08:29:19:       maxTotalSockets: Infinity,
+2026-08-13T08:29:19:       totalSocketCount: 1,
+2026-08-13T08:29:19:       agentKeepAliveTimeoutBuffer: 1000,
+2026-08-13T08:29:19:       maxCachedSessions: 100,
+2026-08-13T08:29:19:       _sessionCache: [Object],
+2026-08-13T08:29:19:       [Symbol(shapeMode)]: false,
+2026-08-13T08:29:19:       [Symbol(kCapture)]: false
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     socketPath: undefined,
+2026-08-13T08:29:19:     method: 'GET',
+2026-08-13T08:29:19:     maxHeaderSize: undefined,
+2026-08-13T08:29:19:     insecureHTTPParser: false,
+2026-08-13T08:29:19:     joinDuplicateHeaders: undefined,
+2026-08-13T08:29:19:     path: '/api/get_seo_settings',
+2026-08-13T08:29:19:     _ended: true,
+2026-08-13T08:29:19:     res: IncomingMessage {
+2026-08-13T08:29:19:       _events: [Object],
+2026-08-13T08:29:19:       _readableState: [ReadableState],
+2026-08-13T08:29:19:       _maxListeners: undefined,
+2026-08-13T08:29:19:       socket: null,
+2026-08-13T08:29:19:       httpVersionMajor: 1,
+2026-08-13T08:29:19:       httpVersionMinor: 1,
+2026-08-13T08:29:19:       httpVersion: '1.1',
+2026-08-13T08:29:19:       complete: true,
+2026-08-13T08:29:19:       rawHeaders: [Array],
+2026-08-13T08:29:19:       rawTrailers: [],
+2026-08-13T08:29:19:       joinDuplicateHeaders: undefined,
+2026-08-13T08:29:19:       aborted: false,
+2026-08-13T08:29:19:       upgrade: false,
+2026-08-13T08:29:19:       url: '',
+2026-08-13T08:29:19:       method: null,
+2026-08-13T08:29:19:       statusCode: 500,
+2026-08-13T08:29:19:       statusMessage: 'Internal Server Error',
+2026-08-13T08:29:19:       client: [TLSSocket],
+2026-08-13T08:29:19:       _consuming: true,
+2026-08-13T08:29:19:       _dumped: false,
+2026-08-13T08:29:19:       req: [Circular *1],
+2026-08-13T08:29:19:       _eventsCount: 4,
+2026-08-13T08:29:19:       responseUrl: 'https://admin.ximmo24.de/api/get_seo_settings',
+2026-08-13T08:29:19:       redirects: [],
+2026-08-13T08:29:19:       [Symbol(shapeMode)]: true,
+2026-08-13T08:29:19:       [Symbol(kCapture)]: false,
+2026-08-13T08:29:19:       [Symbol(kHeaders)]: [Object],
+2026-08-13T08:29:19:       [Symbol(kHeadersCount)]: 30,
+2026-08-13T08:29:19:       [Symbol(kTrailers)]: null,
+2026-08-13T08:29:19:       [Symbol(kTrailersCount)]: 0
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     aborted: false,
+2026-08-13T08:29:19:     timeoutCb: null,
+2026-08-13T08:29:19:     upgradeOrConnect: false,
+2026-08-13T08:29:19:     parser: null,
+2026-08-13T08:29:19:     maxHeadersCount: null,
+2026-08-13T08:29:19:     reusedSocket: false,
+2026-08-13T08:29:19:     host: 'admin.ximmo24.de',
+2026-08-13T08:29:19:     protocol: 'https:',
+2026-08-13T08:29:19:     _redirectable: Writable {
+2026-08-13T08:29:19:       _events: [Object],
+2026-08-13T08:29:19:       _writableState: [WritableState],
+2026-08-13T08:29:19:       _maxListeners: undefined,
+2026-08-13T08:29:19:       _options: [Object],
+2026-08-13T08:29:19:       _ended: true,
+2026-08-13T08:29:19:       _ending: true,
+2026-08-13T08:29:19:       _redirectCount: 0,
+2026-08-13T08:29:19:       _redirects: [],
+2026-08-13T08:29:19:       _requestBodyLength: 0,
+2026-08-13T08:29:19:       _requestBodyBuffers: [],
+2026-08-13T08:29:19:       _eventsCount: 4,
+2026-08-13T08:29:19:       _onNativeResponse: [Function (anonymous)],
+2026-08-13T08:29:19:       _headerFilter: /^(?:Authorization|Proxy-Authorization|Cookie)$/i,
+2026-08-13T08:29:19:       _currentRequest: [Circular *1],
+2026-08-13T08:29:19:       _currentUrl: 'https://admin.ximmo24.de/api/get_seo_settings',
+2026-08-13T08:29:19:       _timeout: null,
+2026-08-13T08:29:19:       [Symbol(shapeMode)]: true,
+2026-08-13T08:29:19:       [Symbol(kCapture)]: false
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     [Symbol(shapeMode)]: false,
+2026-08-13T08:29:19:     [Symbol(kCapture)]: false,
+2026-08-13T08:29:19:     [Symbol(kBytesWritten)]: 0,
+2026-08-13T08:29:19:     [Symbol(kNeedDrain)]: false,
+2026-08-13T08:29:19:     [Symbol(corked)]: 0,
+2026-08-13T08:29:19:     [Symbol(kChunkedBuffer)]: [],
+2026-08-13T08:29:19:     [Symbol(kChunkedLength)]: 0,
+2026-08-13T08:29:19:     [Symbol(kSocket)]: TLSSocket {
+2026-08-13T08:29:19:       _tlsOptions: [Object],
+2026-08-13T08:29:19:       _secureEstablished: true,
+2026-08-13T08:29:19:       _securePending: false,
+2026-08-13T08:29:19:       _newSessionPending: false,
+2026-08-13T08:29:19:       _controlReleased: true,
+2026-08-13T08:29:19:       secureConnecting: false,
+2026-08-13T08:29:19:       _SNICallback: null,
+2026-08-13T08:29:19:       servername: 'admin.ximmo24.de',
+2026-08-13T08:29:19:       alpnProtocol: false,
+2026-08-13T08:29:19:       authorized: true,
+2026-08-13T08:29:19:       authorizationError: null,
+2026-08-13T08:29:19:       encrypted: true,
+2026-08-13T08:29:19:       _events: [Object: null prototype],
+2026-08-13T08:29:19:       _eventsCount: 9,
+2026-08-13T08:29:19:       connecting: false,
+2026-08-13T08:29:19:       _hadError: false,
+2026-08-13T08:29:19:       _parent: null,
+2026-08-13T08:29:19:       _host: 'admin.ximmo24.de',
+2026-08-13T08:29:19:       _closeAfterHandlingError: false,
+2026-08-13T08:29:19:       _readableState: [ReadableState],
+2026-08-13T08:29:19:       _writableState: [WritableState],
+2026-08-13T08:29:19:       allowHalfOpen: false,
+2026-08-13T08:29:19:       _maxListeners: undefined,
+2026-08-13T08:29:19:       _sockname: null,
+2026-08-13T08:29:19:       _pendingData: null,
+2026-08-13T08:29:19:       _pendingEncoding: '',
+2026-08-13T08:29:19:       server: undefined,
+2026-08-13T08:29:19:       _server: null,
+2026-08-13T08:29:19:       ssl: [TLSWrap],
+2026-08-13T08:29:19:       _requestCert: true,
+2026-08-13T08:29:19:       _rejectUnauthorized: true,
+2026-08-13T08:29:19:       timeout: 5000,
+2026-08-13T08:29:19:       parser: null,
+2026-08-13T08:29:19:       _httpMessage: null,
+2026-08-13T08:29:19:       autoSelectFamilyAttemptedAddresses: [Array],
+2026-08-13T08:29:19:       [Symbol(alpncallback)]: null,
+2026-08-13T08:29:19:       [Symbol(res)]: [TLSWrap],
+2026-08-13T08:29:19:       [Symbol(verified)]: true,
+2026-08-13T08:29:19:       [Symbol(pendingSession)]: null,
+2026-08-13T08:29:19:       [Symbol(async_id_symbol)]: -1,
+2026-08-13T08:29:19:       [Symbol(kHandle)]: [TLSWrap],
+2026-08-13T08:29:19:       [Symbol(lastWriteQueueSize)]: 0,
+2026-08-13T08:29:19:       [Symbol(timeout)]: Timeout {
+2026-08-13T08:29:19:         _idleTimeout: 5000,
+2026-08-13T08:29:19:         _idlePrev: [TimersList],
+2026-08-13T08:29:19:         _idleNext: [Timeout],
+2026-08-13T08:29:19:         _idleStart: 312954545,
+2026-08-13T08:29:19:         _onTimeout: [Function: bound ],
+2026-08-13T08:29:19:         _timerArgs: undefined,
+2026-08-13T08:29:19:         _repeat: null,
+2026-08-13T08:29:19:         _destroyed: false,
+2026-08-13T08:29:19:         [Symbol(refed)]: false,
+2026-08-13T08:29:19:         [Symbol(kHasPrimitive)]: false,
+2026-08-13T08:29:19:         [Symbol(asyncId)]: 196582,
+2026-08-13T08:29:19:         [Symbol(triggerId)]: 196580,
+2026-08-13T08:29:19:         [Symbol(kAsyncContextFrame)]: undefined,
+2026-08-13T08:29:19:         [Symbol(kResourceStore)]: undefined
+2026-08-13T08:29:19:       },
+2026-08-13T08:29:19:       [Symbol(kBuffer)]: null,
+2026-08-13T08:29:19:       [Symbol(kBufferCb)]: null,
+2026-08-13T08:29:19:       [Symbol(kBufferGen)]: null,
+2026-08-13T08:29:19:       [Symbol(shapeMode)]: true,
+2026-08-13T08:29:19:       [Symbol(kCapture)]: false,
+2026-08-13T08:29:19:       [Symbol(kSetNoDelay)]: false,
+2026-08-13T08:29:19:       [Symbol(kSetKeepAlive)]: true,
+2026-08-13T08:29:19:       [Symbol(kSetKeepAliveInitialDelay)]: 1,
+2026-08-13T08:29:19:       [Symbol(kBytesRead)]: 0,
+2026-08-13T08:29:19:       [Symbol(kBytesWritten)]: 0,
+2026-08-13T08:29:19:       [Symbol(connect-options)]: [Object],
+2026-08-13T08:29:19:       [Symbol(axios.http.socketListener)]: true,
+2026-08-13T08:29:19:       [Symbol(axios.http.currentReq)]: [Writable]
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     [Symbol(kOutHeaders)]: [Object: null prototype] {
+2026-08-13T08:29:19:       accept: [Array],
+2026-08-13T08:29:19:       'user-agent': [Array],
+2026-08-13T08:29:19:       'accept-encoding': [Array],
+2026-08-13T08:29:19:       host: [Array]
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     [Symbol(errored)]: null,
+2026-08-13T08:29:19:     [Symbol(kHighWaterMark)]: 65536,
+2026-08-13T08:29:19:     [Symbol(kRejectNonStandardBodyWrites)]: false,
+2026-08-13T08:29:19:     [Symbol(kUniqueHeaders)]: null
+2026-08-13T08:29:19:   },
+2026-08-13T08:29:19:   response: {
+2026-08-13T08:29:19:     status: 500,
+2026-08-13T08:29:19:     statusText: 'Internal Server Error',
+2026-08-13T08:29:19:     headers: Object [AxiosHeaders] {
+2026-08-13T08:29:19:       date: 'Thu, 13 Aug 2026 06:29:19 GMT',
+2026-08-13T08:29:19:       'content-type': 'text/html; charset=UTF-8',
+2026-08-13T08:29:19:       'transfer-encoding': 'chunked',
+2026-08-13T08:29:19:       connection: 'keep-alive',
+2026-08-13T08:29:19:       server: 'cloudflare',
+2026-08-13T08:29:19:       'x-powered-by': 'PHP/8.3.33, PleskLin',
+2026-08-13T08:29:19:       'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+2026-08-13T08:29:19:       'access-control-allow-headers': 'Origin, Authorization, Accept, Content-Type, X-Requested-With, x-active-role',
+2026-08-13T08:29:19:       'access-control-allow-origin': '*',
+2026-08-13T08:29:19:       nel: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}',
+2026-08-13T08:29:19:       'cf-cache-status': 'DYNAMIC',
+2026-08-13T08:29:19:       'report-to': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=aLyyEuIKGJRxQVSdptWkN20mkkBfreowrNa%2BQIV3RrpAtQAgWSMZxaWgTLwIEneb0ZMefMUUvFV%2Bh2Bd8oQgCwEOFDeTxggM7sBjtyQ7uXRddwk6yQ4wwv8LfbHoPjZ73RnW"}]}',
+2026-08-13T08:29:19:       'cf-ray': 'a2a5aa27b93ee50b-TXL',
+2026-08-13T08:29:19:       'alt-svc': 'h3=":443"; ma=86400'
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     config: [Object: null prototype] {
+2026-08-13T08:29:19:       transitional: [Object],
+2026-08-13T08:29:19:       adapter: [Array],
+2026-08-13T08:29:19:       transformRequest: [Array],
+2026-08-13T08:29:19:       transformResponse: [Array],
+2026-08-13T08:29:19:       timeout: 0,
+2026-08-13T08:29:19:       xsrfCookieName: 'XSRF-TOKEN',
+2026-08-13T08:29:19:       xsrfHeaderName: 'X-XSRF-TOKEN',
+2026-08-13T08:29:19:       maxContentLength: -1,
+2026-08-13T08:29:19:       maxBodyLength: -1,
+2026-08-13T08:29:19:       env: [Object],
+2026-08-13T08:29:19:       validateStatus: [Function: validateStatus],
+2026-08-13T08:29:19:       headers: [Object [AxiosHeaders]],
+2026-08-13T08:29:19:       method: 'get',
+2026-08-13T08:29:19:       url: 'https://admin.ximmo24.de/api/get_seo_settings',
+2026-08-13T08:29:19:       allowAbsoluteUrls: true,
+2026-08-13T08:29:19:       data: undefined
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     request: <ref *1> ClientRequest {
+2026-08-13T08:29:19:       _events: [Object: null prototype],
+2026-08-13T08:29:19:       _eventsCount: 7,
+2026-08-13T08:29:19:       _maxListeners: undefined,
+2026-08-13T08:29:19:       outputData: [],
+2026-08-13T08:29:19:       outputSize: 0,
+2026-08-13T08:29:19:       writable: true,
+2026-08-13T08:29:19:       destroyed: true,
+2026-08-13T08:29:19:       _last: true,
+2026-08-13T08:29:19:       chunkedEncoding: false,
+2026-08-13T08:29:19:       shouldKeepAlive: true,
+2026-08-13T08:29:19:       maxRequestsOnConnectionReached: false,
+2026-08-13T08:29:19:       _defaultKeepAlive: true,
+2026-08-13T08:29:19:       useChunkedEncodingByDefault: false,
+2026-08-13T08:29:19:       sendDate: false,
+2026-08-13T08:29:19:       _removedConnection: false,
+2026-08-13T08:29:19:       _removedContLen: false,
+2026-08-13T08:29:19:       _removedTE: false,
+2026-08-13T08:29:19:       strictContentLength: false,
+2026-08-13T08:29:19:       _contentLength: 0,
+2026-08-13T08:29:19:       _hasBody: true,
+2026-08-13T08:29:19:       _trailer: '',
+2026-08-13T08:29:19:       finished: true,
+2026-08-13T08:29:19:       _headerSent: true,
+2026-08-13T08:29:19:       _closed: true,
+2026-08-13T08:29:19:       _header: 'GET /api/get_seo_settings HTTP/1.1\r\n' +
+2026-08-13T08:29:19:         'Accept: application/json, text/plain, */*\r\n' +
+2026-08-13T08:29:19:         'User-Agent: axios/1.18.1\r\n' +
+2026-08-13T08:29:19:         'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+2026-08-13T08:29:19:         'Host: admin.ximmo24.de\r\n' +
+2026-08-13T08:29:19:         'Connection: keep-alive\r\n' +
+2026-08-13T08:29:19:         '\r\n',
+2026-08-13T08:29:19:       _keepAliveTimeout: 0,
+2026-08-13T08:29:19:       _onPendingData: [Function: nop],
+2026-08-13T08:29:19:       agent: [Agent],
+2026-08-13T08:29:19:       socketPath: undefined,
+2026-08-13T08:29:19:       method: 'GET',
+2026-08-13T08:29:19:       maxHeaderSize: undefined,
+2026-08-13T08:29:19:       insecureHTTPParser: false,
+2026-08-13T08:29:19:       joinDuplicateHeaders: undefined,
+2026-08-13T08:29:19:       path: '/api/get_seo_settings',
+2026-08-13T08:29:19:       _ended: true,
+2026-08-13T08:29:19:       res: [IncomingMessage],
+2026-08-13T08:29:19:       aborted: false,
+2026-08-13T08:29:19:       timeoutCb: null,
+2026-08-13T08:29:19:       upgradeOrConnect: false,
+2026-08-13T08:29:19:       parser: null,
+2026-08-13T08:29:19:       maxHeadersCount: null,
+2026-08-13T08:29:19:       reusedSocket: false,
+2026-08-13T08:29:19:       host: 'admin.ximmo24.de',
+2026-08-13T08:29:19:       protocol: 'https:',
+2026-08-13T08:29:19:       _redirectable: [Writable],
+2026-08-13T08:29:19:       [Symbol(shapeMode)]: false,
+2026-08-13T08:29:19:       [Symbol(kCapture)]: false,
+2026-08-13T08:29:19:       [Symbol(kBytesWritten)]: 0,
+2026-08-13T08:29:19:       [Symbol(kNeedDrain)]: false,
+2026-08-13T08:29:19:       [Symbol(corked)]: 0,
+2026-08-13T08:29:19:       [Symbol(kChunkedBuffer)]: [],
+2026-08-13T08:29:19:       [Symbol(kChunkedLength)]: 0,
+2026-08-13T08:29:19:       [Symbol(kSocket)]: [TLSSocket],
+2026-08-13T08:29:19:       [Symbol(kOutHeaders)]: [Object: null prototype],
+2026-08-13T08:29:19:       [Symbol(errored)]: null,
+2026-08-13T08:29:19:       [Symbol(kHighWaterMark)]: 65536,
+2026-08-13T08:29:19:       [Symbol(kRejectNonStandardBodyWrites)]: false,
+2026-08-13T08:29:19:       [Symbol(kUniqueHeaders)]: null
+2026-08-13T08:29:19:     },
+2026-08-13T08:29:19:     data: '<script> Sfdump = window.Sfdump || (function (doc) { doc.documentElement.classList.add(\'sf-js-enabled\'); var rxEsc = /([.*+?^${}()|\\[\\]\\/\\\\])/g, idRx = /\\bsf-dump-\\d+-ref[012]\\w+\\b/, keyHint = 0 <= navigator.platform.toUpperCase().indexOf(\'MAC\') ? \'Cmd\' : \'Ctrl\', addEventListener = function (e, n, cb) { e.addEventListener(n, cb, false); }; if (!doc.addEventListener) { addEventListener = function (element, eventName, callback) { element.attachEvent(\'on\' + eventName, function (e) { e.preventDefault = function () {e.returnValue = false;}; e.target = e.srcElement; callback(e); }); }; } function toggle(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className, arrow, newClass; if (/\\bsf-dump-compact\\b/.test(oldClass)) { arrow = \'&#9660;\'; newClass = \'sf-dump-expanded\'; } else if (/\\bsf-dump-expanded\\b/.test(oldClass)) { arrow = \'&#9654;\'; newClass = \'sf-dump-compact\'; } else { return false; } if (doc.createEvent && s.dispatchEvent) { var event = doc.createEvent(\'Event\'); event.initEvent(\'sf-dump-expanded\' === newClass ? \'sfbeforedumpexpand\' : \'sfbeforedumpcollapse\', true, false); s.dispatchEvent(event); } a.lastChild.innerHTML = arrow; s.className = s.className.replace(/\\bsf-dump-(compact|expanded)\\b/, newClass); if (recursive) { try { a = s.querySelectorAll(\'.\'+oldClass); for (s = 0; s < a.length; ++s) { if (-1 == a[s].className.indexOf(newClass)) { a[s].className = newClass; a[s].previousSibling.lastChild.innerHTML = arrow; } } } catch (e) { } } return true; }; function collapse(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className; if (/\\bsf-dump-expanded\\b/.test(oldClass)) { toggle(a, recursive); return true; } return false; }; function expand(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className; if (/\\bsf-dump-compact\\b/.test(oldClass)) { toggle(a, recursive); return true; } return false; }; function collapseAll(root) { var a = root.querySelector(\'a.sf-dump-toggle\'); if (a) { collapse(a, true); expand(a); return true; } return false; } function reveal(node) { var previous, parents = []; while ((node = node.parentNode || {}) && (previous = node.previousSibling) && \'A\' === previous.tagName) { parents.push(previous); } if (0 !== parents.length) { parents.forEach(function (parent) { expand(parent); }); return true; } return false; } function highlight(root, activeNode, nodes) { resetHighlightedNodes(root); Array.from(nodes||[]).forEach(function (node) { if (!/\\bsf-dump-highlight\\b/.test(node.className)) { node.className = node.className + \' sf-dump-highlight\'; } }); if (!/\\bsf-dump-highlight-active\\b/.test(activeNode.className)) { activeNode.className = activeNode.className + \' sf-dump-highlight-active\'; } } function resetHighlightedNodes(root) { Array.from(root.querySelectorAll(\'.sf-dump-str, .sf-dump-key, .sf-dump-public, .sf-dump-protected, .sf-dump-private\')).forEach(function (strNode) { strNode.className = strNode.className.replace(/\\bsf-dump-highlight\\b/, \'\'); strNode.className = strNode.className.replace(/\\bsf-dump-highlight-active\\b/, \'\'); }); } return function (root, x) { root = doc.getElementById(root); var indentRx = new RegExp(\'^(\'+(root.getAttribute(\'data-indent-pad\') || \' \').replace(rxEsc, \'\\\\$1\')+\')+\', \'m\'), options = {"maxDepth":1,"maxStringLength":160,"fileLinkFormat":false}, elt = root.getElementsByTagName(\'A\'), len = elt.length, i = 0, s, h, t = []; while (i < len) t.push(elt[i++]); for (i in x) { options[i] = x[i]; } function a(e, f) { addEventListener(root, e, function (e, n) { if (\'A\' == e.target.tagName) { f(e.target, e); } else if (\'A\' == e.target.parentNode.tagName) { f(e.target.parentNode, e); } else { n = /\\bsf-dump-ellipsis\\b/.test(e.target.className) ? e.target.parentNode : e.target; if ((n = n.nextElementSibling) && \'A\' == n.tagName) { if (!/\\bsf-dump-toggle\\b/.test(n.className)) { n = n.nextElementSibling || n; } f(n, e, true); } } }); }; function isCtrlKey(e) { return e.ctrlKey || e.metaKey; } function xpathString(str) { var parts = str.match(/[^\'"]+|[\'"]/g).map(function (part) { if ("\'" == part) { return \'"\\\'"\'; } if (\'"\' == part) { return "\'\\"\'"; } return "\'" + part + "\'"; }); return "concat(" + parts.join(",") + ", \'\')"; } function xpathHasClass(className) { return "contains(concat(\' \', normalize-space(@class), \' \'), \' " + className +" \')"; } a(\'mouseover\', function (a, e, c) { if (c) { e.target.style.cursor = "pointer"; } }); a(\'click\', function (a, e, c) { if (/\\bsf-dump-toggle\\b/.test(a.className)) { e.preventDefault(); if (!toggle(a, isCtrlKey(e))) { var r = doc.getElementById(a.getAttribute(\'href\').slice(1)), s = r.previousSibling, f = r.parentNode, t = a.parentNode; t.replaceChild(r, a); f.replaceChild(a, s); t.insertBefore(s, r); f = f.firstChild.nodeValue.match(indentRx); t = t.firstChild.nodeValue.match(indentRx); if (f && t && f[0] !== t[0]) { r.innerHTML = r.innerHTML.replace(new RegExp(\'^\'+f[0].replace(rxEsc, \'\\\\$1\'), \'mg\'), t[0]); } if (/\\bsf-dump-compact\\b/.test(r.className)) { toggle(s, isCtrlKey(e)); } } if (c) { } else if (doc.getSelection) { try { doc.getSelection().removeAllRanges(); } catch (e) { doc.getSelection().empty(); } } else { doc.selection.empty(); } } else if (/\\bsf-dump-str-toggle\\b/.test(a.className)) { e.preventDefault(); e = a.parentNode.parentNode; e.className = e.className.replace(/\\bsf-dump-str-(expand|collapse)\\b/, a.parentNode.className); } }); elt = root.getElementsByTagName(\'SAMP\'); len = elt.length; i = 0; while (i < len) t.push(elt[i++]); len = t.length; for (i = 0; i < len; ++i) { elt = t[i]; if (\'SAMP\' == elt.tagName) { a = elt.previousSibling || {}; if (\'A\' != a.tagName) { a = doc.createElement(\'A\'); a.className = \'sf-dump-ref\'; elt.parentNode.insertBefore(a, elt); } else { a.innerHTML += \' \'; } a.title = (a.title ? a.title+\'\\n[\' : \'[\')+keyHint+\'+click] Expand all children\'; a.innerHTML += elt.className == \'sf-dump-compact\' ? \'<span>&#9654;</span>\' : \'<span>&#9660;</span>\'; a.className += \' sf-dump-toggle\'; x = 1; if (\'sf-dump\' != elt.parentNode.className) { x += elt.parentNode.getAttribute(\'data-depth\')/1; } } else if (/\\bsf-dump-ref\\b/.test(elt.className) && (a = elt.getAttribute(\'href\'))) { a = a.slice(1); elt.className += \' sf-dump-hover\'; elt.className += \' \'+a; if (/[\\[{]$/.test(elt.previousSibling.nodeValue)) { a = a != elt.nextSibling.id && doc.getElementById(a); try { s = a.nextSibling; elt.appendChild(a); s.parentNode.insertBefore(a, s); if (/^[@#]/.test(elt.innerHTML)) { elt.innerHTML += \' <span>&#9654;</span>\'; } else { elt.innerHTML = \'<span>&#9654;</span>\'; elt.className = \'sf-dump-ref\'; } elt.className += \' sf-dump-toggle\'; } catch (e) { if (\'&\' == elt.innerHTML.charAt(0)) { elt.innerHTML = \'&#8230;\'; elt.className = \'sf-dump-ref\'; } } } } } if (doc.evaluate && Array.from && root.children.length > 1) { root.setAttribute(\'tabindex\', 0); SearchState = function () { this.nodes = []; this.idx = 0; }; SearchState.prototype = { next: function () { if (this.isEmpty()) { return this.current(); } this.idx = this.idx < (this.nodes.length - 1) ? this.idx + 1 : 0; return this.current(); }, previous: function () { if (this.isEmpty()) { return this.current(); } this.idx = this.idx > 0 ? this.idx - 1 : (this.nodes.length - 1); return this.current(); }, isEmpty: function () { return 0 === this.count(); }, current: function () { if (this.isEmpty()) { return null; } return this.nodes[this.idx]; }, reset: function () { this.nodes = []; this.idx = 0; }, count: function () { return this.nodes.length; }, }; function showCurrent(state) { var currentNode = state.current(), currentRect, searchRect; if (currentNode) { reveal(currentNode); highlight(root, currentNode, state.nodes); if (\'scrollIntoView\' in currentNode) { currentNode.scrollIntoView(true); currentRect = currentNode.getBoundingClientRect(); searchRect = search.getBoundingClientRect(); if (currentRect.top < (searchRect.top + searchRect.height)) { window.scrollBy(0, -(searchRect.top + searchRect.height + 5)); } } } counter.textContent = (state.isEmpty() ? 0 : state.idx + 1) + \' of \' + state.count(); } var search = doc.createElement(\'div\'); search.className = \'sf-dump-search-wrapper sf-dump-search-hidden\'; search.innerHTML = \' <input type="text" class="sf-dump-search-input"> <span class="sf-dump-search-count">0 of 0<\\/span> <button type="button" class="sf-dump-search-input-previous" tabindex="-1"> <svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1683 1331l-166 165q-19 19-45 19t-45-19L896 965l-531 531q-19 19-45 19t-45-19l-166-165q-19-19-19-45.5t19-45.5l742-741q19-19 45-19t45 19l742 741q19 19 19 45.5t-19 45.5z"\\/><\\/svg> <\\/button> <button type="button" class="sf-dump-search-input-next" tabindex="-1"> <svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1683 808l-742 741q-19 19-45 19t-45-19L109 808q-19-19-19-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19 19 19 45.5t-19 45.5z"\\/><\\/svg> <\\/button> \'; root.insertBefore(search, root.firstChild); var state = new SearchState(); var searchInput = search.querySelector(\'.sf-dump-search-input\'); var counter = search.querySelector(\'.sf-dump-search-count\'); var searchInputTimer = 0; var previousSearchQuery = \'\'; addEventListener(searchInput, \'keyup\', function (e) { var searchQuery = e.target.value; /* Don\'t perform anything if the pressed key didn\'t change the query */ if (searchQuery === previousSearchQuery) { return; } previousSearchQuery = searchQuery; clearTimeout(searchInputTimer); searchInputTimer = setTimeout(function () { state.reset(); collapseAll(root); resetHighlightedNodes(root); if (\'\' === searchQuery) { counter.textContent = \'0 of 0\'; return; } var classMatches = [ "sf-dump-str", "sf-dump-key", "sf-dump-public", "sf-dump-protected", "sf-dump-private", ].map(xpathHasClass).join(\' or \'); var xpathResult = doc.evaluate(\'.//span[\' + classMatches + \'][contains(translate(child::text(), \' + xpathString(searchQuery.toUpperCase()) + \', \' + xpathString(searchQuery.toLowerCase()) + \'), \' + xpathString(searchQuery.toLowerCase('... 7497 more characters
+2026-08-13T08:29:19:   },
+2026-08-13T08:29:19:   status: 500
+2026-08-13T08:29:19: }
+2026-08-13T11:23:32: ⨯ Error: Failed to load static file for page: /404 ENOENT: no such file or directory, open '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/.next/server/pages/404.html'
+2026-08-13T11:23:32:     at ignore-listed frames
+2026-08-13T11:23:59: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:23:59:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:23:59:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:23:59:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:23:59:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:23:59:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:23:59:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:23:59:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:23:59:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:23:59:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:23:59:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:23:59:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:23:59:   requireStack: []
+2026-08-13T11:23:59: }
+2026-08-13T11:23:59: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:23:59:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:23:59:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:23:59:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:23:59:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:23:59:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:23:59:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:23:59:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:23:59:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:23:59:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:23:59:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:23:59:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:23:59:   requireStack: []
+2026-08-13T11:23:59: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:00: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:00:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:00:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:00:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:00:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:00:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:00:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:00:   requireStack: []
+2026-08-13T11:24:00: }
+2026-08-13T11:24:01: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:01:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:01:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:01:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:01:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:01:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:01:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:01:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:01:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:01:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:01:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:01:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:01:   requireStack: []
+2026-08-13T11:24:01: }
+2026-08-13T11:24:54: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:54:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:54:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:54:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:54:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:54:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:54:   requireStack: []
+2026-08-13T11:24:54: }
+2026-08-13T11:24:54: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:54:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:54:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:54:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:54:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:54:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:54:   requireStack: []
+2026-08-13T11:24:54: }
+2026-08-13T11:24:54: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:54:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:54:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:54:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:54:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:54:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:54:   requireStack: []
+2026-08-13T11:24:54: }
+2026-08-13T11:24:54: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:54:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:54:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:54:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:54:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:54:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:54:   requireStack: []
+2026-08-13T11:24:54: }
+2026-08-13T11:24:54: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:54:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:54:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:54:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:54:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:54:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:54:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:54:   requireStack: []
+2026-08-13T11:24:54: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-13T11:24:55: Error: Cannot find module '/var/www/vhosts/ximmo24.de/httpdocs/.next/standalone/server.js'
+2026-08-13T11:24:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+2026-08-13T11:24:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+2026-08-13T11:24:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1216:25)
+2026-08-13T11:24:55:     at Object.<anonymous> (/root/.nvm/versions/node/v22.23.1/lib/node_modules/pm2/lib/ProcessContainerFork.js:32:23)
+2026-08-13T11:24:55:     at Module._compile (node:internal/modules/cjs/loader:1781:14)
+2026-08-13T11:24:55:     at Object..js (node:internal/modules/cjs/loader:1913:10)
+2026-08-13T11:24:55:     at Module.load (node:internal/modules/cjs/loader:1505:32)
+2026-08-13T11:24:55:     at Function._load (node:internal/modules/cjs/loader:1309:12)
+2026-08-13T11:24:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19) {
+2026-08-13T11:24:55:   code: 'MODULE_NOT_FOUND',
+2026-08-13T11:24:55:   requireStack: []
+2026-08-13T11:24:55: }
+2026-08-16T07:17:51: ⚠️  No items found for Projects
+2026-08-16T07:17:51: ⚠️  No items found for Articles

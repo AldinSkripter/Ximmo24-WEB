@@ -1,0 +1,180 @@
+import { useTranslation } from '@/components/context/TranslationContext'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import Map from '@/components/google-maps/GoogleMap'
+import CustomLocationAutocomplete from '@/components/location-search/CustomLocationAutocomplete'
+import toast from 'react-hot-toast'
+import { isWithinBW, BW_OUTSIDE_KEY, BW_OUTSIDE_TEXT_DE } from '@/utils/bwRegion'
+
+
+const LocationComponent = ({
+    selectedLocationAddress,
+    setSelectedLocationAddress,
+    handleLocationSelect,
+    handleCheckRequiredFields,
+    isEditing = false,
+    isProperty = true
+}) => {
+    const t = useTranslation();
+
+    // Handle place selection from CustomLocationAutocomplete
+    const handleCustomLocationSelect = async (placeData, placeDetails) => {
+        try {
+            if (!placeData) return;
+
+            // Region gate: only allow addresses inside Baden-Württemberg.
+            const inside = await isWithinBW(placeData.latitude, placeData.longitude);
+            if (!inside) {
+                const msg = t(BW_OUTSIDE_KEY);
+                toast.error(msg && msg !== BW_OUTSIDE_KEY ? msg : BW_OUTSIDE_TEXT_DE);
+                return; // block selection of out-of-BW addresses
+            }
+
+            // placeData.address_components is already the correct array from the API.
+            // Extract city / state / country directly from it.
+            const components = placeData.address_components || [];
+
+            const getComponent = (...types) => {
+                for (const type of types) {
+                    const found = components.find(c => c.types?.includes(type));
+                    if (found) return found.long_name || "";
+                }
+                return "";
+            };
+
+            const city = getComponent("locality", "administrative_area_level_3", "administrative_area_level_2");
+            const state = getComponent("administrative_area_level_1");
+            const country = getComponent("country");
+            const formattedAddress = placeData.formatted_address || placeDetails?.formatted_address || "";
+
+            const updatedLocationData = {
+                city,
+                state,
+                country,
+                formattedAddress,
+                latitude: placeData.latitude,
+                longitude: placeData.longitude,
+                lat: placeData.latitude,
+                lng: placeData.longitude,
+            };
+
+            setSelectedLocationAddress(prev => ({
+                ...prev,
+                ...updatedLocationData,
+            }));
+
+            if (handleLocationSelect) {
+                handleLocationSelect(updatedLocationData);
+            }
+        } catch (error) {
+            console.error("Error processing custom location data:", error);
+        }
+    };
+
+    // Handle input change for city field
+    const handleCityInputChange = (e) => {
+        const value = e.target.value;
+        // Create a new object to avoid mutating the original data
+        setSelectedLocationAddress(prev => ({
+            ...prev,
+            city: value
+        }));
+    };
+
+    return (
+        <div className="flex flex-col gap-8">
+            <div className='font-medium text-gray-800'>{isProperty ? t("selectPropertyLocationNote") : t("selectProjectLocationNote")}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                    {/* City */}
+                    <div className='flex w-full gap-3'>
+                        <div className="w-1/2">
+                            <Label htmlFor="city" className="font-medium text-gray-800">
+                                {t("city")} <span className="text-red-500">*</span>
+                            </Label>
+                            <div className="relative">
+                                <CustomLocationAutocomplete
+                                    value={selectedLocationAddress.city || ''}
+                                    onChange={handleCityInputChange}
+                                    onPlaceSelect={handleCustomLocationSelect}
+                                    placeholder={t("searchCity")}
+                                    className="w-full px-3 py-2 primaryBackgroundBg rounded-md focus:outline-none focus:border-none focus:border-transparent pr-10"
+                                    debounceMs={1000}
+                                    maxResults={10}
+                                    isPropertyOrProjectOperation={true}
+                                />
+                            </div>
+                        </div>
+                        <div className="w-1/2">
+                            <Label htmlFor="state" className="font-medium text-gray-800">
+                                {t("state")} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                                type="text"
+                                id="state"
+                                value={selectedLocationAddress.state || ''}
+                                onChange={(e) => setSelectedLocationAddress(prev => ({ ...prev, state: e.target.value }))}
+                                placeholder={t("enterState")}
+                                className="w-full px-3 py-2 primaryBackgroundBg rounded-md focus:outline-none focus:border-none focus:border-transparent"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Country */}
+                    <div>
+                        <Label htmlFor="country" className="font-medium text-gray-800">
+                            {t("country")} <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                            type="text"
+                            id="country"
+                            value={selectedLocationAddress.country || ''}
+                            onChange={(e) => setSelectedLocationAddress(prev => ({ ...prev, country: e.target.value }))}
+                            placeholder={t("enterCountry")}
+                            className="w-full px-3 py-2 primaryBackgroundBg rounded-md focus:outline-none focus:border-none focus:border-transparent"
+                        />
+                    </div>
+
+                    {/* Address */}
+                    <div>
+                        <Label htmlFor="address" className="font-medium text-gray-800">
+                            {t("address")} <span className="text-red-500">*</span>
+                        </Label>
+                        <div className="relative">
+                            <Textarea
+                                id="address"
+                                value={selectedLocationAddress.formattedAddress || ''}
+                                onChange={(e) => setSelectedLocationAddress(prev => ({ ...prev, formattedAddress: e.target.value }))}
+                                placeholder={t("enterFullAddress")}
+                                className="w-full px-3 py-2 primaryBackgroundBg rounded-md focus:outline-none focus:border-none focus:border-transparent resize-none h-24"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="w-full h-[350px] rounded-lg overflow-hidden">
+                    <Map
+                        latitude={selectedLocationAddress.latitude || 0}
+                        longitude={selectedLocationAddress.longitude || 0}
+                        showLabel={true}
+                        onSelectLocation={handleLocationSelect}
+                    />
+                </div>
+            </div>
+
+            {/* Next Button */}
+            <div className="flex justify-end">
+                <Button
+                    onClick={() => handleCheckRequiredFields("location", isProperty ? "seoSettings" : "floorDetails")}
+                    className="px-10 py-5"
+                >
+                    {isEditing ? t("save") : t("next")}
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+export default LocationComponent
