@@ -323,11 +323,6 @@ const AgentSidebar = ({ isMobile = false }) => {
           url: "/agent/stories",
         },
         {
-          title: t("openImmoImport") === "openImmoImport" ? "Import & Schnittstellen" : t("openImmoImport"),
-          icon: BiImport,
-          url: "/agent/import-schnittstellen",
-        },
-        {
           title: t("watermarkSettings"),
           icon: MdOutlineBrandingWatermark,
           url: "/agent/watermark-settings",
@@ -346,6 +341,13 @@ const AgentSidebar = ({ isMobile = false }) => {
           title: t("myProjects"),
           icon: BiBuildingHouse,
           url: "/agent/projects",
+        },
+        {
+          title: t("openImmoImport") === "openImmoImport"
+            ? (activeLang?.toLowerCase().startsWith("de") ? "Import & Schnittstellen" : "Import & Integrations")
+            : t("openImmoImport"),
+          icon: BiImport,
+          url: "/agent/import-schnittstellen",
         },
         {
           title: t("myAdvertisement"),
