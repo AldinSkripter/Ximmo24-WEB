@@ -2495,3 +2495,4 @@ export const getOpenImmoImportsApi = async (params = {}) => (await api.get(apiEn
 export const getOpenImmoImportApi = async (id) => (await api.get(`${apiEndpoints.OPENIMMO_IMPORTS}/${id}`)).data;
 export const uploadOpenImmoApi = async (file, mode = "dry_run") => { const formData = new FormData(); formData.append("file", file); formData.append("mode", mode); return (await api.post(apiEndpoints.OPENIMMO_IMPORTS, formData)).data; };
 export const applyOpenImmoImportApi = async (id) => (await api.post(`${apiEndpoints.OPENIMMO_IMPORTS}/${id}/apply`)).data;
+export const deleteOpenImmoImportApi = async (id) => (await api.delete(`${apiEndpoints.OPENIMMO_IMPORTS}/${id}`)).data;
