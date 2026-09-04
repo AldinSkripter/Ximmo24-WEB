@@ -14,7 +14,7 @@ const AgentOpenImmoImport = () => {
   const [file, setFile] = useState(null);
   const [credentials, setCredentials] = useState(null);
   const [catalog, setCatalog] = useState({ categories: [], parameters: [], sourceCategories: {}, parameterSources: {} });
-  const [configuration, setConfiguration] = useState({ category_mapping: {}, parameter_mapping: {}, auto_publish: false, auto_approve: false });
+  const [configuration, setConfiguration] = useState({ category_mapping: {}, parameter_mapping: {}, auto_publish: false, auto_approve: false, feed_mode: "dry_run" });
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
 
@@ -25,7 +25,7 @@ const AgentOpenImmoImport = () => {
       const current = data.connection || null;
       setConnection(current);
       setCatalog({ categories: data.categories || [], parameters: data.parameters || [], sourceCategories: data.source_categories || {}, parameterSources: data.parameter_sources || {} });
-      setConfiguration({ category_mapping: current?.category_mapping || {}, parameter_mapping: current?.settings?.parameter_mapping || {}, auto_publish: Boolean(current?.settings?.auto_publish), auto_approve: Boolean(current?.settings?.auto_approve) });
+      setConfiguration({ category_mapping: current?.category_mapping || {}, parameter_mapping: current?.settings?.parameter_mapping || {}, auto_publish: Boolean(current?.settings?.auto_publish), auto_approve: Boolean(current?.settings?.auto_approve), feed_mode: current?.settings?.feed_mode || "dry_run" });
       setImports(importsResult?.data?.data || []);
     } catch (error) { toast.error(error?.message || tr("somethingWentWrong", "Daten konnten nicht geladen werden.")); }
   }, []);
@@ -68,7 +68,7 @@ const AgentOpenImmoImport = () => {
       const clean = (values) => Object.fromEntries(Object.entries(values).filter(([, value]) => value));
       const result = await saveOpenImmoConnectionApi({
         category_mapping: clean(configuration.category_mapping),
-        settings: { auto_publish: configuration.auto_publish, auto_approve: configuration.auto_approve, parameter_mapping: clean(configuration.parameter_mapping) },
+        settings: { auto_publish: configuration.auto_publish, auto_approve: configuration.auto_approve, feed_mode: configuration.feed_mode, parameter_mapping: clean(configuration.parameter_mapping) },
       });
       setConnection(result?.data || connection);
       toast.success(tr("settingsSaved", "Zuordnungen wurden gespeichert."));
@@ -108,7 +108,7 @@ const AgentOpenImmoImport = () => {
         <div><h2 className="text-xl font-bold brandColor">{tr("fieldMapping", "Feldzuordnung")}</h2><p className="mt-1 text-sm secondryTextColor">OpenImmo-Daten werden eindeutig Ihren Ximmo24-Kategorien und Merkmalen zugeordnet.</p></div>
         <div className="mt-6 grid gap-7 lg:grid-cols-2">
           <div><h3 className="font-semibold brandColor">Kategorien</h3><div className="mt-3 space-y-3">{Object.entries(catalog.sourceCategories).map(([key,label])=><label key={key} className="grid gap-1 text-sm sm:grid-cols-2 sm:items-center"><span>{label}</span><select value={configuration.category_mapping[key] || ""} onChange={(event)=>setMapping("category_mapping",key,event.target.value)} className="rounded-xl border bg-white px-3 py-2.5"><option value="">Nicht zugeordnet</option>{catalog.categories.map((category)=><option key={category.id} value={category.id}>{category.category}</option>)}</select></label>)}</div></div>
-          <div><h3 className="font-semibold brandColor">Merkmale</h3><div className="mt-3 space-y-3">{Object.entries(catalog.parameterSources).map(([key,label])=><label key={key} className="grid gap-1 text-sm sm:grid-cols-2 sm:items-center"><span>{label}</span><select value={configuration.parameter_mapping[key] || ""} onChange={(event)=>setMapping("parameter_mapping",key,event.target.value)} className="rounded-xl border bg-white px-3 py-2.5"><option value="">Nicht zugeordnet</option>{catalog.parameters.map((parameter)=><option key={parameter.id} value={parameter.id}>{parameter.name}</option>)}</select></label>)}</div><div className="mt-5 space-y-3 rounded-2xl bg-slate-50 p-4"><label className="flex items-center justify-between gap-3 text-sm"><span>Neue Objekte automatisch freigeben</span><input type="checkbox" checked={configuration.auto_approve} onChange={(event)=>setConfiguration((current)=>({...current,auto_approve:event.target.checked}))}/></label><label className="flex items-center justify-between gap-3 text-sm"><span>Freigegebene Objekte sofort veröffentlichen</span><input type="checkbox" checked={configuration.auto_publish} onChange={(event)=>setConfiguration((current)=>({...current,auto_publish:event.target.checked}))}/></label></div></div>
+          <div><h3 className="font-semibold brandColor">Merkmale</h3><div className="mt-3 space-y-3">{Object.entries(catalog.parameterSources).map(([key,label])=><label key={key} className="grid gap-1 text-sm sm:grid-cols-2 sm:items-center"><span>{label}</span><select value={configuration.parameter_mapping[key] || ""} onChange={(event)=>setMapping("parameter_mapping",key,event.target.value)} className="rounded-xl border bg-white px-3 py-2.5"><option value="">Nicht zugeordnet</option>{catalog.parameters.map((parameter)=><option key={parameter.id} value={parameter.id}>{parameter.name}</option>)}</select></label>)}</div><div className="mt-5 space-y-3 rounded-2xl bg-slate-50 p-4"><label className="flex items-center justify-between gap-3 text-sm"><span>CRM-Übertragungen automatisch anwenden</span><input type="checkbox" checked={configuration.feed_mode === "apply"} onChange={(event)=>setConfiguration((current)=>({...current,feed_mode:event.target.checked ? "apply" : "dry_run"}))}/></label><label className="flex items-center justify-between gap-3 text-sm"><span>Neue Objekte automatisch freigeben</span><input type="checkbox" checked={configuration.auto_approve} onChange={(event)=>setConfiguration((current)=>({...current,auto_approve:event.target.checked}))}/></label><label className="flex items-center justify-between gap-3 text-sm"><span>Freigegebene Objekte sofort veröffentlichen</span><input type="checkbox" checked={configuration.auto_publish} onChange={(event)=>setConfiguration((current)=>({...current,auto_publish:event.target.checked,auto_approve:event.target.checked ? true : current.auto_approve}))}/></label></div></div>
         </div>
         <button disabled={busy} onClick={saveConfiguration} className="mt-6 rounded-2xl primaryBg px-6 py-3 font-semibold text-white disabled:opacity-50">{tr("save", "Speichern")}</button>
       </section>
