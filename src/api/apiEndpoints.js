@@ -182,3 +182,8 @@ export const UPLOAD_STORY = "upload-story";
 export const STORY_VIEW = "story-view";
 export const MY_STORIES = "my-stories";
 export const DELETE_STORY = "delete-story";
+
+// OpenImmo Import Gateway
+export const OPENIMMO_CONNECTION = "openimmo/connection";
+export const OPENIMMO_ROTATE_CREDENTIALS = "openimmo/credentials/rotate";
+export const OPENIMMO_IMPORTS = "openimmo/imports";
