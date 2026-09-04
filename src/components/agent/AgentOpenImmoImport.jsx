@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BiCloudUpload, BiCheckCircle, BiErrorCircle, BiRefresh, BiLinkAlt, BiHistory } from "react-icons/bi";
+import { BiCloudUpload, BiCheckCircle, BiErrorCircle, BiRefresh, BiLinkAlt, BiHistory, BiTrash, BiShieldQuarter } from "react-icons/bi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useTranslation } from "../context/TranslationContext";
-import { applyOpenImmoImportApi, getOpenImmoConnectionApi, getOpenImmoImportsApi, rotateOpenImmoCredentialsApi, saveOpenImmoConnectionApi, uploadOpenImmoApi } from "@/api/apiRoutes";
+import { applyOpenImmoImportApi, deleteOpenImmoImportApi, getOpenImmoConnectionApi, getOpenImmoImportsApi, rotateOpenImmoCredentialsApi, saveOpenImmoConnectionApi, uploadOpenImmoApi } from "@/api/apiRoutes";
 
 const AgentOpenImmoImport = () => {
   const t = useTranslation();
@@ -26,6 +26,10 @@ const AgentOpenImmoImport = () => {
     automaticApply: { de: "CRM-Übertragungen automatisch anwenden", en: "Apply CRM transfers automatically" }, autoApprove: { de: "Neue Objekte automatisch freigeben", en: "Approve new properties automatically" }, autoPublish: { de: "Freigegebene Objekte sofort veröffentlichen", en: "Publish approved properties immediately" },
     save: { de: "Speichern", en: "Save" }, settingsSaved: { de: "Zuordnungen wurden gespeichert.", en: "Mappings have been saved." }, importHistory: { de: "Importverlauf", en: "Import history" }, file: { de: "Datei", en: "File" }, mode: { de: "Modus", en: "Mode" }, status: { de: "Status", en: "Status" }, preview: { de: "Vorschau", en: "Preview" }, import: { de: "Import", en: "Import" }, noImports: { de: "Noch keine Importe vorhanden.", en: "No imports yet." },
     selectFile: { de: "Bitte wählen Sie eine ZIP-Datei aus.", en: "Please select a ZIP file." }, importQueued: { de: "Prüfung wurde gestartet.", en: "The check has started." }, uploadFailed: { de: "Upload fehlgeschlagen.", en: "Upload failed." }, publishFailed: { de: "Import konnte nicht gestartet werden.", en: "The import could not be started." }, credentialsFailed: { de: "Zugangsdaten konnten nicht erstellt werden.", en: "Credentials could not be created." }, dataLoadFailed: { de: "Daten konnten nicht geladen werden.", en: "Data could not be loaded." }, somethingWentWrong: { de: "Etwas ist schiefgelaufen.", en: "Something went wrong." },
+    actions: { de: "Aktionen", en: "Actions" }, deleteImport: { de: "Import löschen", en: "Delete import" }, deleteImportQuestion: { de: "Diesen Import wirklich vollständig löschen?", en: "Delete this import completely?" },
+    deletePreviewWarning: { de: "Die ZIP-Datei, Vorschau und dieser Verlaufseintrag werden dauerhaft gelöscht. Es wurden keine Immobilien veröffentlicht.", en: "The ZIP file, preview and this history entry will be permanently deleted. No properties were published." },
+    deleteAppliedWarning: { de: "Die ZIP-Datei, dieser Verlaufseintrag und alle Immobilien dieses Imports werden dauerhaft aus Ximmo24 entfernt. Immobilien, die durch einen neueren Import aktualisiert wurden, bleiben zum Schutz erhalten.", en: "The ZIP file, this history entry and all properties from this import will be permanently removed from Ximmo24. Properties updated by a newer import are preserved for safety." },
+    irreversible: { de: "Diese Aktion kann nicht rückgängig gemacht werden.", en: "This action cannot be undone." }, cancel: { de: "Abbrechen", en: "Cancel" }, deletePermanently: { de: "Dauerhaft löschen", en: "Delete permanently" }, importDeleted: { de: "Import wurde vollständig gelöscht.", en: "Import was deleted completely." }, deleteFailed: { de: "Import konnte nicht gelöscht werden.", en: "The import could not be deleted." },
   };
   const tr = (key) => { const value = t(key); return !value || value === key ? (fallbacks[key]?.[fallbackLanguage] || key) : value; };
   const sourceCategoryLabels = {
@@ -45,6 +49,7 @@ const AgentOpenImmoImport = () => {
   const [configuration, setConfiguration] = useState({ category_mapping: {}, parameter_mapping: {}, auto_publish: false, auto_approve: false, feed_mode: "dry_run" });
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const load = useCallback(async () => {
     try {
@@ -81,6 +86,21 @@ const AgentOpenImmoImport = () => {
     try { await applyOpenImmoImportApi(id); toast.success(tr("importQueued")); await load(); }
     catch (error) { toast.error(error?.message || tr("publishFailed")); }
     finally { setBusy(false); }
+  };
+
+  const removeImport = async () => {
+    if (!deleteTarget) return;
+    setBusy(true);
+    try {
+      await deleteOpenImmoImportApi(deleteTarget.public_id);
+      setDeleteTarget(null);
+      toast.success(tr("importDeleted"));
+      await load();
+    } catch (error) {
+      toast.error(error?.message || tr("deleteFailed"));
+    } finally {
+      setBusy(false);
+    }
   };
 
   const rotate = async () => {
@@ -141,7 +161,9 @@ const AgentOpenImmoImport = () => {
         <button disabled={busy} onClick={saveConfiguration} className="mt-6 rounded-2xl primaryBg px-6 py-3 font-semibold text-white disabled:opacity-50">{tr("save")}</button>
       </section>
 
-      <section className="rounded-3xl border bg-white p-6 shadow-sm"><div className="flex items-center gap-3"><BiHistory className="primaryColor" size={24}/><h2 className="text-xl font-bold brandColor">{tr("importHistory")}</h2></div><div className="mt-5 overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="border-b text-left secondryTextColor"><th className="p-3">{tr("file")}</th><th className="p-3">{tr("mode")}</th><th className="p-3">{tr("status")}</th><th className="p-3 text-center">{tr("total")}</th><th className="p-3 text-center">{tr("new")}</th><th className="p-3 text-center">{tr("updates")}</th><th className="p-3 text-center">{tr("errors")}</th></tr></thead><tbody>{imports.map((entry)=><tr key={entry.public_id} className="border-b last:border-0"><td className="p-3 font-medium brandColor">{entry.source_filename}</td><td className="p-3">{entry.mode === "dry_run" ? tr("preview") : tr("import")}</td><td className="p-3"><span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle(entry.status)}`}>{entry.status === "failed" ? <BiErrorCircle/> : <BiCheckCircle/>}{entry.status}</span></td><td className="p-3 text-center">{entry.total_count}</td><td className="p-3 text-center">{entry.created_count}</td><td className="p-3 text-center">{entry.updated_count}</td><td className="p-3 text-center">{entry.failed_count}</td></tr>)}{imports.length===0&&<tr><td colSpan="7" className="p-8 text-center secondryTextColor">{tr("noImports")}</td></tr>}</tbody></table></div></section>
+      <section className="rounded-3xl border bg-white p-6 shadow-sm"><div className="flex items-center gap-3"><BiHistory className="primaryColor" size={24}/><h2 className="text-xl font-bold brandColor">{tr("importHistory")}</h2></div><div className="mt-5 overflow-x-auto"><table className="w-full min-w-[860px] text-sm"><thead><tr className="border-b text-left secondryTextColor"><th className="p-3">{tr("file")}</th><th className="p-3">{tr("mode")}</th><th className="p-3">{tr("status")}</th><th className="p-3 text-center">{tr("total")}</th><th className="p-3 text-center">{tr("new")}</th><th className="p-3 text-center">{tr("updates")}</th><th className="p-3 text-center">{tr("errors")}</th><th className="p-3 text-right">{tr("actions")}</th></tr></thead><tbody>{imports.map((entry)=><tr key={entry.public_id} className="border-b last:border-0"><td className="p-3 font-medium brandColor">{entry.source_filename}</td><td className="p-3">{entry.mode === "dry_run" ? tr("preview") : tr("import")}</td><td className="p-3"><span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyle(entry.status)}`}>{entry.status === "failed" ? <BiErrorCircle/> : <BiCheckCircle/>}{entry.status}</span></td><td className="p-3 text-center">{entry.total_count}</td><td className="p-3 text-center">{entry.created_count}</td><td className="p-3 text-center">{entry.updated_count}</td><td className="p-3 text-center">{entry.failed_count}</td><td className="p-3 text-right"><button type="button" disabled={busy || ["received","processing"].includes(entry.status)} onClick={()=>setDeleteTarget(entry)} title={tr("deleteImport")} className="inline-grid h-10 w-10 place-items-center rounded-xl border border-red-200 text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"><BiTrash size={20}/></button></td></tr>)}{imports.length===0&&<tr><td colSpan="8" className="p-8 text-center secondryTextColor">{tr("noImports")}</td></tr>}</tbody></table></div></section>
+
+      {deleteTarget && <div className="fixed inset-0 z-[1000] grid place-items-center bg-slate-950/55 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="delete-openimmo-title" onMouseDown={(event)=>{if(event.target===event.currentTarget&&!busy)setDeleteTarget(null)}}><div className="w-full max-w-lg rounded-3xl border border-white/30 bg-white p-6 shadow-2xl md:p-7"><div className="flex items-start gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-red-50 text-red-600"><BiShieldQuarter size={26}/></div><div><h3 id="delete-openimmo-title" className="text-xl font-bold brandColor">{tr("deleteImportQuestion")}</h3><p className="mt-1 break-all text-sm font-medium secondryTextColor">{deleteTarget.source_filename}</p></div></div><div className="mt-5 rounded-2xl border border-red-100 bg-red-50 p-4 text-sm leading-6 text-red-900">{deleteTarget.mode === "apply" ? tr("deleteAppliedWarning") : tr("deletePreviewWarning")}<strong className="mt-2 block">{tr("irreversible")}</strong></div><div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><button type="button" disabled={busy} onClick={()=>setDeleteTarget(null)} className="rounded-xl border px-5 py-3 font-semibold brandColor disabled:opacity-50">{tr("cancel")}</button><button type="button" disabled={busy} onClick={removeImport} className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"><BiTrash size={19}/>{busy ? tr("processing") : tr("deletePermanently")}</button></div></div></div>}
     </div>
   );
 };
