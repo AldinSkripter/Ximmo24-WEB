@@ -2486,3 +2486,12 @@ export const deleteStoryApi = async ({ story_id }) => {
   const res = await api.delete(apiEndpoints.DELETE_STORY, { params });
   return res.data;
 };
+
+// OpenImmo Import Gateway
+export const getOpenImmoConnectionApi = async () => (await api.get(apiEndpoints.OPENIMMO_CONNECTION)).data;
+export const saveOpenImmoConnectionApi = async (data) => (await api.put(apiEndpoints.OPENIMMO_CONNECTION, data)).data;
+export const rotateOpenImmoCredentialsApi = async () => (await api.post(apiEndpoints.OPENIMMO_ROTATE_CREDENTIALS)).data;
+export const getOpenImmoImportsApi = async (params = {}) => (await api.get(apiEndpoints.OPENIMMO_IMPORTS, { params })).data;
+export const getOpenImmoImportApi = async (id) => (await api.get(`${apiEndpoints.OPENIMMO_IMPORTS}/${id}`)).data;
+export const uploadOpenImmoApi = async (file, mode = "dry_run") => { const formData = new FormData(); formData.append("file", file); formData.append("mode", mode); return (await api.post(apiEndpoints.OPENIMMO_IMPORTS, formData)).data; };
+export const applyOpenImmoImportApi = async (id) => (await api.post(`${apiEndpoints.OPENIMMO_IMPORTS}/${id}/apply`)).data;

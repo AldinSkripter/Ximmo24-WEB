@@ -13,7 +13,7 @@ import {
   BiDollarCircle, BiHeart,
   BiBuildingHouse,
   BiCalendar, BiExpand, BiCollapse,
-  BiChevronRight, BiImages
+  BiChevronRight, BiImages, BiImport
 } from "react-icons/bi";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { FaGlobe, FaSignOutAlt } from "react-icons/fa";
@@ -321,6 +321,11 @@ const AgentSidebar = ({ isMobile = false }) => {
           title: t("myStories"),
           icon: BiImages,
           url: "/agent/stories",
+        },
+        {
+          title: t("openImmoImport") === "openImmoImport" ? "Import & Schnittstellen" : t("openImmoImport"),
+          icon: BiImport,
+          url: "/agent/import-schnittstellen",
         },
         {
           title: t("watermarkSettings"),

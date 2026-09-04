@@ -20,6 +20,7 @@ import AgentProperties from './AgentProperties'
 import AgentPackages from './AgentPackages'
 import AgentWatermarkSettings from './AgentWatermarkSettings'
 import AgentStories from './AgentStories'
+import AgentOpenImmoImport from './AgentOpenImmoImport'
 
 // Root component to render the agent dashboard related pages
 const AgentRoot = ({ notificationData }) => {
@@ -58,7 +59,8 @@ const AgentRoot = ({ notificationData }) => {
         "appointment-settings": AgentAppointmentConfiguration,
         "packages": AgentPackages,
         "watermark-settings": AgentWatermarkSettings,
-        "stories": AgentStories
+        "stories": AgentStories,
+        "import-schnittstellen": AgentOpenImmoImport
 
     }
 
