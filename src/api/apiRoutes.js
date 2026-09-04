@@ -2486,6 +2486,7 @@ export const deleteStoryApi = async ({ story_id }) => {
   const res = await api.delete(apiEndpoints.DELETE_STORY, { params });
   return res.data;
 };
+
 // OpenImmo Import Gateway
 export const getOpenImmoConnectionApi = async () => (await api.get(apiEndpoints.OPENIMMO_CONNECTION)).data;
 export const saveOpenImmoConnectionApi = async (data) => (await api.put(apiEndpoints.OPENIMMO_CONNECTION, data)).data;
