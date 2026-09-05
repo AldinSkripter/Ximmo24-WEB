@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport ImageWithPlaceholder from "@/components/image-with-placeholder/ImageWithPlaceholder";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import ImageWithPlaceholder from "@/components/image-with-placeholder/ImageWithPlaceholder";
 import { formatPriceAbbreviated, getDisplayValueForOption } from "@/utils/helperFunction";
 import { BsGeoAlt, BsCheck } from "react-icons/bs";
 import { ReactSVG } from "react-svg";

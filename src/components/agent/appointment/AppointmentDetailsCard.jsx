@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport React from 'react';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import React from 'react';
 import { BiPhoneCall, BiEnvelope, BiMap } from 'react-icons/bi';
 import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder';
 import { useTranslation } from '@/components/context/TranslationContext';
