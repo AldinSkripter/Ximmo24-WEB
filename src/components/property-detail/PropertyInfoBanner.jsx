@@ -1,4 +1,4 @@
-import React from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport React from "react";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { useTranslation } from "../context/TranslationContext";
@@ -19,7 +19,7 @@ const PropertyInfoBanner = ({ property }) => {
           <span className="block md:hidden leadColor text-sm font-medium">{t("propertyId")} : {property?.id}</span>
           <div className="mb-2 flex items-center gap-2 md:gap-4">
             <div className="primaryBackgroundBg flex items-center justify-center rounded-lg px-4 py-2">
-              <ReactSVG
+              <ApiImage
                 src={property?.category?.image}
                 beforeInjection={(svg) => {
                   svg.setAttribute(
@@ -90,7 +90,7 @@ const PropertyInfoBanner = ({ property }) => {
               key={parameter?.id}
               className="flex items-center gap-2 md:gap-3"
             >
-              <ReactSVG
+              <ApiImage
                 src={parameter?.image}
                 beforeInjection={(svg) => {
                   svg.setAttribute(
