@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useEffect, useState } from 'react';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import { useEffect, useState } from 'react';
 import ImageWithPlaceholder from '../image-with-placeholder/ImageWithPlaceholder';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '../context/TranslationContext';
