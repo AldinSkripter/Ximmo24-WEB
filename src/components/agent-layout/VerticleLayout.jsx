@@ -79,7 +79,20 @@ const VerticleLayout = ({ children }) => {
 
     // Fetch and apply language data
     const handleLanguageChange = async (localeCode) => {
-        if (!localeCode || localeCode === activeLanguage) return;
+        if (!localeCode) return;
+
+        // `active_language` is persisted, while the actual translation file is
+        // intentionally not persisted. After a full browser refresh the locale
+        // can therefore already be "de" even though no German translations are
+        // loaded yet. Only skip the request when both the locale and its payload
+        // are available.
+        const hasLoadedTranslations = Boolean(
+            isLanguageLoaded &&
+            currentLang?.file_name &&
+            Object.keys(currentLang.file_name).length
+        );
+
+        if (localeCode === activeLanguage && hasLoadedTranslations) return;
 
         try {
             const response = await getLanguageData({
