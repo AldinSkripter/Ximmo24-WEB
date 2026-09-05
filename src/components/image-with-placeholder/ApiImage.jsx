@@ -4,7 +4,15 @@ import { ReactSVG } from "react-svg";
  * Renders API-managed images without assuming their file format.
  * Administrators may upload SVG, PNG, WebP or JPEG assets.
  */
-const ApiImage = ({ src, alt = "", className = "", beforeInjection, ...props }) => {
+const ApiImage = ({
+  src,
+  alt = "",
+  className = "",
+  beforeInjection,
+  width = 24,
+  height = 24,
+  ...props
+}) => {
   if (!src) return null;
 
   const cleanPath = src.split("?")[0].split("#")[0].toLowerCase();
@@ -23,7 +31,9 @@ const ApiImage = ({ src, alt = "", className = "", beforeInjection, ...props }) 
     <img
       src={src}
       alt={alt}
-      className={`h-full w-full object-contain ${className}`}
+      width={width}
+      height={height}
+      className={`shrink-0 object-contain ${className}`}
       loading="lazy"
       {...props}
     />
