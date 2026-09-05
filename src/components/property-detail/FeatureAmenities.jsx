@@ -1,4 +1,4 @@
-import { ReactSVG } from "react-svg";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { ReactSVG } from "react-svg";
 import { useTranslation } from "../context/TranslationContext";
 import { getDisplayValueForOption } from "@/utils/helperFunction";
 import Link from "next/link";
@@ -35,7 +35,7 @@ const FeaturesAmenities = ({ data, themeEnabled, DistanceSymbol }) => {
                 elem.value !== "" && elem.value !== "0" ? (
                   <div key={index} className="flex flex-row gap-4">
                     <div className="flex h-10 w-10 min-w-10 items-center justify-center rounded newBorder">
-                      <ReactSVG
+                      <ApiImage
                         src={elem?.image}
                         beforeInjection={(svg) => {
                           svg.setAttribute(
@@ -94,7 +94,7 @@ const FeaturesAmenities = ({ data, themeEnabled, DistanceSymbol }) => {
                 elem.distance !== "" && elem.distance !== 0 ? (
                   <div key={index} className="flex flex-row gap-4">
                     <div className="newBorderColor flex h-10 w-10 min-w-10 items-center justify-center rounded border-[0.2px]">
-                      <ReactSVG
+                      <ApiImage
                         src={elem?.image}
                         beforeInjection={(svg) => {
                           svg.setAttribute(
