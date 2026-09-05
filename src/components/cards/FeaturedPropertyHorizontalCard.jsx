@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useEffect, useState } from 'react';
 import ImageWithPlaceholder from '../image-with-placeholder/ImageWithPlaceholder';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '../context/TranslationContext';
@@ -180,7 +180,7 @@ const FeaturedPropertyHorizontalCard = ({ property, removeCard = null }) => {
                     />
                 </CustomLink>
                 <div className='primaryBackgroundBg leadColor absolute bottom-4 left-4 p-2 font-bold text-sm rounded-lg flex items-center gap-2'>
-                    <ReactSVG
+                    <ApiImage
                         src={property?.category?.image}
                         beforeInjection={(svg) => {
                             svg.setAttribute(
@@ -260,7 +260,7 @@ const FeaturedPropertyHorizontalCard = ({ property, removeCard = null }) => {
                                                 className="flex items-center justify-start gap-1 px-1 sm:px-2 cursor-default"
                                             >
                                                 <div className="bg-white/25 p-1.5 flex items-center justify-center rounded-full">
-                                                    <ReactSVG
+                                                    <ApiImage
                                                         src={parameter.image}
                                                         beforeInjection={(svg) => {
                                                             svg.setAttribute(
