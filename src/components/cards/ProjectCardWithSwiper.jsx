@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useState, useEffect, useRef } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import { useState, useEffect, useRef } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import { useTranslation } from "../context/TranslationContext";
 import { useRouter } from "next/router";
