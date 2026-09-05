@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useEffect, useState } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import { useEffect, useState } from "react";
 import NewBreadcrumb from "../breadcrumb/NewBreadCrumb";
 import { useTranslation } from "../context/TranslationContext";
 import { useRouter } from "next/router";
