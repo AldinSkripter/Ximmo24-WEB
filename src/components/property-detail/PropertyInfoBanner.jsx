@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport React from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import React from "react";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { useTranslation } from "../context/TranslationContext";
