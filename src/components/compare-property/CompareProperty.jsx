@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useEffect, useState } from "react";
 import NewBreadcrumb from "../breadcrumb/NewBreadCrumb";
 import { useTranslation } from "../context/TranslationContext";
 import { useRouter } from "next/router";
@@ -410,7 +410,7 @@ const CompareProperty = () => {
                         <div className="flex flex-col gap-2 p-3 md:p-4">
                           <div className="flex justify-between gap-2 items-center">
                             <div className="flex gap-2 items-center w-fit p-2 rounded-md primaryBackgroundBg">
-                              <ReactSVG
+                              <ApiImage
                                 src={prop?.category?.image}
                                 beforeInjection={(svg) => {
                                   svg.setAttribute(
