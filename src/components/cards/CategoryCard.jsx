@@ -6,6 +6,7 @@ import { setLockedFilter } from '@/redux/slices/propertyListSlice';
 import { getCategoryLink, isRTL } from '@/utils/helperFunction';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder';
 
 const CategoryCard = ({ category, passLocationFilter }) => {
     const t = useTranslation();
@@ -14,6 +15,8 @@ const CategoryCard = ({ category, passLocationFilter }) => {
     const { lang } = router?.query;
     const webSettings = useSelector(state => state.WebSetting?.data)
     const isRtl = isRTL();
+    const categoryImage = category?.image || '';
+    const isSvgImage = /\.svg(?:\?|#|$)/i.test(categoryImage);
 
     const handleClick = () => {
         dispatch(setLockedFilter("category"));
@@ -26,27 +29,28 @@ const CategoryCard = ({ category, passLocationFilter }) => {
             className='bg-white relative rounded-2xl p-4 border flex flex-col lg:flex-row justify-center md:justify-normal items-center gap-6 group transition-colors duration-300 ease-in-out overflow-hidden hover:cursor-pointer hover:cardHoverShadow hover:bg-white hover:border-primaryColor'
         >
             <div className='bg-[#F5F5F4] group-hover:primaryBg rounded-[8px] p-3 flex items-center justify-center transition-colors duration-500 ease-in-out'>
-                <ReactSVG
-                    src={category?.image}
-                    beforeInjection={(svg) => {
-                        svg.querySelectorAll("path,text,tspan,circle").forEach((path) => {
-                            path.setAttribute(
-                                "style",
-                                `fill: ${webSettings?.system_color}`,
-                            );
-                            path.classList.add("transition-all");
-                            path.classList.add("duration-500");
-                            path.classList.add("ease-in-out");
-                            path.classList.add("group-hover:!fill-white");
-                        });
-                        svg.setAttribute(
-                            "style",
-                            `height: 48px; width: 48px;`,
-                        );
-                    }}
-                    className={`flex w-12 h-12 items-center justify-center object-cover`}
-                    alt={category?.translated_name || category?.category}
-                />
+                {isSvgImage ? (
+                    <ReactSVG
+                        src={categoryImage}
+                        beforeInjection={(svg) => {
+                            svg.querySelectorAll("path,text,tspan,circle").forEach((path) => {
+                                path.setAttribute("style", `fill: ${webSettings?.system_color}`);
+                                path.classList.add("transition-all", "duration-500", "ease-in-out", "group-hover:!fill-white");
+                            });
+                            svg.setAttribute("style", "height: 48px; width: 48px;");
+                        }}
+                        className="flex w-12 h-12 items-center justify-center object-contain"
+                        alt={category?.translated_name || category?.category}
+                    />
+                ) : (
+                    <ImageWithPlaceholder
+                        src={categoryImage}
+                        alt={category?.translated_name || category?.category}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 object-contain"
+                    />
+                )}
             </div>
             <div className='flex flex-col items-center lg:items-start gap-3'>
                 <span className='text-base md:text-xl font-bold line-clamp-1 transition-colors duration-300 ease-in-out group-hover:text-primary'>{category?.translated_name || category?.category}</span>
