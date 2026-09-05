@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\n'use client';
+'use client';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
 
 import { useTranslation } from '../context/TranslationContext';
 import ImageWithPlaceholder from '../image-with-placeholder/ImageWithPlaceholder';
