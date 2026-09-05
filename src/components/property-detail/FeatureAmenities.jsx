@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { ReactSVG } from "react-svg";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import { ReactSVG } from "react-svg";
 import { useTranslation } from "../context/TranslationContext";
 import { getDisplayValueForOption } from "@/utils/helperFunction";
 import Link from "next/link";
