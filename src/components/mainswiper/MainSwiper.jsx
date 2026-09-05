@@ -1,4 +1,5 @@
-import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useState, useMemo } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";
+import { useState, useMemo } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import {
   Carousel,
