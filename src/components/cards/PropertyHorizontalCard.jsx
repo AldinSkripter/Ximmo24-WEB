@@ -1,4 +1,4 @@
-"use client";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\n"use client";
 
 import {
   Tooltip,
@@ -108,7 +108,7 @@ const PropertyHorizontalCard = ({
           <header className="mx-2 p-2 flex-grow h-fit">
             <div className="flex justify-between items-center">
               <span className="leadColor primaryBackgroundBg p-2 rounded-lg font-semibold text-base flex items-center gap-2 text-nowrap max-w-48 overflow-ellipsis">
-                <ReactSVG
+                <ApiImage
                   src={property?.category?.image}
                   beforeInjection={(svg) => {
                     svg.setAttribute(
@@ -158,7 +158,7 @@ const PropertyHorizontalCard = ({
                           >
                             <div className="relative flex h-8 w-8 items-center justify-center">
                               <div className="absolute inset-0 rounded-full opacity-50"></div>
-                              <ReactSVG
+                              <ApiImage
                                 src={parameter?.image}
                                 beforeInjection={(svg) => {
                                   svg.setAttribute(
