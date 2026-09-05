@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useEffect, useState } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import { useTranslation } from "../context/TranslationContext";
 import {
@@ -244,7 +244,7 @@ const PropertyVerticalCard = ({
         </div>
 
         <span className={`absolute bottom-3 flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-gray-800 shadow ${isRtl ? "right-3" : "left-3"}`}>
-          <ReactSVG
+          <ApiImage
             src={property?.category?.image}
             beforeInjection={(svg) => {
               svg.setAttribute(
@@ -312,7 +312,7 @@ const PropertyVerticalCard = ({
                       className="flex cursor-default items-center justify-center gap-1 px-2"
                       aria-label={parameter?.translated_name || parameter?.name}
                     >
-                      <ReactSVG
+                      <ApiImage
                         src={parameter.image}
                         beforeInjection={(svg) => {
                           svg.setAttribute(
