@@ -1,4 +1,4 @@
-'use client';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\n'use client';
 
 import { useTranslation } from '../context/TranslationContext';
 import ImageWithPlaceholder from '../image-with-placeholder/ImageWithPlaceholder';
@@ -191,7 +191,7 @@ const MapPropertyCard = ({ property, removeCard = null }) => {
                 </div>
 
                 <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-gray-800 shadow">
-                    <ReactSVG
+                    <ApiImage
                         src={property?.category?.image}
                         beforeInjection={(svg) => {
                             svg.setAttribute(

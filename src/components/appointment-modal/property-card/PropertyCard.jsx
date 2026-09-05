@@ -1,4 +1,4 @@
-import ImageWithPlaceholder from "@/components/image-with-placeholder/ImageWithPlaceholder";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport ImageWithPlaceholder from "@/components/image-with-placeholder/ImageWithPlaceholder";
 import { formatPriceAbbreviated, getDisplayValueForOption } from "@/utils/helperFunction";
 import { BsGeoAlt, BsCheck } from "react-icons/bs";
 import { ReactSVG } from "react-svg";
@@ -64,7 +64,7 @@ const PropertyCard = ({
                                         key={parameter?.id}
                                         className="flex items-center gap-2 md:gap-3"
                                     >
-                                        <ReactSVG
+                                        <ApiImage
                                             src={parameter?.image}
                                             beforeInjection={(svg) => {
                                                 svg.setAttribute(

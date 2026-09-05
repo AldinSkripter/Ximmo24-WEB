@@ -1,4 +1,4 @@
-import { useTranslation } from "../context/TranslationContext";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useTranslation } from "../context/TranslationContext";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import premiumIcon from "@/assets/premium.svg";
 import { featuredIcon } from "@/assets/svg";
@@ -46,7 +46,7 @@ const ProjectInfoBanner = ({ projectDetails }) => {
             <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-1 flex-shrink-0">
               {projectDetails.category?.image && (
                 <div className="h-4 w-4 flex-shrink-0">
-                  <ReactSVG
+                  <ApiImage
                     src={projectDetails.category.image}
                     beforeInjection={(svg) => {
                       svg.setAttribute(

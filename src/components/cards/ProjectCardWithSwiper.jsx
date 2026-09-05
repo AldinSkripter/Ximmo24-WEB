@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useState, useEffect, useRef } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import { useTranslation } from "../context/TranslationContext";
 import { useRouter } from "next/router";
@@ -259,7 +259,7 @@ const ProjectCardWithSwiper = ({ data }) => {
       <div className="flex w-full flex-col gap-3">
         {/* Category */}
         <div className="flex items-center gap-2">
-          <ReactSVG
+          <ApiImage
             src={data?.category?.image}
             beforeInjection={(svg) => {
               svg.setAttribute("style", `height: 100%; width: 100%;`);

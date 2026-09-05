@@ -1,4 +1,4 @@
-import React from 'react';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport React from 'react';
 import { BiPhoneCall, BiEnvelope, BiMap } from 'react-icons/bi';
 import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder';
 import { useTranslation } from '@/components/context/TranslationContext';
@@ -57,7 +57,7 @@ const AppointmentDetailsCard = ({
                 {/* Property Info */}
                 <div className="flex-1 space-y-3 w-full">
                     <span className={`flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-gray-800 rtl:right-3 ltr:left-3 w-max`}>
-                        <ReactSVG
+                        <ApiImage
                             src={propertyData?.category?.image}
                             beforeInjection={(svg) => {
                                 svg.setAttribute(
@@ -108,7 +108,7 @@ const AppointmentDetailsCard = ({
                                                         className="flex cursor-default items-center justify-center gap-1 px-2"
                                                         aria-label={translatedName}
                                                     >
-                                                        <ReactSVG
+                                                        <ApiImage
                                                             src={parameter.image}
                                                             beforeInjection={(svg) => {
                                                                 svg.setAttribute(

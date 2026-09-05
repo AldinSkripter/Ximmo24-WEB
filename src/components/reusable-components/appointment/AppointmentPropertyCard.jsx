@@ -1,4 +1,4 @@
-import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder';
 import { useTranslation } from '@/components/context/TranslationContext';
 import { formatPriceAbbreviated, getDisplayValueForOption, truncate } from '@/utils/helperFunction';
 import { SlLocationPin } from 'react-icons/sl';
@@ -58,7 +58,7 @@ const AppointmentPropertyCard = ({
                                                 key={parameter?.id}
                                                 className="flex items-center gap-1.5 md:gap-2"
                                             >
-                                                <ReactSVG
+                                                <ApiImage
                                                     src={parameter?.image}
                                                     beforeInjection={(svg) => {
                                                         svg.setAttribute(
