@@ -1,4 +1,4 @@
-'use client';
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\n'use client';
 
 import { useRef, useState } from 'react';
 import { MapPin, ArrowRight } from 'lucide-react';
@@ -129,7 +129,7 @@ const PremiumPropertyCard = ({ property, type = "" }) => {
                 }`}>
                 <div className='flex flex-col gap-1 min-w-0'>
                     <div className="flex items-center gap-1.5 bg-[#F5F5F4] rounded-md py-1 px-1.5 mb-2 w-fit">
-                        <ReactSVG
+                        <ApiImage
                             src={property?.category?.image}
                             beforeInjection={(svg) => {
                                 svg.setAttribute(
