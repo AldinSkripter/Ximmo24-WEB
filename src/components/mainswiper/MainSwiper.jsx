@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import ApiImage from "@/components/image-with-placeholder/ApiImage";\nimport { useState, useMemo } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import {
   Carousel,
@@ -255,7 +255,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                                 </div>
                               </div>
                               <div className="flex items-center gap-3">
-                                <ReactSVG
+                                <ApiImage
                                   src={image?.category?.image}
                                   beforeInjection={(svg) => {
                                     svg.setAttribute(
@@ -282,7 +282,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                               <div className="flex flex-wrap gap-1 md:gap-3 border-y p-1 md:p-2 w-full text-sm text-gray-500 font-medium">
                                 {image?.property?.parameters?.slice(0, 4).map((p) => (
                                   <div key={p.id} className="flex flex-row items-center justify-center gap-1 border-r last:border-r-0 pr-2 ">
-                                    <ReactSVG
+                                    <ApiImage
                                       src={p.image}
                                       beforeInjection={(svg) => {
                                         svg.setAttribute(
