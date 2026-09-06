@@ -771,6 +771,8 @@ export const postPropertyApi = async ({
   latitude = "",
   longitude = "",
   address = "",
+  zip_code = "",
+  place_id = "",
   price = "",
   category_id = "",
   property_type = "",
@@ -823,6 +825,12 @@ export const postPropertyApi = async ({
   }
   if (address) {
     formData.append("address", address);
+  }
+  if (zip_code) {
+    formData.append("zip_code", zip_code);
+  }
+  if (place_id) {
+    formData.append("place_id", place_id);
   }
   if (price) {
     formData.append("price", price);
@@ -979,6 +987,8 @@ export const updatePostPropertyApi = async ({
   latitude = "",
   longitude = "",
   address = "",
+  zip_code = "",
+  place_id = "",
   price = "",
   category_id = "",
   property_type = "",
@@ -1038,6 +1048,12 @@ export const updatePostPropertyApi = async ({
   }
   if (address) {
     data.append("address", address);
+  }
+  if (zip_code) {
+    data.append("zip_code", zip_code);
+  }
+  if (place_id) {
+    data.append("place_id", place_id);
   }
   if (price) {
     data.append("price", price);
