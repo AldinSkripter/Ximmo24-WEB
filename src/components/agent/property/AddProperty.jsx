@@ -18,7 +18,6 @@ import { generateSlug } from '@/utils/helperFunction';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacilitiesComponent from '@/components/reusable-components/add-property/FacilitiesComponent';
-import OutdoorFacilitiesComponent from '@/components/reusable-components/add-property/OutdoorFacilitiesComponent';
 import LocationComponent from '@/components/reusable-components/add-property/LocationComponent';
 import ImagesVideoTab from '@/components/reusable-components/add-property/ImagesVideoTab';
 import SEODetailsTab from '@/components/reusable-components/add-property/SEODetailsTab';
@@ -87,7 +86,6 @@ const AddProperty = () => {
         { id: "propertyDetails", label: t("propertyDetails") },
         { id: "imagesVideo", label: t("imagesVideo") },
         { id: "facilities", label: t("facilities") },
-        { id: "outdoorFacilities", label: t("outdoorFacilities") },
         { id: "location", label: t("location") },
         { id: "seoSettings", label: t("seoSettings") },
     ];
@@ -137,7 +135,10 @@ const AddProperty = () => {
         country: currentLocation?.country || "",
         formattedAddress: currentLocation?.formatted_address || "",
         latitude: currentLocation?.latitude || "",
-        longitude: currentLocation?.longitude || ""
+        longitude: currentLocation?.longitude || "",
+        postalCode: currentLocation?.postal_code || currentLocation?.zip_code || "",
+        placeId: "",
+        isAddressVerified: false
     });
 
     // Handle removing any type of media
@@ -343,21 +344,6 @@ const AddProperty = () => {
                 }
                 break;
 
-            case "outdoorFacilities":
-                if (facilities.length > 0) {
-                    const requiredFacilities = facilities.filter(facility => facility.is_required === 1);
-
-                    for (const facility of requiredFacilities) {
-                        const distance = facilityDistances[facility.id];
-                        if (distance === undefined || distance === '' || distance === null) {
-                            toast.error(`${t("distanceFor")} ${facility.name} ${t("isRequired")}`);
-                            missingFields = true;
-                            break;
-                        }
-                    }
-                }
-                break;
-
             case "location":
                 if (!selectedLocationAddress.city) {
                     toast.error(t("cityIsRequired"));
@@ -376,6 +362,16 @@ const AddProperty = () => {
                 }
                 if (!selectedLocationAddress.formattedAddress) {
                     toast.error(t("addressIsRequired"));
+                    missingFields = true;
+                    break;
+                }
+                if (!/^\d{5}$/.test(selectedLocationAddress.postalCode || "")) {
+                    toast.error("Bitte wählen Sie eine vollständige Adresse mit gültiger PLZ aus.");
+                    missingFields = true;
+                    break;
+                }
+                if (!selectedLocationAddress.isAddressVerified) {
+                    toast.error("Bitte wählen Sie die genaue Adresse aus den Suchergebnissen aus.");
                     missingFields = true;
                     break;
                 }
@@ -475,7 +471,7 @@ const AddProperty = () => {
     };
 
     const handleTabChange = (value) => {
-        const tabOrder = ["categories", "propertyDetails", "imagesVideo", "facilities", "outdoorFacilities", "location", "seoSettings"];
+        const tabOrder = ["categories", "propertyDetails", "imagesVideo", "facilities", "location", "seoSettings"];
         const currentIndex = tabOrder.indexOf(activeTab);
         const targetIndex = tabOrder.indexOf(value);
 
@@ -523,7 +519,10 @@ const AddProperty = () => {
             country: address.country || prev.country,
             formattedAddress: address.formattedAddress || prev.formattedAddress,
             latitude: address?.latitude || address?.lat || prev.latitude,
-            longitude: address?.longitude || address?.lng || prev.longitude
+            longitude: address?.longitude || address?.lng || prev.longitude,
+            postalCode: address.postalCode || prev.postalCode,
+            placeId: address.placeId || prev.placeId,
+            isAddressVerified: address.isAddressVerified ?? prev.isAddressVerified
         }));
     };
 
@@ -654,6 +653,8 @@ const AddProperty = () => {
                 latitude: selectedLocationAddress.latitude,
                 longitude: selectedLocationAddress.longitude,
                 address: selectedLocationAddress.formattedAddress,
+                zip_code: selectedLocationAddress.postalCode,
+                place_id: selectedLocationAddress.placeId,
                 price: propertyFormData.propertyPrice,
                 category_id: selectedCategory.id,
                 property_type: propertyFormData.propertyType?.toLowerCase() === "sell" ? "0" : "1", // 0 for Sell, 1 for Rent
@@ -886,15 +887,6 @@ const AddProperty = () => {
                                 categories={categories}
                                 handleTabChange={handleTabChange}
                                 handleCheckRequiredFields={handleCheckRequiredFields}
-                            />
-                        )}
-
-                        {activeTab === "outdoorFacilities" && (
-                            <OutdoorFacilitiesComponent
-                                facilities={facilities}
-                                handleTabChange={handleTabChange}
-                                facilityDistances={facilityDistances}
-                                handleDistanceChange={handleDistanceChange}
                             />
                         )}
 
