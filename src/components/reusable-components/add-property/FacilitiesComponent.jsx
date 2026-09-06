@@ -430,7 +430,7 @@ const FacilitiesComponent = ({
             </div>
             <div className="flex justify-end mt-4">
                 <Button
-                    onClick={() => handleCheckRequiredFields("facilities", "outdoorFacilities")}
+                    onClick={() => handleCheckRequiredFields("facilities", "location")}
                     className="px-10 py-5"
                 >
                     {isEditing ? t("save") : t("next")}
