@@ -8,7 +8,6 @@ import { generateSlug } from '@/utils/helperFunction';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacilitiesComponent from '@/components/reusable-components/add-property/FacilitiesComponent';
-import OutdoorFacilitiesComponent from '@/components/reusable-components/add-property/OutdoorFacilitiesComponent';
 import LocationComponent from '@/components/reusable-components/add-property/LocationComponent';
 import ImagesVideoTab from '@/components/reusable-components/add-property/ImagesVideoTab';
 import SEODetailsTab from '@/components/reusable-components/add-property/SEODetailsTab';
@@ -60,7 +59,6 @@ const EditProperty = ({ params = [] }) => {
         { id: "propertyDetails", label: t("propertyDetails") },
         { id: "imagesVideo", label: t("imagesVideo") },
         { id: "facilities", label: t("facilities") },
-        { id: "outdoorFacilities", label: t("outdoorFacilities") },
         { id: "location", label: t("location") },
         { id: "seoSettings", label: t("seoSettings") },
     ];
@@ -120,7 +118,10 @@ const EditProperty = ({ params = [] }) => {
         country: '',
         formattedAddress: '',
         latitude: 0,
-        longitude: 0
+        longitude: 0,
+        postalCode: '',
+        placeId: '',
+        isAddressVerified: false
     });
 
     // Remove Gallery Images Form State
@@ -283,7 +284,7 @@ const EditProperty = ({ params = [] }) => {
 
     const handleCheckRequiredFields = (currentTab, nextTab) => {
         // Define tab order for comparison
-        const tabOrder = ["propertyDetails", "imagesVideo", "facilities", "outdoorFacilities", "location", "seoSettings"];
+        const tabOrder = ["propertyDetails", "imagesVideo", "facilities", "location", "seoSettings"];
         const currentIndex = tabOrder.indexOf(currentTab);
         const nextIndex = tabOrder.indexOf(nextTab);
 
@@ -352,21 +353,6 @@ const EditProperty = ({ params = [] }) => {
                     }
                     break;
 
-                case "outdoorFacilities":
-                    if (facilities.length > 0) {
-                        const requiredFacilities = facilities.filter(facility => facility.is_required === 1);
-
-                        for (const facility of requiredFacilities) {
-                            const distance = facilityDistances[facility.id];
-                            if (distance === undefined || distance === '' || distance === null) {
-                                toast.error(`${t("distanceFor")} ${facility.name} ${t("isRequired")}`);
-                                missingFields = true;
-                                break;
-                            }
-                        }
-                    }
-                    break;
-
                 case "location":
                     if (!selectedLocationAddress.city) {
                         toast.error(t("cityIsRequired"));
@@ -385,6 +371,16 @@ const EditProperty = ({ params = [] }) => {
                     }
                     if (!selectedLocationAddress.formattedAddress) {
                         toast.error(t("addressIsRequired"));
+                        missingFields = true;
+                        break;
+                    }
+                    if (!/^\d{5}$/.test(selectedLocationAddress.postalCode || "")) {
+                        toast.error("Bitte wählen Sie eine vollständige Adresse mit gültiger PLZ aus.");
+                        missingFields = true;
+                        break;
+                    }
+                    if (!selectedLocationAddress.isAddressVerified) {
+                        toast.error("Bitte wählen Sie die genaue Adresse aus den Suchergebnissen aus.");
                         missingFields = true;
                         break;
                     }
@@ -495,7 +491,10 @@ const EditProperty = ({ params = [] }) => {
                     country: propertyData.country || "",
                     formattedAddress: propertyData.address || "",
                     latitude: propertyData.latitude || 0,
-                    longitude: propertyData.longitude || 0
+                    longitude: propertyData.longitude || 0,
+                    postalCode: propertyData.zip_code || propertyData.postal_code || (propertyData.address || '').match(/\b\d{5}\b/)?.[0] || '',
+                    placeId: propertyData.place_id || '',
+                    isAddressVerified: Boolean(propertyData.latitude && propertyData.longitude && (propertyData.zip_code || propertyData.postal_code || (propertyData.address || '').match(/\b\d{5}\b/)))
                 });
 
                 // Initialize media form data (will be populated with fetched images)
@@ -693,7 +692,10 @@ const EditProperty = ({ params = [] }) => {
             country: address.country || prev.country,
             formattedAddress: address.formattedAddress || prev.formattedAddress,
             latitude: address.latitude || address.lat || prev.latitude,
-            longitude: address.longitude || address.lng || prev.longitude
+            longitude: address.longitude || address.lng || prev.longitude,
+            postalCode: address.postalCode || prev.postalCode,
+            placeId: address.placeId || prev.placeId,
+            isAddressVerified: address.isAddressVerified ?? prev.isAddressVerified
         }));
     };
 
@@ -931,6 +933,8 @@ const EditProperty = ({ params = [] }) => {
                 latitude: selectedLocationAddress.latitude,
                 longitude: selectedLocationAddress.longitude,
                 address: selectedLocationAddress.formattedAddress,
+                zip_code: selectedLocationAddress.postalCode,
+                place_id: selectedLocationAddress.placeId,
                 client_address: userData?.address ? userData?.address : "",
                 parameters: parameters,
                 facilities: facilities,
@@ -1167,16 +1171,6 @@ const EditProperty = ({ params = [] }) => {
                         categories={categories}
                         handleTabChange={handleTabChange}
                         handleCheckRequiredFields={handleCheckRequiredFields}
-                        isEditing={true}
-                    />
-                )}
-
-                {activeTab === "outdoorFacilities" && (
-                    <OutdoorFacilitiesComponent
-                        facilities={facilities}
-                        handleTabChange={handleTabChange}
-                        facilityDistances={facilityDistances}
-                        handleDistanceChange={handleEditDistanceChange}
                         isEditing={true}
                     />
                 )}
