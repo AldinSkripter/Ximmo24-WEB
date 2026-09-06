@@ -566,19 +566,24 @@ const Header = () => {
         <header className="relative z-50 w-full h-20 bg-white">
           <div className="container px-2 md:px-0 h-14">
             <div className="my-3 flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <Link href={logoHref} title="Home" onClick={() => dispatch(setLockedFilter(null))}>
+              <div className="flex min-w-0 items-center gap-4 lg:gap-6">
+                <Link
+                  href={logoHref}
+                  title="Home"
+                  className="flex shrink-0 items-center"
+                  onClick={() => dispatch(setLockedFilter(null))}
+                >
                   <ImageWithPlaceholder
                     src={webSettings?.web_logo ? webSettings?.web_logo : Logo}
                     alt="logo"
                     width={176}
                     height={56}
-                    className="md:w-44 md:h-14 w-32 h-10 aspect-[176/56] object-cover"
+                    className="md:w-44 md:h-14 w-32 h-10 aspect-[176/56] object-contain"
                     priority={true}
                   />
                 </Link>
-                <div className="h-14 md:border-r border-gray-200 md:block"></div>
-                <div className="relative">
+                <div className="hidden h-14 shrink-0 border-r border-gray-200 md:block"></div>
+                <div className="relative min-w-0 max-w-[190px] lg:max-w-[230px] 2xl:max-w-[280px]">
                   <div
                     className="relative hidden cursor-pointer transition-all md:block"
                     role="button"
@@ -590,16 +595,19 @@ const Header = () => {
                       }
                     }}
                   >
-                    <div className="flex items-center gap-2">
-                      <div className="rounded bg-[#0000001A] p-2">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <div className="shrink-0 rounded bg-[#0000001A] p-2">
                         <BiMapPin size={28} />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-1 text-gray-700">
                           <span className="text-sm">{t("location")}</span>
                           <FaChevronDown size={10} className="mb-0.5" />
                         </div>
-                        <div className="mt-0.5 text-sm text-gray-600">
+                        <div
+                          className="mt-0.5 truncate text-sm text-gray-600"
+                          title={location?.filter(Boolean)?.join(", ") || t("selectLocation")}
+                        >
                           {location && location?.filter(Boolean)?.length > 0
                             ? location?.filter(Boolean)?.join(", ")
                             : t("selectLocation")}
