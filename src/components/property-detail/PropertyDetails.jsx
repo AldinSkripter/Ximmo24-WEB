@@ -661,6 +661,13 @@ const PropertyDetails = () => {
                   />
                 )}
 
+              {/* Financing calculator - full content width */}
+              {propertyDetails?.property_type === "sell" && (
+                <div className="mb-5">
+                  <MortgageLoanCalculator propertyDetails={propertyDetails} />
+                </div>
+              )}
+
               {/* 360degree Virtual Tour */}
               {imageURL ? (
                 <div className="cardBg newBorder mb-5 flex flex-col rounded-2xl">
@@ -744,11 +751,6 @@ const PropertyDetails = () => {
                   </div>
                 )}
 
-              {/* Mortgage Loan Calculator */}
-              {propertyDetails?.property_type === "sell" && (
-                <MortgageLoanCalculator propertyDetails={propertyDetails}
-                  showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
-              )}
               {belowMortgageAdBanner && (
                 <div className="mt-6"
                   onClick={() => {
