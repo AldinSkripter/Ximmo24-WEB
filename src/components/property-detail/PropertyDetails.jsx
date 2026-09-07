@@ -644,6 +644,13 @@ const PropertyDetails = () => {
                 themeEnabled={webSettings?.svg_clr === "1"}
               />
 
+              {/* Financing calculator - prominent full content width */}
+              {propertyDetails?.property_type === "sell" && (
+                <div className="mb-5">
+                  <MortgageLoanCalculator propertyDetails={propertyDetails} />
+                </div>
+              )}
+
               {/* Property Address */}
               {propertyDetails &&
                 propertyDetails?.latitude &&
@@ -660,13 +667,6 @@ const PropertyDetails = () => {
                     showExactLocation={showExactLocation}
                   />
                 )}
-
-              {/* Financing calculator - full content width */}
-              {propertyDetails?.property_type === "sell" && (
-                <div className="mb-5">
-                  <MortgageLoanCalculator propertyDetails={propertyDetails} />
-                </div>
-              )}
 
               {/* 360degree Virtual Tour */}
               {imageURL ? (
