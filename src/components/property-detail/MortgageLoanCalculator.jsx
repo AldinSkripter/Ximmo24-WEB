@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 const HYPOFRIEND_SCRIPT_URL = "https://hypofriend.de/widgets/js/app.js";
 
@@ -33,6 +34,10 @@ const MortgageLoanCalculator = ({ propertyDetails }) => {
   const router = useRouter();
   const [widgetReady, setWidgetReady] = useState(false);
   const [widgetFailed, setWidgetFailed] = useState(false);
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "500px 0px",
+  });
 
   const locale = router.query?.lang === "en" ? "en" : "de";
   const propertyPrice = getNumericPrice(propertyDetails?.price);
@@ -69,24 +74,26 @@ const MortgageLoanCalculator = ({ propertyDetails }) => {
         };
 
   return (
-    <div className="cardBg newBorder overflow-hidden rounded-2xl border">
-      <Script
-        id="hypofriend-calculator-script"
-        src={HYPOFRIEND_SCRIPT_URL}
-        strategy="afterInteractive"
-        onLoad={() => {
-          setWidgetReady(true);
-          setWidgetFailed(false);
-        }}
-        onReady={() => {
-          setWidgetReady(true);
-          setWidgetFailed(false);
-        }}
-        onError={() => {
-          setWidgetReady(false);
-          setWidgetFailed(true);
-        }}
-      />
+    <div ref={ref} className="cardBg newBorder overflow-hidden rounded-2xl border">
+      {inView && (
+        <Script
+          id="hypofriend-calculator-script"
+          src={HYPOFRIEND_SCRIPT_URL}
+          strategy="afterInteractive"
+          onLoad={() => {
+            setWidgetReady(true);
+            setWidgetFailed(false);
+          }}
+          onReady={() => {
+            setWidgetReady(true);
+            setWidgetFailed(false);
+          }}
+          onError={() => {
+            setWidgetReady(false);
+            setWidgetFailed(true);
+          }}
+        />
+      )}
 
       <div className="border-b p-5">
         <h2 className="blackTextColor text-base font-bold md:text-lg">
@@ -96,13 +103,17 @@ const MortgageLoanCalculator = ({ propertyDetails }) => {
       </div>
 
       <div className="min-w-0 p-3 sm:p-5">
-        {!widgetReady && !widgetFailed && (
+        {inView && !widgetReady && !widgetFailed && (
           <div
             className="textColor flex min-h-48 items-center justify-center text-sm"
             role="status"
           >
             {copy.loading}
           </div>
+        )}
+
+        {!inView && (
+          <div className="textColor flex min-h-48 items-center justify-center text-sm" aria-hidden="true" />
         )}
 
         {widgetFailed && (

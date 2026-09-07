@@ -6,7 +6,13 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {},
   images: {
+    unoptimized: process.env.NEXT_PUBLIC_SEO === "false",
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "admin.ximmo24.de",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "dev-ebroker.thewrteam.in",
@@ -15,7 +21,11 @@ const nextConfig = {
         // search: '',
       }
     ],
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 7,
+    path: "/_next/image/",
+    deviceSizes: [360, 640, 750, 828, 1080, 1200, 1600, 1920],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384],
   },
   trailingSlash: true,
   devIndicators: {

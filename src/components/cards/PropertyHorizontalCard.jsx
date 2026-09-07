@@ -82,6 +82,7 @@ const PropertyHorizontalCard = ({
               className="h-[250px] w-full object-cover transition-all duration-300 group-hover:brightness-90"
               blurDataURL={property?.low_quality_title_image}
               loading="lazy"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           <button

@@ -2,6 +2,7 @@ import { GET_SEO_SETTINGS } from '@/api/apiEndpoints';
 import MetaData from '@/components/meta/MetaData';
 import SearchPage from '@/components/pagescomponents/SearchPage';
 import axios from 'axios';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 
 
 const fetchDataFromSeo = async () => {
@@ -39,7 +40,8 @@ const index = ({ seoData, pageName = "/search/" }) => {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { query } = context;
+        const { query, res } = context;
+        setPublicPageCache(res);
 
         const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'
         const pageName = `/search/?lang=${lang}`;

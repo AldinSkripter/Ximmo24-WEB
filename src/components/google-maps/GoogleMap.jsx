@@ -8,6 +8,7 @@ import { getMapDetailsApi } from '@/api/apiRoutes';
 import { isOpenStreetMapProvider } from '@/utils/mapProvider';
 import BwGoogleOverlay from '../maps/BwGoogleOverlay';
 import { BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM } from '@/utils/bwRegion';
+import GoogleMapsScript from './GoogleMapsScript';
 
 const LeafletMapView = dynamic(() => import('../maps/LeafletMapView'), { ssr: false });
 
@@ -191,9 +192,15 @@ const Map = ({ onSelectLocation, latitude, longitude, showLabel = false, isDragg
                             restrictToBw
                         />
                     ) : !isGoogleReady ? (
-                        <div style={containerStyle} className="flex items-center justify-center bg-gray-100 text-sm text-gray-500">
-                            {t("loading")}
-                        </div>
+                        <>
+                            <GoogleMapsScript
+                                enabled={!useOpenStreetMaps}
+                                onReady={() => setIsGoogleReady(Boolean(window.google?.maps))}
+                            />
+                            <div style={containerStyle} className="flex items-center justify-center bg-gray-100 text-sm text-gray-500">
+                                {t("loading")}
+                            </div>
+                        </>
                     ) : (
                         <GoogleMap
                         mapContainerStyle={containerStyle}

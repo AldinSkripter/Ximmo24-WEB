@@ -6,6 +6,7 @@ const PropertyDetailPage = dynamic(() => import('@/components/pagescomponents/Pr
 });
 // import PropertyDetailPage from '@/components/pagescomponents/PropertyDetailPage';
 import axios from 'axios';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 
 const fetchDataFromSeo = async (slug) => {
     try {
@@ -41,7 +42,8 @@ const index = ({ seoData, pageName }) => {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { query, params } = context;
+        const { query, params, res } = context;
+        setPublicPageCache(res);
 
         const slugValue = params?.slug;
         const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'

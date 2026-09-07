@@ -2,6 +2,7 @@ import PropertyList from '@/components/pagescomponents/PropertyList';
 import MetaData from '@/components/meta/MetaData';
 import axios from 'axios';
 import { GET_SEO_SETTINGS } from '@/api/apiEndpoints';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 
 const fetchDataFromSeo = async () => {
     try {
@@ -41,7 +42,8 @@ const CityPropertiesPage = ({ seoData, slug, pageName = "/properties/city/" }) =
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { params, query } = context; // Extract params and query from context
+        const { params, query, res } = context; // Extract params and query from context
+        setPublicPageCache(res);
         // Accessing the slug property
         const slugValue = params?.slug;
 
