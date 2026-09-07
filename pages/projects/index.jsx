@@ -2,6 +2,7 @@ import { GET_SEO_SETTINGS } from '@/api/apiEndpoints';
 import MetaData from '@/components/meta/MetaData';
 import ProjectListingPage from '@/components/pagescomponents/ProjectListingPage';
 import axios from 'axios';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 
 const fetchDataFromSeo = async () => {
     try {
@@ -38,7 +39,8 @@ const index = ({ seoData, pageName = "/projects/" }) => {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { query, params } = context;
+        const { query, params, res } = context;
+        setPublicPageCache(res);
         const slugValue = params?.slug;
         const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'
         const pageName = `/projects/?lang=${lang}`;

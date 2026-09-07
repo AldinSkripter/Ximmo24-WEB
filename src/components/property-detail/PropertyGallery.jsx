@@ -11,7 +11,9 @@ import { useTranslation } from "../context/TranslationContext";
 import { FaArrowRight } from "react-icons/fa";
 import { isRTL } from "@/utils/helperFunction";
 import { useIsMobile } from "@/hooks/use-mobile";
-import ReactPlayer from "react-player";
+import dynamic from "next/dynamic";
+
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const PropertyGallery = ({
   galleryPhotos,
@@ -158,7 +160,9 @@ const PropertyGallery = ({
                     blurDataURL={blurDataURL}
                     className="w-full h-[176px] sm:h-[400px] lg:h-[800px] rounded-2xl object-cover"
                     alt={`Property view ${index}`}
-                    loading="lazy"
+                    priority={index === 0 && !hasVideo}
+                    loading={index === 0 && !hasVideo ? "eager" : "lazy"}
+                    sizes="(max-width: 1024px) 100vw, 75vw"
                   />
                 </div>
               </CarouselItem>
@@ -188,6 +192,7 @@ const PropertyGallery = ({
               className="w-[150px] rounded-xl object-cover h-[60px] md:h-[100px] md:w-[110px] lg:min-w-[150px]"
               alt="Property view"
               loading="lazy"
+              sizes="150px"
             />
           </div>
 
@@ -213,6 +218,7 @@ const PropertyGallery = ({
                   className="w-[150px] rounded-xl object-cover h-[60px] md:h-[100px] md:w-[110px] lg:w-[150px]"
                   alt={`Property view ${actualIndex + 1}`}
                   loading="lazy"
+                  sizes="150px"
                 />
 
                 {isLastThumbnail && (

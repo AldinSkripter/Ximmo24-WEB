@@ -23,6 +23,7 @@ import { MdOutlineMyLocation } from "react-icons/md";
 import { isOpenStreetMapProvider } from "@/utils/mapProvider";
 import BwGoogleOverlay from "../maps/BwGoogleOverlay";
 import { BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM } from "@/utils/bwRegion";
+import GoogleMapsScript from "../google-maps/GoogleMapsScript";
 
 const LeafletMapView = dynamic(() => import("../maps/LeafletMapView"), { ssr: false });
 
@@ -78,6 +79,13 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     const typingTimeoutRef = useRef(null);
     const [mapType, setMapType] = useState("roadmap");
     const [isGoogleReady, setIsGoogleReady] = useState(false);
+
+    const googleMapsScript = (
+        <GoogleMapsScript
+            enabled={isOpen && !useOpenStreetMaps}
+            onReady={() => setIsGoogleReady(Boolean(window.google?.maps))}
+        />
+    );
 
 
     // API-based reverse geocoding for address lookup
@@ -542,6 +550,8 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     }, [radius, minRadius, maxRadius]);
 
     return (
+        <>
+        {googleMapsScript}
         <Dialog open={isOpen} onOpenChange={(open) => {
             // Only close if explicitly clicking outside or pressing escape
             if (!open) {
@@ -751,6 +761,7 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+        </>
     );
 };
 

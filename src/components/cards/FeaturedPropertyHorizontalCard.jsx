@@ -178,6 +178,7 @@ const FeaturedPropertyHorizontalCard = ({ property, removeCard = null }) => {
                         alt={property?.translated_title || property?.title}
                         className="w-full h-full object-cover rounded-2xl aspect-[340/279]"
                         loading='lazy'
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 260px, 340px"
                     />
                 </CustomLink>
                 <div className='primaryBackgroundBg leadColor absolute bottom-4 left-4 p-2 font-bold text-sm rounded-lg flex items-center gap-2'>

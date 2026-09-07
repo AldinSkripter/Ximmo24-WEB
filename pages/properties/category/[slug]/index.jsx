@@ -2,6 +2,7 @@ import PropertyList from '@/components/pagescomponents/PropertyList';
 import MetaData from '@/components/meta/MetaData';
 import axios from 'axios';
 import { GET_CATEGORIES } from '@/api/apiEndpoints';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 
 const fetchDataFromSeo = async (slug) => {
     try {
@@ -49,7 +50,8 @@ const CategoryPropertiesPage = ({ seoData, pageName, slug }) => {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { params, query } = context; // Extract query and request object from context
+        const { params, query, res } = context; // Extract query and request object from context
+        setPublicPageCache(res);
         // Accessing the slug property
         const slugValue = params?.slug;
         const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'

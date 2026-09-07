@@ -6,6 +6,7 @@ import MapPropertyCard from '../cards/MapPropertyCard';
 import { isOpenStreetMapProvider } from "@/utils/mapProvider";
 import BwGoogleOverlay from "../maps/BwGoogleOverlay";
 import { BW_BOUNDS, BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM, BW_FIT_PADDING } from "@/utils/bwRegion";
+import GoogleMapsScript from "./GoogleMapsScript";
 
 const LeafletPropertyOnMapView = dynamic(
     () => import("../maps/LeafletPropertyOnMapView"),
@@ -29,6 +30,7 @@ const PropertyOnMapView = ({
     const webSettings = useSelector((state) => state.WebSetting?.data);
     const useOpenStreetMaps = isOpenStreetMapProvider(webSettings);
     const [isGoogleReady, setIsGoogleReady] = useState(false);
+    const markGoogleReady = () => setIsGoogleReady(Boolean(window.google?.maps));
 
     useEffect(() => {
         if (useOpenStreetMaps) return;
@@ -78,9 +80,12 @@ const PropertyOnMapView = ({
 
     if (!isGoogleReady) {
         return (
-            <div style={containerStyle} className="flex items-center justify-center bg-gray-100 text-sm text-gray-500">
-                Loading...
-            </div>
+            <>
+                <GoogleMapsScript enabled={!useOpenStreetMaps} onReady={markGoogleReady} />
+                <div style={containerStyle} className="flex items-center justify-center bg-gray-100 text-sm text-gray-500">
+                    Loading...
+                </div>
+            </>
         );
     }
 

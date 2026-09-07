@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import DefaultLogo from "@/assets/logo.png";
@@ -17,35 +17,16 @@ export default function ImageWithPlaceholder({
   priority = false,
   blurDataURL,
   loading = "lazy",
+  sizes,
+  quality = 75,
+  ...props
 }) {
   const webSettings = useSelector((state) => state.WebSetting?.data);
   const fallbackSrc = normalizeSrc(webSettings?.web_placeholder_logo || DefaultLogo);
   const realSrc = normalizeSrc(src);
 
-  const [currentSrc, setCurrentSrc] = useState(blurDataURL || fallbackSrc);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // preload real image
-  useEffect(() => {
-    if (!realSrc) {
-      setCurrentSrc(fallbackSrc);
-      setIsLoading(false);
-      return;
-    }
-
-    const img = new window.Image();
-    img.src = realSrc;
-
-    img.onload = () => {
-      setCurrentSrc(realSrc);
-      setIsLoading(false);
-    };
-
-    img.onerror = () => {
-      setCurrentSrc(fallbackSrc);
-      setIsLoading(false);
-    };
-  }, [realSrc, fallbackSrc]);
+  const [failedSrc, setFailedSrc] = useState(null);
+  const currentSrc = realSrc && failedSrc !== realSrc ? realSrc : fallbackSrc;
 
   const isPlaceholder = currentSrc === fallbackSrc;
 
@@ -58,7 +39,11 @@ export default function ImageWithPlaceholder({
       blurDataURL={blurDataURL}
       loading={priority ? "eager" : loading}
       priority={priority}
+      sizes={sizes}
+      quality={quality}
+      onError={() => setFailedSrc(realSrc)}
       className={`${isPlaceholder ? "opacity-40 !object-contain" : ""} ${className} `}
+      {...props}
     />
   );
 }

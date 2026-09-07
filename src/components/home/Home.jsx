@@ -119,6 +119,23 @@ const Home = () => {
     const isUserLoggedIn = useAuthStatus();
     const userSelectedLocation = useSelector(state => state.location);
     const [isLocationInitializing, setIsLocationInitializing] = useState(true);
+    const [loadMapData, setLoadMapData] = useState(false);
+
+    useEffect(() => {
+        if (sessionStorage.getItem('__scroll_/')) {
+            const immediate = window.setTimeout(() => setLoadMapData(true), 0);
+            return () => window.clearTimeout(immediate);
+        }
+
+        const schedule = window.requestIdleCallback
+            ? window.requestIdleCallback(() => setLoadMapData(true), { timeout: 3000 })
+            : window.setTimeout(() => setLoadMapData(true), 1800);
+
+        return () => {
+            if (window.cancelIdleCallback) window.cancelIdleCallback(schedule);
+            else window.clearTimeout(schedule);
+        };
+    }, []);
 
     useEffect(() => {
         if (!router.isReady || router.pathname !== "/") return
@@ -256,6 +273,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: loadMapData,
     });
 
     // 6. Fetch Cities Section Data
@@ -428,6 +446,7 @@ const Home = () => {
 
     const allQueriesLoaded =
         !isLocationInitializing &&
+        loadMapData &&
         !sectionsQuery.isLoading &&
         !propertySectionsQuery.isLoading &&
         !projectSectionsQuery.isLoading &&

@@ -214,6 +214,7 @@ const PropertyVerticalCard = ({
             placeholder={property.low_quality_title_image ? "blur" : "empty"}
             width={357}
             height={197}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 357px"
             className="rounded-t-2xl w-full h-full aspect-[357/197] object-cover"
             loading="lazy"
           />

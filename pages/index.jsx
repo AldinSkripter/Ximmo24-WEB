@@ -2,6 +2,7 @@ import axios from "axios";
 import MetaData from "@/components/meta/MetaData";
 import HomePage from "@/components/pagescomponents/HomePage";
 import { GET_SEO_SETTINGS } from "@/api/apiEndpoints";
+import { setPublicPageCache } from "@/utils/publicPageCache";
 
 const fetchDataFromSeo = async () => {
   try {
@@ -40,15 +41,15 @@ export default function Home({ seoData, pageName }) {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
   serverSidePropsFunction = async (context) => {
-    const { query } = context;
-    const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'
-    const pageName = `/?lang=${lang}`;
-    const seoData = await fetchDataFromSeo();
+    const { query, res } = context;
+    const lang = query?.lang || "en";
+
+    setPublicPageCache(res, { maxAge: 300, staleWhileRevalidate: 3600 });
 
     return {
       props: {
-        seoData,
-        pageName,
+        seoData: await fetchDataFromSeo(),
+        pageName: `/?lang=${lang}`,
       },
     };
   };

@@ -80,6 +80,7 @@ const PremiumPropertyCard = ({ property, type = "" }) => {
                     src={imageUrl}
                     alt={property?.title || 'Property'}
                     loading='lazy'
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 355px"
                     blurDataURL={property?.low_quality_title_image}
                     className="h-full w-full object-cover"
                 />

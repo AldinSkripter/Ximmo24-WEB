@@ -2,6 +2,7 @@ import { GET_PROJECTS } from '@/api/apiEndpoints';
 import MetaData from '@/components/meta/MetaData';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
+import { setPublicPageCache } from '@/utils/publicPageCache';
 const ProjectDetailsPage = dynamic(() => import('@/components/pagescomponents/ProjectDetailsPage'), {
     ssr: false,
 });
@@ -39,7 +40,8 @@ const index = ({ seoData, pageName }) => {
 let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
     serverSidePropsFunction = async (context) => {
-        const { query, params } = context; // Extract query and request object from context
+        const { query, params, res } = context; // Extract query and request object from context
+        setPublicPageCache(res);
         const lang = query?.lang || 'en'; // Get lang from query params, default to 'en'
         const pageName = `/project-details/${params.slug}/?lang=${lang}`;
         const seoData = await fetchDataFromSeo(params.slug);

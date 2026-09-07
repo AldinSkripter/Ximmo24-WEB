@@ -10,13 +10,12 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-phone-input-2/lib/style.css";
 import "leaflet/dist/leaflet.css";
 import { Manrope } from "next/font/google";
 import dynamic from "next/dynamic";
-import { isGoogleMapsProvider } from "@/utils/mapProvider";
 import { hasAdvertisingConsent, hasAnalyticsConsent } from "@/utils/cookieConsent";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import MicrosoftClarity from "@/components/analytics/MicrosoftClarity";
@@ -41,22 +40,6 @@ const manrope = Manrope({
   weight: ["200", "300", "400", "500", "600", "700", "800"]
 })
 
-const MapProviderAssets = () => {
-  const webSettings = useSelector((state) => state.WebSetting?.data);
-
-  if (!webSettings || !isGoogleMapsProvider(webSettings)) {
-    return null;
-  }
-
-  return (
-    <Script
-      id="google-maps-api"
-      src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API}&libraries=places&loading=async`}
-      strategy="afterInteractive"
-    />
-  );
-};
-
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
@@ -67,6 +50,18 @@ export default function App({ Component, pageProps }) {
       },
     }
   })) // 👈 stable client
+  const [loadBackgroundFeatures, setLoadBackgroundFeatures] = useState(false);
+
+  useEffect(() => {
+    const schedule = window.requestIdleCallback
+      ? window.requestIdleCallback(() => setLoadBackgroundFeatures(true), { timeout: 2500 })
+      : window.setTimeout(() => setLoadBackgroundFeatures(true), 1500);
+
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(schedule);
+      else window.clearTimeout(schedule);
+    };
+  }, []);
 
   const [adConsentGranted, setAdConsentGranted] = useState(() =>
     typeof window !== 'undefined' ? hasAdvertisingConsent() : false
@@ -189,7 +184,7 @@ export default function App({ Component, pageProps }) {
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5187122762138955"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       )}
       {gaConsentGranted && <GoogleAnalytics />}
@@ -197,8 +192,7 @@ export default function App({ Component, pageProps }) {
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <MapProviderAssets />
-            <NotificationProvider />
+            {loadBackgroundFeatures && <NotificationProvider />}
             <TranslationProvider>
               <Suspense fallback={<FullScreenSpinLoader />}>
                 <Component {...pageProps} />

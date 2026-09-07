@@ -111,7 +111,8 @@ const HomePropertiesOnMap = ({
                                     alt={t("clickToActivateMap")}
                                     width={1600}
                                     height={900}
-                                    priority
+                                    loading="lazy"
+                                    sizes="100vw"
                                     className="absolute inset-0 h-full w-full object-cover scale-105 blur-xl brightness-75"
                                 />
                                 <button
