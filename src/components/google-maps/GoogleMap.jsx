@@ -8,7 +8,7 @@ import { getMapDetailsApi } from '@/api/apiRoutes';
 import { isOpenStreetMapProvider } from '@/utils/mapProvider';
 import BwGoogleOverlay from '../maps/BwGoogleOverlay';
 import { BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM } from '@/utils/bwRegion';
-import GoogleMapsScript from './GoogleMapsScript';
+import GoogleMapsScript, { isGoogleMapsReady } from './GoogleMapsScript';
 
 const LeafletMapView = dynamic(() => import('../maps/LeafletMapView'), { ssr: false });
 
@@ -64,7 +64,7 @@ const Map = ({ onSelectLocation, latitude, longitude, showLabel = false, isDragg
         if (useOpenStreetMaps) return;
 
         const updateGoogleReady = () => {
-            setIsGoogleReady(Boolean(window.google?.maps));
+            setIsGoogleReady(isGoogleMapsReady());
         };
 
         updateGoogleReady();
@@ -195,7 +195,7 @@ const Map = ({ onSelectLocation, latitude, longitude, showLabel = false, isDragg
                         <>
                             <GoogleMapsScript
                                 enabled={!useOpenStreetMaps}
-                                onReady={() => setIsGoogleReady(Boolean(window.google?.maps))}
+                                onReady={() => setIsGoogleReady(isGoogleMapsReady())}
                             />
                             <div style={containerStyle} className="flex items-center justify-center bg-gray-100 text-sm text-gray-500">
                                 {t("loading")}

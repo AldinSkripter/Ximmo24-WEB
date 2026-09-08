@@ -6,7 +6,7 @@ import MapPropertyCard from '../cards/MapPropertyCard';
 import { isOpenStreetMapProvider } from "@/utils/mapProvider";
 import BwGoogleOverlay from "../maps/BwGoogleOverlay";
 import { BW_BOUNDS, BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM, BW_FIT_PADDING } from "@/utils/bwRegion";
-import GoogleMapsScript from "./GoogleMapsScript";
+import GoogleMapsScript, { isGoogleMapsReady } from "./GoogleMapsScript";
 
 const LeafletPropertyOnMapView = dynamic(
     () => import("../maps/LeafletPropertyOnMapView"),
@@ -30,13 +30,13 @@ const PropertyOnMapView = ({
     const webSettings = useSelector((state) => state.WebSetting?.data);
     const useOpenStreetMaps = isOpenStreetMapProvider(webSettings);
     const [isGoogleReady, setIsGoogleReady] = useState(false);
-    const markGoogleReady = () => setIsGoogleReady(Boolean(window.google?.maps));
+    const markGoogleReady = () => setIsGoogleReady(isGoogleMapsReady());
 
     useEffect(() => {
         if (useOpenStreetMaps) return;
 
         const updateGoogleReady = () => {
-            setIsGoogleReady(Boolean(window.google?.maps));
+            setIsGoogleReady(isGoogleMapsReady());
         };
 
         updateGoogleReady();
