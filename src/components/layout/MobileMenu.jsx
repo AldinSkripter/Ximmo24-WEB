@@ -175,8 +175,12 @@ const MobileMenu = ({
                 <ImageWithPlaceholder
                   src={webSettings?.web_logo || Logo}
                   alt="logo"
-                  loading="lazy"
-                  className="w-full h-full"
+                  width={176}
+                  height={56}
+                  sizes="160px"
+                  quality={95}
+                  loading="eager"
+                  className="h-auto w-full object-contain"
                 />
               </div>
               <MdClose
