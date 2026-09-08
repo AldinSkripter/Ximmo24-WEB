@@ -33,6 +33,11 @@ const ChatList = ({ conversations, activeChat, handleSelectChat, loading }) => {
                   <ImageWithPlaceholder
                     src={conversation?.profile}
                     alt={conversation?.name}
+                    width={48}
+                    height={48}
+                    sizes="(min-width: 768px) 48px, 28px"
+                    quality={95}
+                    unoptimized
                     className="h-7 w-7 object-cover md:h-12 md:w-12"
                     loading="lazy"
                   />

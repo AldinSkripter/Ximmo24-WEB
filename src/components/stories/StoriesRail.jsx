@@ -191,7 +191,10 @@ const StoriesRail = ({ category_id } = {}) => {
                           alt={agent.agent_name}
                           width={76}
                           height={76}
-                          className="h-full w-full"
+                          sizes="56px"
+                          quality={95}
+                          unoptimized
+                          className="h-full w-full object-cover"
                         />
                       </div>
                     </div>

@@ -225,6 +225,11 @@ const AppointmentTableRow = ({
                             <ImageWithPlaceholder
                                 src={isAgent ? user?.profile : agent?.profile}
                                 alt={isAgent ? (user?.name || "User Image") : (agent?.name || "Agent Image")}
+                                width={48}
+                                height={48}
+                                sizes="48px"
+                                quality={95}
+                                unoptimized
                                 className="w-12 h-12 rounded object-cover shadow-md"
                             />
                         </div>

@@ -144,6 +144,10 @@ const AgentHorizontalCard = ({ agentDetails, isFeatureAvailable = false, setShow
               alt={`${name} - Real Estate Agent`}
               className="w-full h-full md:aspect-square object-cover"
               loading="lazy"
+              fill
+              sizes="(min-width: 768px) 304px, 100vw"
+              quality={95}
+              unoptimized
             />
           </div>
         </div>

@@ -55,7 +55,12 @@ const ChatHeader = ({
               <ImageWithPlaceholder
                 src={activeChat?.title_image}
                 alt={activeChat?.title}
-                className="h-7 w-7 md:h-12 md:w-12 aspect-[28/28] md:aspect-[48/48]"
+                width={48}
+                height={48}
+                sizes="(min-width: 768px) 48px, 28px"
+                quality={95}
+                unoptimized
+                className="h-7 w-7 object-cover md:h-12 md:w-12 aspect-[28/28] md:aspect-[48/48]"
                 loading="lazy"
               />
             )}

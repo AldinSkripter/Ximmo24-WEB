@@ -355,6 +355,7 @@ const UserProfile = () => {
                                             height={72}
                                             sizes="72px"
                                             quality={95}
+                                            unoptimized
                                             className="h-full w-full rounded-xl aspect-[72/72] object-cover"
                                         />
                                     ) : (

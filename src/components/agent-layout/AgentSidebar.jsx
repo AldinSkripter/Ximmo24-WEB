@@ -440,8 +440,12 @@ const AgentSidebar = ({ isMobile = false }) => {
                 <ImageWithPlaceholder
                   src={settingData?.web_logo || logo}
                   alt="eBroker Logo"
-                  className="h-14 w-full object-cover"
-                  loading="lazy"
+                  width={176}
+                  height={56}
+                  sizes="176px"
+                  quality={95}
+                  className="h-14 w-full object-contain"
+                  loading="eager"
                 />
               </CustomLink>
             </div>

@@ -63,6 +63,10 @@ const AgentProfileCard = ({ agent }) => {
                         alt={agent?.name || "Agent Profile"}
                         className="w-full h-full rounded-lg group-hover:brightness-[0.8] object-cover"
                         loading="lazy"
+                        fill
+                        sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 85vw"
+                        quality={95}
+                        unoptimized
                     />
 
                     {/* Verified badge */}

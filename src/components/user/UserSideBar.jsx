@@ -200,6 +200,7 @@ const UserSidebar = ({ isLoading }) => {
                             height={64}
                             sizes="64px"
                             quality={95}
+                            unoptimized
                             className="rounded-full border flex-shrink-0 h-16 w-16 aspect-[64/64] object-cover"
                         />
                     ) : (

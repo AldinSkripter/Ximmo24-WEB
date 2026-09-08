@@ -522,6 +522,10 @@ const AgentProfile = () => {
                                             alt="Profile"
                                             className="h-full w-full object-cover"
                                             loading="lazy"
+                                            fill
+                                            sizes="128px"
+                                            quality={95}
+                                            unoptimized
                                         />
                                     ) : (
                                         <div className="absolute inset-0 flex items-center justify-center text-gray-400">

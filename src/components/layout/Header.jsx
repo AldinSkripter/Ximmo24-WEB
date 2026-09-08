@@ -637,6 +637,7 @@ const Header = () => {
                           height={44}
                           sizes="44px"
                           quality={95}
+                          unoptimized
                           className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5 object-cover"
                         />
                       ) : (
@@ -778,6 +779,7 @@ const Header = () => {
                             height={44}
                             sizes="44px"
                             quality={95}
+                            unoptimized
                             className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5 object-cover"
                           />
                         ) : (
