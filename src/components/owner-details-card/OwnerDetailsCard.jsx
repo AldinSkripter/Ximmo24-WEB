@@ -283,6 +283,10 @@ const OwnerDetailsCard = ({
                 src={profile || placeholderImage}
                 className="h-full w-full object-cover"
                 alt="PropertyOwner"
+                fill
+                sizes="(min-width: 1280px) 120px, (min-width: 768px) 100px, 90px"
+                quality={95}
+                unoptimized
               />
             </div>
           </div>
