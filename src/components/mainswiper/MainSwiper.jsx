@@ -37,6 +37,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [keywords, setKeywords] = useState('');
   const [city, setCity] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -136,17 +137,18 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
     setShowAdvancedFilters(value);
   };
 
-  const handleApplyFilters = () => {
+  const navigateWithFilters = (overrides = {}) => {
     // Build filters object in the same format as PropertyList.jsx
     const filters = {
-      property_type: propertyType === 'All' ? '' : propertyType,
-      category_id: selectedCategory || '',
-      keywords: keywords || '',
-      city: city || '',
+      property_type: overrides.property_type ?? (propertyType === 'All' ? '' : propertyType),
+      category_id: overrides.category_id ?? (selectedCategory || ''),
+      keywords: overrides.keywords ?? (keywords || ''),
+      city: overrides.city ?? (city || ''),
+      zip_code: overrides.zip_code ?? (zipCode || ''),
       state: state || '',
       country: country || '',
-      min_price: minPrice || '',
-      max_price: maxPrice || '',
+      min_price: overrides.min_price ?? (minPrice || ''),
+      max_price: overrides.max_price ?? (maxPrice || ''),
       posted_since: postedSince === 'anytime' ? '' : postedSince,
       promoted: false,
       is_premium: false,
@@ -177,11 +179,33 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
     setShowAdvancedFilters(false);
   };
 
+  const handleApplyFilters = () => navigateWithFilters();
+
+  const handleSmartSearch = (parsedFilters) => {
+    const effectivePropertyType = parsedFilters.property_type === 'All'
+      ? propertyType
+      : parsedFilters.property_type;
+    const smartFilters = {
+      ...parsedFilters,
+      property_type: effectivePropertyType === 'All' ? '' : effectivePropertyType,
+    };
+
+    setPropertyType(effectivePropertyType || 'All');
+    setSelectedCategory(parsedFilters.category_id ? String(parsedFilters.category_id) : '');
+    setKeywords(parsedFilters.keywords || '');
+    setCity(parsedFilters.city || '');
+    setZipCode(parsedFilters.zip_code || '');
+    setMinPrice(parsedFilters.min_price || '');
+    setMaxPrice(parsedFilters.max_price || '');
+    navigateWithFilters(smartFilters);
+  };
+
   const handleClearFilters = () => {
     setPropertyType('All');
     setSelectedCategory('');
     setKeywords('');
     setCity('');
+    setZipCode('');
     setState('');
     setCountry('');
     setMinPrice('');
@@ -348,6 +372,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                   selectedCategory={selectedCategory}
                   keywords={keywords}
                   city={city}
+                  zipCode={zipCode}
                   state={state}
                   country={country}
                   minPrice={minPrice}
@@ -369,6 +394,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                   onNearbyPlacesChange={handleNearbyPlacesChange}
                   onShowAdvancedFiltersChange={handleShowAdvancedFiltersChange}
                   onApplyFilters={handleApplyFilters}
+                  onSmartSearch={handleSmartSearch}
                   onClearFilters={handleClearFilters}
                 />
               </div>
@@ -384,6 +410,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                 selectedCategory={selectedCategory}
                 keywords={keywords}
                 city={city}
+                zipCode={zipCode}
                 state={state}
                 country={country}
                 minPrice={minPrice}
@@ -405,6 +432,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                 onNearbyPlacesChange={handleNearbyPlacesChange}
                 onShowAdvancedFiltersChange={handleShowAdvancedFiltersChange}
                 onApplyFilters={handleApplyFilters}
+                onSmartSearch={handleSmartSearch}
                 onClearFilters={handleClearFilters}
               />
             </div>

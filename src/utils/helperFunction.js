@@ -1587,6 +1587,7 @@ export const generateBase64FilterUrl = (filters, options = {}) => {
     country: isCityPage ? undefined : (filters.country || undefined),
     state: isCityPage ? undefined : (filters.state || undefined),
     city: isCityPage ? (citySlug || filters.city || undefined) : (filters.city || undefined),
+    zip_code: filters.zip_code || undefined,
     latitude: isCityPage ? undefined : (filters.latitude || undefined),
     longitude: isCityPage ? undefined : (filters.longitude || undefined),
     radius: isCityPage ? undefined : (filters.radius || undefined)
@@ -1757,6 +1758,7 @@ export const buildPropertyApiParams = (filters, options = {}) => {
     city: isCityPage
       ? (citySlug || filters?.city || undefined)
       : (filters?.city || undefined),
+    zip_code: filters?.zip_code || undefined,
     latitude: isCityPage ? undefined : (filters?.latitude || undefined),
     longitude: isCityPage ? undefined : (filters?.longitude || undefined),
     radius: isCityPage ? undefined : (filters?.radius || undefined),

@@ -19,13 +19,12 @@ import {
 } from "@/components/ui/drawer";
 import { useTranslation } from '../context/TranslationContext';
 import { getAdvancedFilterDataApi, getCategoriesApi } from '@/api/apiRoutes';
-import { IoClose, IoFilterSharp } from 'react-icons/io5';
-import searchIcon from '@/assets/searchIcon.svg';
-import Image from 'next/image';
 import CustomLocationAutocomplete from '../location-search/CustomLocationAutocomplete';
 import { extractAddressComponents } from '@/utils/helperFunction';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { HiMagnifyingGlass, HiOutlineAdjustmentsHorizontal, HiOutlineSparkles } from 'react-icons/hi2';
+import { parseSmartPropertySearch } from '@/utils/smartPropertySearch';
 
 const SearchBox = ({
     // Props for external state management - using flat structure (new)
@@ -33,6 +32,7 @@ const SearchBox = ({
     selectedCategory = '',
     keywords = '',
     city = '',
+    zipCode = '',
     state = '',
     country = '',
     minPrice = '',
@@ -56,6 +56,7 @@ const SearchBox = ({
     onNearbyPlacesChange,
     onShowAdvancedFiltersChange,
     onApplyFilters,
+    onSmartSearch,
     onClearFilters,
 
     // Legacy props for backward compatibility (old nested structure)
@@ -72,7 +73,7 @@ const SearchBox = ({
     className = ''
 }) => {
     const t = useTranslation();
-    const limit = 10;
+    const limit = 100;
 
     // --- State for categories and facilities ---
     const [categories, setCategories] = useState([]);
@@ -82,6 +83,7 @@ const SearchBox = ({
     const [hasMoreCategories, setHasMoreCategories] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [isMobileView, setIsMobileView] = useState(false);
+    const [smartQuery, setSmartQuery] = useState(keywords || '');
 
     // Track data loading state
     const [isCategoriesLoaded, setIsCategoriesLoaded] = useState(false);
@@ -307,6 +309,25 @@ const SearchBox = ({
         onApplyFilters?.();
     };
 
+    const handleKiSearch = () => {
+        const parsed = parseSmartPropertySearch(smartQuery, categories);
+        const hasStructuredResult = parsed.category_id || parsed.city || parsed.zip_code ||
+            parsed.min_price || parsed.max_price || parsed.property_type !== 'All';
+
+        if (!hasStructuredResult) {
+            parsed.keywords = smartQuery.trim();
+        }
+
+        onSmartSearch?.(parsed);
+    };
+
+    const handleSmartQueryKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleKiSearch();
+        }
+    };
+
     const renderAdvancedFiltersContent = ({ showActions = true } = {}) => (
         <>
             {/* Property Budget & Posted Since Row */}
@@ -486,87 +507,69 @@ const SearchBox = ({
     return (
         // Outer container relative for positioning the dropdown
         <div className="relative w-full container">
-            {/* --- Top Row Filters Container --- */}
-            <div
-                className={`bg-white ${className} p-3 md:p-6 w-full relative z-10 transition-all duration-300 ease-in-out ${showAdvancedFilters ? 'border-b' : ''}`}
-            >
-                {/* Mobile compact search row */}
-                <div className="flex md:hidden items-center gap-2">
-                    <Input
-                        id="mobileKeywords"
-                        type="text"
-                        placeholder={t('enterKeywords')}
-                        className="!shadow-none min-w-0 flex-1 text-sm bg-gray-100 newBorder rounded-md h-11 focus:ring-0 focus:border-none focus-visible:ring-0"
-                        value={keywords}
-                        onChange={(e) => onKeywordsChange?.(e.target.value)}
-                    />
-                    {showFiltersButton && (
-                        <Button
-                            type="button"
-                            variant="outline"
-                            className="h-11 w-11 shrink-0 border-gray-300 text-gray-700 border-[1.5px] brandBorder p-0 hover:brandBg hover:text-white"
-                            onClick={() => onShowAdvancedFiltersChange?.(!showAdvancedFilters)}
-                            aria-label={t('smartFilters')}
-                            aria-expanded={showAdvancedFilters}
-                        >
-                            <IoFilterSharp size={20} />
-                        </Button>
-                    )}
-                    {showSearchButton && (
-                        <button
-                            type="button"
-                            onClick={handleApplyFiltersInternal}
-                            className="h-11 w-11 shrink-0 brandBg text-white flex items-center justify-center hover:primaryBg rounded-lg"
-                            aria-label={t('search')}
-                        >
-                            <Image src={searchIcon} width={20} height={20} className='w-5 h-5' alt='searchButton' />
-                        </button>
-                    )}
-                </div>
-                {/* Grid for top row inputs/buttons */}
-                <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-4 items-end">
-                    {renderBasicFilterFields()}
-                    {/* Keywords Input */}
-                    <div className="lg:col-span-1">
-                        <Label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-1">{t('keywords') || 'Keywords'}</Label>
-                        <Input
-                            id="keywords"
-                            type="text"
-                            placeholder={t('enterKeywords')}
-                            className="!shadow-none w-full text-sm md:text-base bg-gray-100 newBorder rounded-md h-11 focus:ring-0 focus:border-none focus-visible:ring-0"
-                            value={keywords}
-                            onChange={(e) => onKeywordsChange?.(e.target.value)}
-                        />
+            <div className={`relative z-10 w-full overflow-hidden rounded-[26px] border border-white/70 bg-white/95 p-4 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.55)] backdrop-blur-xl md:p-6 ${className}`}>
+                <div className="pointer-events-none absolute -right-16 -top-24 h-52 w-52 rounded-full primaryBg opacity-10 blur-3xl" />
+                <div className="relative flex flex-col gap-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl brandBg text-white shadow-lg">
+                                <HiOutlineSparkles className="h-6 w-6" />
+                                <span className="absolute -right-1 -top-1 flex h-4 w-4">
+                                    <span className="absolute h-full w-full animate-ping rounded-full primaryBg opacity-60" />
+                                    <span className="relative h-4 w-4 rounded-full border-2 border-white primaryBg" />
+                                </span>
+                            </div>
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <span className="blackTextColor text-base font-bold md:text-lg">{t('kiPropertySearch')}</span>
+                                    <span className="rounded-full primaryBg px-2 py-0.5 text-[10px] font-extrabold tracking-[0.16em] text-white">KI</span>
+                                </div>
+                                <p className="leadColor text-xs md:text-sm">{t('kiSearchDescription')}</p>
+                            </div>
+                        </div>
+                        <div className="flex rounded-xl bg-slate-100 p-1">
+                            {propertyTypeOptions.map((option) => (
+                                <button type="button" key={option} onClick={() => onPropertyTypeChange?.(option)}
+                                    className={`rounded-lg px-3 py-2 text-xs font-semibold transition-all md:px-4 md:text-sm ${propertyType === option ? 'brandBg text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}>
+                                    {t(option?.toLowerCase())}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    {/* Conditional Filters/Cancel Button */}
-                    {showFiltersButton && (
-                        <div className="lg:col-span-1">
-                            <Button
-                                variant="outline"
-                                className="w-full h-11 border-gray-300 text-gray-700 border-[1.5px] brandBorder flex items-center justify-center gap-2 hover:brandBg hover:text-white text-sm md:text-base"
-                                onClick={() => onShowAdvancedFiltersChange?.(!showAdvancedFilters)}
-                                aria-expanded={showAdvancedFilters}
-                            >
-                                {showAdvancedFilters ? (
-                                    <><IoClose size={18} /> {t('cancel') || 'Cancel'}</>
-                                ) : (
-                                    <><IoFilterSharp size={18} /> {t('smartFilters')}</>
-                                )}
-                            </Button>
+                    <div className="flex flex-col gap-2 md:flex-row">
+                        <div className="group relative min-w-0 flex-1">
+                            <HiOutlineSparkles className="primaryColor absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2" />
+                            <input id="ximmo24-ki-search" type="text" value={smartQuery}
+                                onChange={(event) => setSmartQuery(event.target.value)}
+                                onKeyDown={handleSmartQueryKeyDown}
+                                placeholder={t('kiSearchPlaceholder')}
+                                className="h-14 w-full rounded-2xl border-2 border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:primaryBorderColor focus:shadow-[0_0_0_4px_rgba(14,165,233,0.10)] md:h-16 md:text-base" />
                         </div>
-                    )}
-                    {/* Search Button */}
-                    {showSearchButton && (
-                        <div className="lg:col-span-1">
-                            <button
-                                onClick={handleApplyFiltersInternal}
-                                className="w-full h-11 brandBg text-white flex items-center justify-center gap-2 hover:primaryBg text-sm md:text-base rtl:flex-row-reverse rounded-lg"
-                            >
-                                <Image src={searchIcon} width={20} height={20} className='w-5 h-5' alt='searchButton' />
-                                <div>{t('search')}</div>
+                        <div className="flex gap-2">
+                            {showFiltersButton && (
+                                <Button type="button" variant="outline"
+                                    className="h-14 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 text-slate-700 hover:bg-slate-50 md:h-16 md:flex-none md:px-6"
+                                    onClick={() => onShowAdvancedFiltersChange?.(!showAdvancedFilters)} aria-expanded={showAdvancedFilters}>
+                                    <HiOutlineAdjustmentsHorizontal className="mr-2 h-5 w-5" />{t('filters')}
+                                </Button>
+                            )}
+                            {showSearchButton && (
+                                <button type="button" onClick={handleKiSearch}
+                                    className="primaryBg flex h-14 flex-[1.35] items-center justify-center gap-2 rounded-2xl px-5 font-bold text-white shadow-[0_12px_28px_-10px_rgba(14,165,233,0.9)] transition-all hover:-translate-y-0.5 hover:brightness-95 md:h-16 md:flex-none md:px-8">
+                                    <HiMagnifyingGlass className="h-5 w-5" />{t('kiSearchButton')}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="leadColor mr-1 text-xs font-medium">{t('tryForExample')}</span>
+                        {['Haus in Achern', 'Wohnung 77855', 'Haus kaufen bis 500.000 €'].map((suggestion) => (
+                            <button type="button" key={suggestion} onClick={() => setSmartQuery(suggestion)}
+                                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:primaryBorderColor hover:primaryColor">
+                                {suggestion}
                             </button>
-                        </div>
-                    )}
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -590,7 +593,10 @@ const SearchBox = ({
             {/* --- Advanced Filters Dropdown Section --- */}
             {showAdvancedFilters && (
                 // Absolute positioning below the top row
-                <div className="absolute top-full left-0 right-0 hidden w-full bg-white shadow-lg border-0 border-gray-200 z-20 p-4 md:block md:p-6">
+                <div className="absolute left-0 right-0 top-[calc(100%+10px)] z-20 hidden w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl md:block md:p-6">
+                    <div className="mb-5 grid grid-cols-3 gap-4">
+                        {renderBasicFilterFields()}
+                    </div>
                     {renderAdvancedFiltersContent()}
                 </div>
             )}

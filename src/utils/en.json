@@ -1627,5 +1627,10 @@
   "galleryImage": "Gallery",
   "noImagesFound": "No images found for this listing.",
   "failedToLoadImage": "Failed to load the selected image. Please try again.",
-  "onlyAvailableInBadenWurttemberg": "Wir sind derzeit nur in Baden-Württemberg verfügbar."
+  "onlyAvailableInBadenWurttemberg": "Wir sind derzeit nur in Baden-Württemberg verfügbar.",
+  "kiPropertySearch": "Ximmo24 AI Search",
+  "kiSearchDescription": "Simply describe the property you are looking for",
+  "kiSearchPlaceholder": "e.g. House in Achern or apartment 77855 up to €350,000",
+  "kiSearchButton": "AI Search",
+  "tryForExample": "Try an example:"
 }
