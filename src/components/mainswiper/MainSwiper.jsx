@@ -366,7 +366,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
 
           {showSearchBox && (
             <div className="absolute -bottom-2 md:-bottom-6 left-0 right-0 z-20 px-4">
-              <div className="mx-auto w-full max-w-6xl shadow-[0px_14px_36px_3px_#ADB3B852]">
+              <div className="mx-auto w-full max-w-6xl">
                 <SearchBox
                   propertyType={propertyType}
                   selectedCategory={selectedCategory}
@@ -404,7 +404,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
       ) : (
         showSearchBox && (
           <div className="px-4">
-            <div className="container mx-auto shadow-[0px_14px_36px_3px_#ADB3B852]">
+            <div className="container mx-auto">
               <SearchBox
                 propertyType={propertyType}
                 selectedCategory={selectedCategory}
