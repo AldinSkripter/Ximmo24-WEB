@@ -365,7 +365,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
           </Carousel>
 
           {showSearchBox && (
-            <div className="absolute -bottom-2 md:-bottom-6 left-0 right-0 z-20 px-4">
+            <div className="relative z-20 -mt-7 px-3 md:absolute md:-bottom-6 md:left-0 md:right-0 md:mt-0 md:px-4">
               <div className="mx-auto w-full max-w-6xl">
                 <SearchBox
                   propertyType={propertyType}

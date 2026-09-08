@@ -507,12 +507,12 @@ const SearchBox = ({
     return (
         // Outer container relative for positioning the dropdown
         <div className="relative w-full">
-            <div className={`relative z-10 w-full overflow-hidden rounded-[22px] border border-white/70 bg-white/95 p-3 shadow-[0_20px_55px_-25px_rgba(15,23,42,0.5)] backdrop-blur-xl md:p-4 ${className}`}>
+            <div className={`relative z-10 w-full overflow-hidden rounded-[18px] border border-white/70 bg-white/95 p-2.5 shadow-[0_20px_55px_-25px_rgba(15,23,42,0.5)] backdrop-blur-xl md:rounded-[22px] md:p-4 ${className}`}>
                 <div className="pointer-events-none absolute -right-16 -top-24 h-52 w-52 rounded-full primaryBg opacity-10 blur-3xl" />
-                <div className="relative flex flex-col gap-2.5">
+                <div className="relative flex flex-col gap-2 md:gap-2.5">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-2.5">
-                            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl brandBg text-white shadow-md">
+                            <div className="relative flex h-8 w-8 items-center justify-center rounded-lg brandBg text-white shadow-md md:h-9 md:w-9 md:rounded-xl">
                                 <HiOutlineSparkles className="h-5 w-5" />
                                 <span className="absolute -right-1 -top-1 flex h-4 w-4">
                                     <span className="absolute h-full w-full animate-ping rounded-full primaryBg opacity-60" />
@@ -521,16 +521,16 @@ const SearchBox = ({
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <span className="blackTextColor text-sm font-bold md:text-base">{t('kiPropertySearch')}</span>
+                                    <span className="blackTextColor text-xs font-bold sm:text-sm md:text-base">{t('kiPropertySearch')}</span>
                                     <span className="rounded-full primaryBg px-2 py-0.5 text-[10px] font-extrabold tracking-[0.16em] text-white">KI</span>
                                 </div>
                                 <p className="leadColor hidden text-xs sm:block">{t('kiSearchDescription')}</p>
                             </div>
                         </div>
-                        <div className="flex rounded-lg bg-slate-100 p-1">
+                        <div className="flex rounded-lg bg-slate-100 p-0.5 md:p-1">
                             {propertyTypeOptions.map((option) => (
                                 <button type="button" key={option} onClick={() => onPropertyTypeChange?.(option)}
-                                    className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all md:px-4 ${propertyType === option ? 'brandBg text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}>
+                                    className={`rounded-md px-2 py-1 text-[11px] font-semibold transition-all sm:px-3 sm:text-xs md:px-4 md:py-1.5 ${propertyType === option ? 'brandBg text-white shadow-sm' : 'text-slate-600 hover:bg-white'}`}>
                                     {t(option?.toLowerCase())}
                                 </button>
                             ))}
@@ -543,25 +543,25 @@ const SearchBox = ({
                                 onChange={(event) => setSmartQuery(event.target.value)}
                                 onKeyDown={handleSmartQueryKeyDown}
                                 placeholder={t('kiSearchPlaceholder')}
-                                className="h-12 w-full rounded-xl border-2 border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:primaryBorderColor focus:shadow-[0_0_0_4px_rgba(14,165,233,0.10)] md:h-[52px]" />
+                                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-slate-50 pl-11 pr-3 text-xs font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:bg-white focus:primaryBorderColor focus:shadow-[0_0_0_4px_rgba(14,165,233,0.10)] sm:text-sm md:h-[52px] md:pl-12 md:pr-4" />
                         </div>
                         <div className="flex gap-2">
                             {showFiltersButton && (
                                 <Button type="button" variant="outline"
-                                    className="h-12 flex-1 rounded-xl border-2 border-slate-200 bg-white px-4 text-sm text-slate-700 hover:bg-slate-50 md:h-[52px] md:flex-none md:px-5"
+                                    className="h-10 flex-1 rounded-xl border-2 border-slate-200 bg-white px-3 text-xs text-slate-700 hover:bg-slate-50 sm:h-11 sm:text-sm md:h-[52px] md:flex-none md:px-5"
                                     onClick={() => onShowAdvancedFiltersChange?.(!showAdvancedFilters)} aria-expanded={showAdvancedFilters}>
                                     <HiOutlineAdjustmentsHorizontal className="mr-2 h-5 w-5" />{t('filters')}
                                 </Button>
                             )}
                             {showSearchButton && (
                                 <button type="button" onClick={handleKiSearch}
-                                    className="primaryBg flex h-12 flex-[1.35] items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold text-white shadow-[0_10px_24px_-12px_rgba(14,165,233,0.9)] transition-all hover:-translate-y-0.5 hover:brightness-95 md:h-[52px] md:flex-none md:px-6">
+                                    className="primaryBg flex h-10 flex-[1.35] items-center justify-center gap-1.5 rounded-xl px-3 text-xs font-bold text-white shadow-[0_10px_24px_-12px_rgba(14,165,233,0.9)] transition-all hover:-translate-y-0.5 hover:brightness-95 sm:h-11 sm:text-sm md:h-[52px] md:flex-none md:gap-2 md:px-6">
                                     <HiMagnifyingGlass className="h-5 w-5" />{t('kiSearchButton')}
                                 </button>
                             )}
                         </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="hidden flex-wrap items-center gap-2 md:flex">
                         <span className="leadColor mr-1 text-xs font-medium">{t('tryForExample')}</span>
                         {['Haus in Achern', 'Wohnung 77855', 'Haus kaufen bis 500.000 €'].map((suggestion) => (
                             <button type="button" key={suggestion} onClick={() => setSmartQuery(suggestion)}
