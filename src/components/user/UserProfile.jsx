@@ -353,7 +353,9 @@ const UserProfile = () => {
                                             alt={profileData?.name || t("profilePicture")}
                                             width={72}
                                             height={72}
-                                            className="h-full w-full rounded-xl aspect-[72/72]"
+                                            sizes="72px"
+                                            quality={95}
+                                            className="h-full w-full rounded-xl aspect-[72/72] object-cover"
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center leadColor">

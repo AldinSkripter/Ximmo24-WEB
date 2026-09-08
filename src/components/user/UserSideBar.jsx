@@ -196,7 +196,11 @@ const UserSidebar = ({ isLoading }) => {
                         <ImageWithPlaceholder
                             src={user?.profile}
                             alt={user?.name}
-                            className="rounded-full border flex-shrink-0 h-16 w-16 aspect-[64/64]"
+                            width={64}
+                            height={64}
+                            sizes="64px"
+                            quality={95}
+                            className="rounded-full border flex-shrink-0 h-16 w-16 aspect-[64/64] object-cover"
                         />
                     ) : (
                         <div className="rounded-full h-16 w-16 flex items-center justify-center primaryBg text-white text-xl font-bold uppercase border  shrink-0">

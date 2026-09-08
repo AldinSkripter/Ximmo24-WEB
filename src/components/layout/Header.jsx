@@ -635,7 +635,9 @@ const Header = () => {
                           alt={userData?.name}
                           width={44}
                           height={44}
-                          className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5"
+                          sizes="44px"
+                          quality={95}
+                          className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5 object-cover"
                         />
                       ) : (
                         <div className="rounded-full aspect-[44/44] h-11 w-11 flex items-center justify-center primaryBg text-white text-xl font-bold uppercase border newBorderColor">
@@ -774,7 +776,9 @@ const Header = () => {
                             alt={userData?.name}
                             width={44}
                             height={44}
-                            className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5"
+                            sizes="44px"
+                            quality={95}
+                            className="rounded-full aspect-[44/44] h-11 w-11 border newBorderColor p-0.5 object-cover"
                           />
                         ) : (
                           <div className="rounded-full aspect-[44/44] h-11 w-11 flex items-center justify-center primaryBg text-white text-xl font-bold uppercase border newBorderColor">
