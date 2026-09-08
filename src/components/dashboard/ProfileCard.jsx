@@ -40,10 +40,13 @@ const ProfileCard = ({ userName }) => {
                     {/* Uncomment this and add your image path */}
                     <ImageWithPlaceholder
                         priority={true}
-                        src={dashboardImg.src}
+                        src={dashboardImg}
                         alt="Modern Building"
                         className="w-full h-full object-cover"
-                        loading="lazy"
+                        fill
+                        sizes="(min-width: 768px) 466px, 100vw"
+                        quality={100}
+                        unoptimized
                     />
                 </div>
             </div>

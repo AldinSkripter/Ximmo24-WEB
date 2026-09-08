@@ -87,6 +87,11 @@ const RecentChats = ({ chatData = [], isLoading = false }) => {
                   <ImageWithPlaceholder
                     src={otherUser?.profile}
                     alt={otherUser?.name}
+                    width={40}
+                    height={40}
+                    sizes="40px"
+                    quality={95}
+                    unoptimized
                     className="w-full h-full object-cover"
                   />
                 </div>
