@@ -23,7 +23,7 @@ import { MdOutlineMyLocation } from "react-icons/md";
 import { isOpenStreetMapProvider } from "@/utils/mapProvider";
 import BwGoogleOverlay from "../maps/BwGoogleOverlay";
 import { BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM } from "@/utils/bwRegion";
-import GoogleMapsScript from "../google-maps/GoogleMapsScript";
+import GoogleMapsScript, { isGoogleMapsReady } from "../google-maps/GoogleMapsScript";
 
 const LeafletMapView = dynamic(() => import("../maps/LeafletMapView"), { ssr: false });
 
@@ -83,7 +83,7 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     const googleMapsScript = (
         <GoogleMapsScript
             enabled={isOpen && !useOpenStreetMaps}
-            onReady={() => setIsGoogleReady(Boolean(window.google?.maps))}
+            onReady={() => setIsGoogleReady(isGoogleMapsReady())}
         />
     );
 
@@ -294,7 +294,7 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
         }
 
         try {
-            // 1️⃣ Check permission explicitly
+            // 1ï¸â£ Check permission explicitly
             if ("permissions" in navigator) {
                 const status = await navigator.permissions.query({ name: "geolocation" });
 
@@ -304,7 +304,7 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
                 }
             }
 
-            // 2️⃣ Get position as Promise
+            // 2ï¸â£ Get position as Promise
             const position = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject, {
                     enableHighAccuracy: true,
@@ -316,22 +316,22 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
-            // 3️⃣ Reset typing state so fetchAddressFromCoordinates updates the search input
+            // 3ï¸â£ Reset typing state so fetchAddressFromCoordinates updates the search input
             setIsUserTyping(false);
 
-            // 4️⃣ Update state
+            // 4ï¸â£ Update state
             setLocation({ lat, lng, radius });
 
             await fetchAddressFromCoordinates(lat, lng);
 
-            // 5️⃣ Update map
+            // 5ï¸â£ Update map
             if (!useOpenStreetMaps && (map || mapRef.current)) {
                 const mapInstance = map || mapRef.current;
                 mapInstance.panTo({ lat, lng });
                 mapInstance.setZoom(14);
             }
         } catch (error) {
-            // 6️⃣ Only show toast for REAL permission denial
+            // 6ï¸â£ Only show toast for REAL permission denial
             if (error?.code === 1) {
                 toast.error(t("locationAccessDenied"));
             } else {
