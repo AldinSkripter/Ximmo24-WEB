@@ -44,6 +44,10 @@ const PhoneLoginForm = ({
     }
 
     const phoneConfig = getPhoneInputConfig(phoneCountry);
+    const dialCode = value?.countryCode || "49";
+    const normalizedPhoneValue = value?.number
+        ? (String(value.number).startsWith(dialCode) ? String(value.number) : `${dialCode}${value.number}`)
+        : dialCode;
 
     return (
         <form
@@ -89,7 +93,7 @@ const PhoneLoginForm = ({
                             enableLongNumbers={phoneConfig.enableLongNumbers}
                             enableSearch={true}
                             searchPlaceholder={t("search")}
-                            value={value.number}
+                            value={normalizedPhoneValue}
                             onChange={(phone, data) => handleInputChange(phone, data)}
                             containerClass="w-full"
                             inputClass="!primaryBackgroundBg !w-full !rounded-lg !h-14 !border !newBorderColor "
