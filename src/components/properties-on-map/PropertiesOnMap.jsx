@@ -27,6 +27,7 @@ const PropertiesOnMap = () => {
 
   // Property list states
   const [properties, setProperties] = useState([]);
+  const [mapProperties, setMapProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [sortBy, setSortBy] = useState("default");
@@ -226,6 +227,11 @@ const PropertiesOnMap = () => {
       if (!response.error) {
         const allProperties = response?.data || [];
 
+        // The cards are paginated for usability, but the map must always
+        // receive the complete filtered result set so every BW listing with
+        // valid coordinates is represented by a marker.
+        setMapProperties(allProperties);
+
         // Simulate pagination with client-side slicing
         const pageToFetch = loadMore ? currentPage + 1 : (isReset ? 1 : currentPage);
         const startIndex = (pageToFetch - 1) * PROPERTIES_PER_PAGE;
@@ -250,11 +256,13 @@ const PropertiesOnMap = () => {
       } else {
         console.error("API returned an error:", response.error);
         setProperties([]);
+        setMapProperties([]);
         setHasMoreData(false);
       }
     } catch (error) {
       console.error("Error fetching properties:", error);
       setProperties([]);
+      setMapProperties([]);
       setHasMoreData(false);
     } finally {
       setIsLoading(false);
@@ -456,7 +464,7 @@ const PropertiesOnMap = () => {
               handleMarkerClick={handleMarkerClick}
               handleInfoWindowClose={handleInfoWindowClose}
               iconConfig={iconConfig}
-              data={properties}
+              data={mapProperties}
               isInteractive={true}
             />
           </div>
