@@ -231,7 +231,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true, isSliderL
       {showSwiper && !hasSlides ? (
         <div
           aria-hidden="true"
-          className="w-full aspect-[1920/1080] bg-gradient-to-br from-slate-200 via-sky-100 to-slate-300 animate-pulse lg:aspect-[1920/700] xl:h-[700px] xl:aspect-auto"
+          className={`w-full aspect-[1920/1080] bg-gradient-to-br from-slate-200 via-sky-100 to-slate-300 lg:aspect-[1920/700] xl:h-[700px] xl:aspect-auto ${isSliderLoading ? "animate-pulse" : ""}`}
         />
       ) : null}
       {showSwiper && hasSlides ? (
