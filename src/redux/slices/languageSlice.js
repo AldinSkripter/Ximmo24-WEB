@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  default_language: "", // The system default language from API
-  active_language: "", // The currently active language (user selected or default)
+  default_language: "de", // Ximmo24 first-paint fallback; API can update it
+  active_language: "de", // Ximmo24 defaults to German before API hydration
   current_language: {}, // Language data/translations
   languages: [], // Available languages
   isFetched: false, // Whether language data has been fetched
