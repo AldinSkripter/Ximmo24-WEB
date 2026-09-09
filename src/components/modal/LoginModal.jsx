@@ -2295,7 +2295,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent
           onInteractOutside={(e) => e.preventDefault()}
-          className="mx-auto h-[min(760px,96vh)] max-h-[96vh] w-[calc(100%-20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
+          className="mx-auto h-[min(760px,96vh)] max-h-[96vh] w-[calc(100%_-_20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
         >
           <div ref={authShellRef} onMouseMove={handleAuthPointerMove} className="relative grid h-full min-h-0 lg:grid-cols-[.94fr_1.06fr]" style={{ "--auth-x": "50%", "--auth-y": "50%" }}>
             <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(360px_circle_at_var(--auth-x)_var(--auth-y),rgba(9,168,236,.11),transparent_72%)]" aria-hidden="true" />
@@ -2479,9 +2479,10 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               transform: translateY(-1px);
             }
             .ximmo-auth-form .react-tel-input .form-control {
-              padding-left: 112px !important;
+              padding-left: 72px !important;
               color: #0f172a !important;
               opacity: 1 !important;
+              direction: ltr !important;
             }
             .ximmo-auth-form .react-tel-input .flag-dropdown {
               width: 58px !important;
