@@ -2251,12 +2251,14 @@ export const getHomepageProjectsSectionApi = async ({
 export const getHomepageOtherSectionsApi = async ({
   latitude = "",
   longitude = "",
-  radius = ""
+  radius = "",
+  lightweight = false
 }) => {
   const params = getFilteredParams({
     latitude,
     longitude,
-    radius
+    radius,
+    lightweight: lightweight ? 1 : ""
   })
   const res = await api.get(apiEndpoints.GET_HOMEPAGE_OTHER_SECTIONS, { params });
   return res.data
