@@ -1,6 +1,5 @@
-import dynamic from "next/dynamic";
 import * as api from "@/api/apiRoutes";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWebSettings } from "@/redux/slices/webSettingSlice";
 import {
@@ -15,7 +14,6 @@ import { setCategories, setInitialLoadComplete } from "@/redux/slices/cacheSlice
 import withAuth from "../HOC/withAuth";
 import Header from "./Header";
 import Footer from "./Footer";
-import FullScreenSpinLoader from "../ui/loaders/FullScreenSpinLoader";
 // Service worker registration and global foreground listener are handled by
 // NotificationProvider in pages/_app.js. No push notification wrapper needed here.
 
@@ -25,22 +23,17 @@ import PWAInstallButton from "../PWAInstallButton";
 import UnderMaintenance from "../under-maintenance/UnderMaintenance";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import SomethingWentWrong from "../error/SomethingWentWrong";
 import { updateUserProfile } from "@/redux/slices/authSlice";
 
 const Layout = ({ children }) => {
   const router = useRouter();
   const t = useTranslation()
   const dispatch = useDispatch();
-  const [isInitialLoading, setIsInitialLoading] = useState(false); // Only for initial app load
-  const [isRouteChanging, setIsRouteChanging] = useState(false); // Only for route changes
-  const [isError, setIsError] = useState(false);
   const isLoadCompleted = useSelector((state) => state.cacheData.initialLoadComplete); // Track if initial load finished
 
   // Get language settings from Redux
   const defaultLanguage = useSelector((state) => state.LanguageSettings?.default_language);
   const activeLanguage = useSelector((state) => state.LanguageSettings?.active_language);
-  const isFetched = useSelector((state) => state.LanguageSettings?.isFetched);
   const isLanguageLoaded = useSelector((state) => state.LanguageSettings?.isLanguageLoaded);
   const currentLanguage = useSelector((state) => state.LanguageSettings?.current_language);
   const availableLanguages = useSelector((state) => state.LanguageSettings?.languages);
@@ -97,7 +90,6 @@ const Layout = ({ children }) => {
       return true;
     } catch (error) {
       console.error("Failed to fetch web settings:", error);
-      setIsError(true);
       return false;
     }
   }, [dispatch, currentLanguage]);
@@ -134,20 +126,18 @@ const Layout = ({ children }) => {
         }
 
         document.documentElement.lang = localeCode;
-        if (userData) {
-          await changeNotificationLanguage(localeCode);
-        }
 
-        // Set active language to the requested locale
+        // Make translations available immediately. Secondary synchronization must
+        // never block the first visible render of a public page.
         dispatch(setActiveLanguage({ data: localeCode }));
         dispatch(setCurrentLanguage({ data: response.data }));
         dispatch(setIsFetched({ data: true }));
-
-        // Also fetch categories to ensure they're updated with new language
-        await fetchCategories();
-
-        // Finally mark language as loaded after all dependent data is refreshed
         dispatch(setIsLanguageLoaded({ data: true }));
+
+        void fetchCategories();
+        if (userData) {
+          void changeNotificationLanguage(localeCode);
+        }
 
         return true;
       } catch (error) {
@@ -158,15 +148,15 @@ const Layout = ({ children }) => {
         return false;
       }
     },
-    [dispatch, activeLanguage, isLanguageLoaded, fetchCategories],
+    [dispatch, activeLanguage, isLanguageLoaded, fetchCategories, userData],
   );
 
   // Fetch web settings using React Query for caching and stale time
-  const webSettingsQuery = useQuery({
+  useQuery({
     queryKey: ['webSettings'],
     queryFn: fetchWebSettings,
     // keepPreviousData: true,
-    staleTime: 0, // 0 minutes
+    staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
@@ -191,11 +181,11 @@ const Layout = ({ children }) => {
     }
   };
 
-  const fetchUserProfileQuery = useQuery({
+  useQuery({
     queryKey: ['userProfile'],
     queryFn: fetchUserData,
     enabled: !!userData?.id, // Only fetch if user ID is available
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
@@ -294,18 +284,12 @@ const Layout = ({ children }) => {
       // Skip if no language code available yet
       if (!urlLocale) return;
 
-      // Only show loading for initial app load
-      if (!isLoadCompleted) {
-        setIsInitialLoading(true);
-      }
       try {
         await fetchLanguageData(urlLocale);
       } catch (error) {
         console.error("Error loading language data:", error);
-        setIsError(true);
       } finally {
         dispatch(setInitialLoadComplete(true));
-        setIsInitialLoading(false);
       }
     };
 
@@ -314,28 +298,6 @@ const Layout = ({ children }) => {
     return () => { };
   }, [urlLocale, isLoadCompleted]);
 
-
-  // Show loader for initial load or route changes
-  const isPageNotReady =
-    isInitialLoading ||
-    webSettingsQuery.isLoading ||
-    !isLanguageLoaded ||
-    !isFetched ||
-    !isLoadCompleted;
-
-  if (isPageNotReady) {
-    return <FullScreenSpinLoader />;
-  }
-
-  if (underMaintenance) {
-    return (
-      <UnderMaintenance />
-    )
-  }
-
-  if (isError) {
-    return <SomethingWentWrong />;
-  }
 
   return (
     <>

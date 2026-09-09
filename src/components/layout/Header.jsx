@@ -481,7 +481,7 @@ const Header = () => {
                   onClick={handleShowLanguageDropdown}
                 >
                   <button className="flex items-center gap-1 text-sm font-medium rounded-full bg-[#FFFFFF3D] px-2 py-1 text-white focus:outline-none">
-                    {languages.find((lang) => lang.code === currentLang)
+                    {languages?.find((lang) => lang.code === currentLang)
                       ?.name || t("language")}
                     {languages?.length > 1 && <FaChevronDown size={10} />}
                   </button>
@@ -490,7 +490,7 @@ const Header = () => {
                     <div
                       className="absolute right-0 top-3 z-[9999] mt-2 w-[110px] rounded-md border border-gray-100 bg-white shadow-lg"
                     >
-                      {languages.map((lang) => (
+                      {(languages || []).map((lang) => (
                         <div
                           key={lang.code}
                           className="hover:primaryColor hover:primaryBorderColor group block cursor-pointer border-b-2 border-dashed px-3 py-2 text-black transition-all duration-150 last:border-b-0"

@@ -187,7 +187,8 @@ const PremiumHomepageGateway = () => {
     const userData = useSelector((state) => state.User?.data);
     const activeRole = useSelector((state) => state.Auth?.role);
     const activeLanguage = useSelector((state) => state.LanguageSettings?.current_language?.code);
-    const copy = homepageCopy[activeLanguage === "en" ? "en" : "de"];
+    const requestedLanguage = Array.isArray(router.query?.lang) ? router.query.lang[0] : router.query?.lang;
+  const copy = homepageCopy[(requestedLanguage || activeLanguage) === "en" ? "en" : "de"];
     const choices = getChoices(copy);
     const regionalRoutes = getRegionalRoutes(copy);
     const advantages = getAdvantages(copy);
