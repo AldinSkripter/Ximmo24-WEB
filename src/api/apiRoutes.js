@@ -2110,7 +2110,8 @@ export const getHomepagePropertiesOnMapSectionApi = async ({
   const params = getFilteredParams({
     latitude,
     longitude,
-    radius
+    radius,
+    platform: "web"
   });
   const res = await api.get(apiEndpoints.GET_HOMEPAGE_PROPERTIES_ON_MAP_SECTION, { params });
   return res.data;
@@ -2118,7 +2119,7 @@ export const getHomepagePropertiesOnMapSectionApi = async ({
 
 // 99. GET Homepage Property By Cities Section
 export const getHomepagePropertyByCitiesSectionApi = async () => {
-  const res = await api.get(apiEndpoints.GET_HOMEPAGE_PROPERTIES_BY_CITIES_SECTION);
+  const res = await api.get(apiEndpoints.GET_HOMEPAGE_PROPERTIES_BY_CITIES_SECTION, { params: { platform: "web" } });
   return res.data;
 };
 
@@ -2213,7 +2214,7 @@ export const getPrivacyPolicyApi = async () => {
 
 // 106. GET Homepage Sections List API
 export const getHomepageSectionsApi = async ({ }) => {
-  const res = await api.get(apiEndpoints.GET_HOMEPAGE_SECTIONS);
+  const res = await api.get(apiEndpoints.GET_HOMEPAGE_SECTIONS, { params: { platform: "web" } });
   return res.data;
 }
 
@@ -2226,7 +2227,8 @@ export const getHomepagePropertiesSectionApi = async ({
   const params = getFilteredParams({
     latitude,
     longitude,
-    radius
+    radius,
+    platform: "web"
   })
   const res = await api.get(apiEndpoints.GET_HOMEPAGE_PROPERTY_SECTIONS, { params });
   return res.data;
@@ -2241,7 +2243,8 @@ export const getHomepageProjectsSectionApi = async ({
   const params = getFilteredParams({
     latitude,
     longitude,
-    radius
+    radius,
+    platform: "web"
   })
   const res = await api.get(apiEndpoints.GET_HOMEPAGE_PROJECT_SECTIONS, { params });
   return res.data
@@ -2258,7 +2261,8 @@ export const getHomepageOtherSectionsApi = async ({
     latitude,
     longitude,
     radius,
-    lightweight: lightweight ? 1 : ""
+    lightweight: lightweight ? 1 : "",
+    platform: "web"
   })
   const res = await api.get(apiEndpoints.GET_HOMEPAGE_OTHER_SECTIONS, { params });
   return res.data
