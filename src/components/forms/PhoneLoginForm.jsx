@@ -3,11 +3,9 @@ import AuthButton from '../reusable-components/AuthButton';
 import { RiMailSendFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
 import ButtonLoader from '../ui/loaders/ButtonLoader';
-import PhoneInput from "react-phone-input-2";
 import { useTranslation } from '../context/TranslationContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { isRTL } from '@/utils/helperFunction';
-import { getPhoneInputConfig } from '@/utils/phoneUtils';
 
 
 const PhoneLoginForm = ({
@@ -32,18 +30,16 @@ const PhoneLoginForm = ({
     const t = useTranslation();
     const isRtl = isRTL();
     const [showPassword, setShowPassword] = useState(false);
-    const [phoneCountry, setPhoneCountry] = useState(process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase());
+    const germanNationalNumber = String(value?.number || "").replace(/\D/g, "").replace(/^49/, "");
 
-    const handleInputChange = (value) => {
+    const handleInputChange = (event) => {
+        const nationalNumber = event.target.value.replace(/\D/g, "").slice(0, 13);
         setValue((prev) => ({
             ...prev,
-            number: value,
+            number: `49${nationalNumber}`,
             countryCode: "49"
         }));
-        setPhoneCountry("de");
     }
-
-    const phoneConfig = getPhoneInputConfig(phoneCountry);
 
     return (
         <form
@@ -75,31 +71,27 @@ const PhoneLoginForm = ({
                         {t("phoneNumber")}
                         <span className="ms-1 text-red-600">*</span>
                     </label>
-                    <div className="mobile-number">
-                        <PhoneInput
-                            country="de"
-                            onlyCountries={["de"]}
-                            disableDropdown={true}
-                            enableAreaCodes={true}
-                            inputProps={{
-                                name: 'phoneNumber',
-                                id: 'phoneNumber',
-                                required: true,
-                                autoFocus: true,
-                                maxLength: phoneConfig.maxLength,
-                            }}
-                            enableLongNumbers={phoneConfig.enableLongNumbers}
-                            enableSearch={true}
-                            searchPlaceholder={t("search")}
-                            value={value.number}
+                    <div className="flex h-14 w-full overflow-hidden rounded-[15px] border border-slate-200 bg-white shadow-[0_8px_24px_rgba(15,23,42,.045)] focus-within:border-cyan-500 focus-within:ring-4 focus-within:ring-cyan-500/10">
+                        <div className="flex shrink-0 items-center gap-2 border-r border-slate-200 bg-slate-50 px-3 text-slate-900" aria-label="Deutschland +49">
+                            <span className="text-lg" aria-hidden="true">🇩🇪</span>
+                            <span className="text-sm font-bold sm:text-base">+49</span>
+                        </div>
+                        <input
+                            type="tel"
+                            inputMode="numeric"
+                            autoComplete="tel-national"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            required
+                            autoFocus
+                            minLength={6}
+                            maxLength={13}
+                            pattern="[0-9]{6,13}"
+                            placeholder="151 23456789"
+                            value={germanNationalNumber}
                             onChange={handleInputChange}
-                            countryCodeEditable={false}
-                            prefix="+"
-                            containerClass="w-full"
-                            inputClass="!primaryBackgroundBg !w-full !rounded-lg !h-14 !border !newBorderColor "
-                            dropdownClass="!primaryBackgroundBg"
-                            buttonClass="!primaryBackgroundBg !w-10 h-14 !rounded-tl-lg !rounded-bl-lg !newBorderColor "
                             disabled={showPasswordInput}
+                            className="ximmo-phone-native min-w-0 flex-1 rounded-none border-0 bg-white px-3 text-sm font-medium text-slate-950 outline-none shadow-none sm:px-4 sm:text-base"
                         />
                     </div>
                 </div>
