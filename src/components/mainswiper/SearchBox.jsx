@@ -196,16 +196,37 @@ const SearchBox = ({
         }
     }, [isFacilitiesLoaded]);
 
-    // Initial fetch on component mount
+    // Categories help KI parsing, but they are not required to paint or use the
+    // initial search box. Fetch them when the browser becomes idle so the hero
+    // image and search UI keep the critical network/CPU path.
     useEffect(() => {
-        // Prevent duplicate API calls
         if (dataFetchedRef.current) return;
         dataFetchedRef.current = true;
 
-        setOffset(0);
-        fetchCategories(0);
-        fetchAdvancedData();
-    }, [fetchCategories, fetchAdvancedData, language]);
+        const loadCategories = () => {
+            setOffset(0);
+            void fetchCategories(0);
+        };
+        const idleId = typeof window.requestIdleCallback === 'function'
+            ? window.requestIdleCallback(loadCategories, { timeout: 1500 })
+            : window.setTimeout(loadCategories, 800);
+
+        return () => {
+            if (typeof window.cancelIdleCallback === 'function') {
+                window.cancelIdleCallback(idleId);
+            } else {
+                window.clearTimeout(idleId);
+            }
+        };
+    }, [fetchCategories, language]);
+
+    const handleAdvancedFiltersToggle = () => {
+        const willOpen = !showAdvancedFilters;
+        if (willOpen) {
+            void fetchAdvancedData();
+        }
+        onShowAdvancedFiltersChange?.(willOpen);
+    };
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(max-width: 767px)');
@@ -549,7 +570,7 @@ const SearchBox = ({
                             {showFiltersButton && (
                                 <Button type="button" variant="outline"
                                     className="h-10 flex-1 rounded-xl border-2 border-slate-200 bg-white px-3 text-xs text-slate-700 hover:bg-slate-50 sm:h-11 sm:text-sm md:h-[52px] md:flex-none md:px-5"
-                                    onClick={() => onShowAdvancedFiltersChange?.(!showAdvancedFilters)} aria-expanded={showAdvancedFilters}>
+                                    onClick={handleAdvancedFiltersToggle} aria-expanded={showAdvancedFilters}>
                                     <HiOutlineAdjustmentsHorizontal className="mr-2 h-5 w-5" />{t('filters')}
                                 </Button>
                             )}
