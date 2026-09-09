@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
-import Logo from "@/assets/logo.png";
+import Ximmo24Brand from "@/components/brand/Ximmo24Brand";
 import {
   MdClose,
   MdKeyboardArrowRight,
@@ -172,16 +172,20 @@ const MobileMenu = ({
                 className="h-full max-w-[160px] w-full flex items-center cursor-pointer"
                 onClick={handleLogoClick}
               >
-                <ImageWithPlaceholder
-                  src={webSettings?.web_logo || Logo}
-                  alt="logo"
-                  width={176}
-                  height={56}
-                  sizes="160px"
-                  quality={95}
-                  loading="eager"
-                  className="h-auto w-full object-contain"
-                />
+                {webSettings?.web_logo ? (
+                  <ImageWithPlaceholder
+                    src={webSettings.web_logo}
+                    alt="Ximmo24"
+                    width={176}
+                    height={56}
+                    sizes="160px"
+                    quality={95}
+                    loading="eager"
+                    className="h-auto w-full object-contain"
+                  />
+                ) : (
+                  <Ximmo24Brand className="scale-90 origin-left" />
+                )}
               </div>
               <MdClose
                 size={30}
