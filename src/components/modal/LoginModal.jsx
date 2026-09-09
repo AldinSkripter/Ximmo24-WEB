@@ -2295,7 +2295,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent
           onInteractOutside={(e) => e.preventDefault()}
-          className="mx-auto h-[min(760px,96vh)] max-h-[96vh] w-[calc(100%_-_20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
+          className="ximmo-auth-dialog mx-auto h-[min(760px,96vh)] max-h-[96vh] w-[calc(100%_-_20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
         >
           <div ref={authShellRef} onMouseMove={handleAuthPointerMove} className="relative grid h-full min-h-0 lg:grid-cols-[.94fr_1.06fr]" style={{ "--auth-x": "50%", "--auth-y": "50%" }}>
             <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(360px_circle_at_var(--auth-x)_var(--auth-y),rgba(9,168,236,.11),transparent_72%)]" aria-hidden="true" />
@@ -2455,7 +2455,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             />
           ) : <GoogleForm handleGoogleSignup={handleGoogleSignup} />}</div>
 
-          <div className="flex w-full shrink-0 items-center justify-between gap-3 border-t border-slate-200/70 bg-white/70 px-5 py-3 backdrop-blur-xl sm:px-8">
+          <div className="ximmo-auth-footer flex w-full shrink-0 items-center justify-between gap-3 border-t border-slate-200/70 bg-white/70 px-5 py-3 backdrop-blur-xl sm:px-8">
             <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500"><BiShieldQuarter size={17} className="primaryColor" />{authVisualText.secure}</div>
             <AuthFooter setShowLogin={setShowLogin} />
           </div>
@@ -2499,7 +2499,30 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               background: rgba(255,255,255,.9); font-weight: 700; box-shadow: 0 8px 24px rgba(15,23,42,.05);
             }
             @media (max-width: 639px) {
+              .ximmo-auth-dialog {
+                width: 100vw !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                border: 0 !important;
+                border-radius: 0 !important;
+              }
               .ximmo-auth-form form > div { padding: 12px 8px; }
+              .ximmo-auth-dialog section > header > div {
+                padding: 14px 16px !important;
+              }
+              .ximmo-auth-dialog section > header > div > div > div:last-child {
+                font-size: 21px !important;
+                line-height: 1.15 !important;
+              }
+              .ximmo-auth-form {
+                padding: 8px 10px 14px !important;
+              }
+              .ximmo-auth-footer {
+                padding: 10px 14px !important;
+              }
+              .ximmo-auth-footer > div:first-child {
+                display: none;
+              }
             }
           `}</style>
         </DialogContent>
