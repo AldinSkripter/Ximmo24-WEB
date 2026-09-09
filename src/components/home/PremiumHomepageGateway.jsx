@@ -37,15 +37,15 @@ const choices = [
         accent: "from-slate-900 to-slate-700",
     },
     {
-        title: "Auf derd KartenOnMap",
+        title: "Auf der Karte",
         description: "Immobilien direkt in Ihrer Wunschlage erkunden.",
         href: "/properties-on-map",
         type: "map",
         accent: "from-cyan-500 to-blue-500",
     },
     {
-        title:Vpn "Makclip",
-        description: "Verifizierte Immobilienprofis in Ihrer Nähelify.",
+        title: "Makler finden",
+        description: "Verifizierte Immobilienprofis in Ihrer Nähe.",
         href: "/all/agents",
         type: "agent",
         accent: "from-neutral-900 to-black",
