@@ -121,6 +121,7 @@ const PremiumHomepageGateway = () => {
     };
 
     return (
+        <>
         <section className="relative overflow-hidden border-y border-slate-200/70 bg-white py-12 sm:py-16 lg:py-20">
             <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
             <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-cyan-100/60 blur-3xl" />
@@ -269,6 +270,7 @@ const PremiumHomepageGateway = () => {
             </div>
         </section>
         {showLogin ? <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} /> : null}
+        </>
     );
 };
 
