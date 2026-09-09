@@ -57,6 +57,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
   const settingsData = useSelector((state) => state.WebSetting?.data);
   const isDemo = settingsData?.demo_mode;
   const CompanyName = settingsData?.company_name;
+  const webLogo = settingsData?.web_logo || settingsData?.header_logo || settingsData?.logo;
   const authShellRef = useRef(null);
   const activeLanguage = useSelector((state) => state.LanguageSettings?.active_language);
   const isGerman = activeLanguage?.toLowerCase().startsWith("de") || lang === "de";
@@ -66,6 +67,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
     body: "Ein sicherer Zugang für Suchende, Eigentümer und Immobilienprofis.",
     find: "Traumimmobilie entdecken",
     publish: "Angebot professionell veröffentlichen",
+    region: "Für Baden-Württemberg gemacht",
+    regional: "Regional suchen. Sicher inserieren.",
     secure: "Geschützt & transparent",
   } : {
     kicker: "Welcome to Ximmo24",
@@ -73,6 +76,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
     body: "One secure account for buyers, owners and real-estate professionals.",
     find: "Discover your dream property",
     publish: "Publish a listing professionally",
+    region: "Built for Baden-Württemberg",
+    regional: "Search locally. List securely.",
     secure: "Protected & transparent",
   };
 
@@ -2297,15 +2302,23 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             <aside className="relative hidden min-h-[620px] overflow-hidden lg:flex lg:flex-col lg:justify-between">
               <div className="absolute inset-0 bg-[url('/assets/auth-luxury.svg')] bg-cover bg-center" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,10,22,.18),rgba(3,10,22,.92))]" />
-              <div className="relative z-10 p-9">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[.16em] text-white backdrop-blur-xl"><BiHomeHeart size={18} className="text-cyan-300" />{authVisualText.kicker}</div>
+              <div className="relative z-10 flex items-center justify-between gap-3 p-7">
+                <div className="inline-flex min-h-14 items-center gap-3 rounded-2xl border border-white/20 bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-[.13em] text-slate-900 shadow-xl backdrop-blur-xl">
+                  {webLogo ? <img src={webLogo} alt="Ximmo24" className="h-9 w-auto max-w-[155px] object-contain" /> : <BiHomeHeart size={24} className="primaryColor" />}
+                </div>
+                <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-[10px] font-black uppercase tracking-[.14em] text-cyan-100">BW · DE</span>
               </div>
-              <div className="relative z-10 p-9 pb-10 text-white">
-                <h2 className="max-w-md text-4xl font-black leading-[1.08] tracking-[-.035em]">{authVisualText.title}</h2>
-                <p className="mt-4 max-w-md text-[15px] leading-6 text-white/70">{authVisualText.body}</p>
-                <div className="mt-7 grid gap-3">
-                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3.5 backdrop-blur-xl"><BiCheckCircle size={22} className="shrink-0 text-cyan-300" /><span className="text-sm font-semibold">{authVisualText.find}</span></div>
-                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3.5 backdrop-blur-xl"><BiCheckCircle size={22} className="shrink-0 text-violet-300" /><span className="text-sm font-semibold">{authVisualText.publish}</span></div>
+              <div className="relative z-10 p-7 pb-7 text-white">
+                <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[.16em] text-cyan-300"><BiHomeHeart size={17} />{authVisualText.region}</div>
+                <h2 className="max-w-md text-[32px] font-black leading-[1.08] tracking-[-.035em]">{authVisualText.title}</h2>
+                <p className="mt-3 max-w-md text-sm leading-5 text-white/70">{authVisualText.body}</p>
+                <p className="mt-3 text-xs font-bold uppercase tracking-[.12em] text-white/55">{authVisualText.regional}</p>
+                <div className="mt-5 grid gap-2.5">
+                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3 backdrop-blur-xl"><BiCheckCircle size={20} className="shrink-0 text-cyan-300" /><span className="text-sm font-semibold">{authVisualText.find}</span></div>
+                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3 backdrop-blur-xl"><BiCheckCircle size={20} className="shrink-0 text-violet-300" /><span className="text-sm font-semibold">{authVisualText.publish}</span></div>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-1.5 text-[10px] font-bold text-white/60">
+                  {['Ortenaukreis', 'Karlsruhe', 'Freiburg', 'Stuttgart'].map((region) => <span key={region} className="rounded-full border border-white/10 bg-black/15 px-2.5 py-1">{region}</span>)}
                 </div>
               </div>
             </aside>
@@ -2464,6 +2477,20 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               border-color: var(--primary-color) !important;
               box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-color) 13%, transparent), 0 12px 28px rgba(15,23,42,.07) !important;
               transform: translateY(-1px);
+            }
+            .ximmo-auth-form .react-tel-input .form-control {
+              padding-left: 72px !important;
+              color: #0f172a !important;
+              opacity: 1 !important;
+            }
+            .ximmo-auth-form .react-tel-input .flag-dropdown {
+              width: 58px !important;
+              border-right: 1px solid #dbe4ef !important;
+              background: rgba(248,250,252,.95) !important;
+            }
+            .ximmo-auth-form .react-tel-input .selected-flag {
+              width: 58px !important;
+              padding-left: 14px !important;
             }
             .ximmo-auth-form form > div { gap: 16px; padding: 18px 14px; }
             .ximmo-auth-form form button[type='submit'] {

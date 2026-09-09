@@ -187,8 +187,7 @@ const SubscriptionCard = ({ data, index = 1, allFeatures, subscribePayment, page
   };
 
   return (
-    <div ref={cardRef} onMouseMove={handlePointerMove} onMouseLeave={() => cardRef.current?.style.setProperty("--pointer-opacity", "0")} className="group relative h-full w-full overflow-hidden rounded-[34px] p-[2px] transition duration-500 hover:-translate-y-2" style={{ boxShadow: `0 22px 65px ${visualTheme.glow}`, "--pointer-opacity": 0 }}>
-      <div className="pointer-events-none absolute inset-[-65%] animate-[spin_9s_linear_infinite] motion-reduce:animate-none" style={{ background: visualTheme.ring }} aria-hidden="true" />
+    <div ref={cardRef} onMouseMove={handlePointerMove} onMouseLeave={() => cardRef.current?.style.setProperty("--pointer-opacity", "0")} className="group relative isolate h-full w-full overflow-hidden rounded-[34px] p-[2px] transition duration-500 hover:-translate-y-2" style={{ background: visualTheme.ring, boxShadow: `0 22px 65px ${visualTheme.glow}`, "--pointer-opacity": 0 }}>
       <div className="pointer-events-none absolute inset-0 z-[3] rounded-[34px] opacity-[var(--pointer-opacity)] transition-opacity duration-300" style={{ background: `radial-gradient(260px circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,.7), ${visualTheme.glow} 38%, transparent 72%)`, mixBlendMode: "screen" }} aria-hidden="true" />
     <article
       className={`relative z-[1] flex h-full min-h-[38rem] w-full flex-col overflow-hidden rounded-[32px] p-5 sm:p-6 ${data?.is_active ? "bg-[linear-gradient(145deg,#050a12,#0b1728_55%,#111827)]" : "bg-[linear-gradient(150deg,#ffffff,#f8fbff_50%,#f3f0ff)]"}`}
