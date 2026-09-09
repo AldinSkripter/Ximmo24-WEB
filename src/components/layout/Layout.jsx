@@ -24,6 +24,7 @@ import UnderMaintenance from "../under-maintenance/UnderMaintenance";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { updateUserProfile } from "@/redux/slices/authSlice";
+import { applyWebTheme } from "@/utils/applyWebTheme";
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -54,30 +55,7 @@ const Layout = ({ children }) => {
       const response = await api.getWebSetting();
       const { data } = response;
       document.documentElement.lang = currentLanguage?.code;
-      document.documentElement.style.setProperty(
-        "--primary-color",
-        data?.system_color
-      );
-      document.documentElement.style.setProperty(
-        "--primary-category-background",
-        data?.category_background
-      );
-      document.documentElement.style.setProperty(
-        "--primary-sell",
-        data?.sell_web_color
-      );
-      document.documentElement.style.setProperty(
-        "--primary-rent",
-        data?.rent_web_color
-      );
-      document.documentElement.style.setProperty(
-        "--primary-sell-bg",
-        data?.sell_web_background_color
-      );
-      document.documentElement.style.setProperty(
-        "--primary-rent-bg",
-        data?.rent_web_background_color
-      );
+      applyWebTheme(data);
       try {
         window.localStorage.setItem("ximmo24-theme", JSON.stringify({
           primary: data?.system_color,
@@ -180,6 +158,12 @@ const Layout = ({ children }) => {
     refetchOnReconnect: false,
     refetchOnMount: false,
   })
+
+  // Re-apply the selected System Settings theme whenever Redux is restored or
+  // refreshed. This keeps public and signed-in layouts visually identical.
+  useEffect(() => {
+    applyWebTheme(webSettings);
+  }, [webSettings]);
 
 
   // Fetch User Data
