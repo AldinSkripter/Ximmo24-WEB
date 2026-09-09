@@ -90,8 +90,8 @@ const Header = () => {
     router?.pathname?.startsWith("/agent/my-project");
   const logoHref =
     isAgent && isAgentOwnListingDetailsPage
-      ? `/agent/dashboard?lang=${lang || "en"}`
-      : `/?lang=${lang || "en"}`;
+      ? `/agent/dashboard?lang=${lang || "de"}`
+      : `/?lang=${lang || "de"}`;
   const { signOut } = FirebaseData();
   const agentStatusButtonClass =
     "hidden m-2 xl:flex items-center gap-2 rounded-lg border brandBorder px-4 py-2 text-base font-medium brandColor max-h-14 justify-center hover:brandBg hover:text-white";
