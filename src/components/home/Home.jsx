@@ -132,6 +132,10 @@ const Home = () => {
             return () => window.clearTimeout(immediate);
         }
 
+        // The map is one of the heaviest homepage features. Do not initialize it
+        // until the visitor actually reaches the admin-controlled content area.
+        if (!loadDeferredHomepage) return;
+
         const schedule = window.requestIdleCallback
             ? window.requestIdleCallback(() => setLoadMapData(true), { timeout: 3000 })
             : window.setTimeout(() => setLoadMapData(true), 1800);
@@ -140,7 +144,7 @@ const Home = () => {
             if (window.cancelIdleCallback) window.cancelIdleCallback(schedule);
             else window.clearTimeout(schedule);
         };
-    }, []);
+    }, [loadDeferredHomepage]);
 
     useEffect(() => {
         if (loadDeferredHomepage || !deferredHomepageRef.current) return;
