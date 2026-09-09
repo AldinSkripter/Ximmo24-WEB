@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { uploadBankReceiptFileApi } from "@/api/apiRoutes";
 
-const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) => {
+const SubscriptionCard = ({ data, index = 1, allFeatures, subscribePayment, page = "" }) => {
   const t = useTranslation();
   const [isUploading, setIsUploading] = useState(false);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
@@ -47,6 +47,13 @@ const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) =>
   const visibleFeatures = showAllFeatures
     ? featureList
     : featureList.slice(0, initialFeatureCount);
+  const visualThemes = [
+    { ring: "conic-gradient(from 0deg,#09a8ec,#7357ff,#ec4899,#f59e0b,#09a8ec)", glow: "rgba(9,168,236,.18)", badge: "linear-gradient(135deg,#e8f8ff,#f4efff)" },
+    { ring: "conic-gradient(from 45deg,#8b5cf6,#ec4899,#fb7185,#fbbf24,#8b5cf6)", glow: "rgba(139,92,246,.18)", badge: "linear-gradient(135deg,#f3efff,#fff0f7)" },
+    { ring: "conic-gradient(from 90deg,#06b6d4,#22c55e,#eab308,#f97316,#06b6d4)", glow: "rgba(34,197,94,.16)", badge: "linear-gradient(135deg,#e9fbff,#effcf2)" },
+    { ring: "conic-gradient(from 135deg,#f59e0b,#ef4444,#a855f7,#0ea5e9,#f59e0b)", glow: "rgba(245,158,11,.17)", badge: "linear-gradient(135deg,#fff8e7,#fff0f2)" },
+  ];
+  const visualTheme = visualThemes[(Math.max(1, index) - 1) % visualThemes.length];
 
   const formatPlanPrice = (value) =>
     new Intl.NumberFormat(undefined, {
@@ -171,15 +178,19 @@ const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) =>
   };
 
   return (
+    <div className="group relative h-full w-full overflow-hidden rounded-[31px] p-[2px] transition duration-500 hover:-translate-y-2" style={{ boxShadow: `0 22px 65px ${visualTheme.glow}` }}>
+      <div className="pointer-events-none absolute inset-[-65%] animate-[spin_9s_linear_infinite] motion-reduce:animate-none" style={{ background: visualTheme.ring }} aria-hidden="true" />
     <article
-      className={`group relative flex h-full min-h-[38rem] w-full flex-col overflow-hidden rounded-[28px] border p-5 shadow-[0_18px_55px_rgba(15,23,42,.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,.14)] sm:p-6 ${data?.is_active ? "border-transparent primaryBg" : "border-slate-200/90 bg-white"}`}
+      className={`relative z-[1] flex h-full min-h-[38rem] w-full flex-col overflow-hidden rounded-[29px] p-5 sm:p-6 ${data?.is_active ? "bg-[linear-gradient(145deg,#07111f,#101b31_55%,#111827)]" : "bg-[linear-gradient(150deg,#ffffff,#fbfdff_58%,#f7f8fc)]"}`}
       aria-label={`Subscription plan: ${planName}`}
     >
-      <div className={`pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full ${data?.is_active ? "bg-white/10" : "primaryBackgroundBg opacity-70"}`} />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70" style={{ background: `radial-gradient(circle at 80% 0%, ${visualTheme.glow}, transparent 68%)` }} />
+      <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full border border-white/20 bg-white/5 backdrop-blur-3xl" />
       <div className="relative flex flex-1 flex-col gap-5">
         <header className="flex flex-col gap-4">
-          <div className="flex items-start justify-between gap-3"><span className={`inline-flex w-fit items-center gap-2 rounded-full ${data?.is_active ? "bg-white/20" : "primaryBackgroundBg"} px-4 py-2 text-sm font-extrabold`}>
-            <BiCrown size={18} className={data?.is_active ? "text-white" : "primaryColor"} />
+          <div className="flex items-start justify-between gap-3"><span className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-extrabold ${data?.is_active ? "bg-white/10 text-white ring-1 ring-white/15" : "bg-white/80 text-slate-800 ring-1 ring-slate-200/80"}`}>
+            <span className="grid h-7 w-7 place-items-center rounded-full text-xs font-black text-slate-900" style={{ background: visualTheme.badge }}>{String(index).padStart(2, "0")}</span>
+            <BiCrown size={17} className={data?.is_active ? "text-amber-300" : "primaryColor"} />
             <span className={`line-clamp-1 opacity-100 ${data?.is_active ? "text-white" : "leadColor"}`}>{planName} {!isPaidPlan ? t("plan") : ""}</span>
           </span>{data?.is_active && <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-black uppercase tracking-wider primaryColor">{t("currentPlan")}</span>}</div>
 
@@ -190,7 +201,8 @@ const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) =>
           </div>
         </header>
 
-        <div className={`rounded-2xl border p-4 ${data?.is_active ? "border-white/15 bg-white/10" : "border-slate-100 bg-slate-50/80"}`}>
+        <div className={`relative overflow-hidden rounded-[22px] border p-5 backdrop-blur-xl ${data?.is_active ? "border-white/15 bg-white/[.07]" : "border-white bg-white/75 shadow-[0_12px_35px_rgba(15,23,42,.06)]"}`}>
+          <span className="absolute bottom-0 left-0 h-1 w-full opacity-80" style={{ background: visualTheme.ring }} />
           <p className={`text-3xl font-black tracking-tight lg:text-4xl ${data?.is_active ? "text-white" : "text-slate-950"}`}>
             {isPaidPlan
                 ? `${currencySymbol}${formatPlanPrice(data?.price)}`
@@ -205,7 +217,7 @@ const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) =>
           </div>
         </div>
 
-        <section className={`flex flex-1 flex-col rounded-2xl border p-4 ${data?.is_active ? "border-white/15 bg-slate-950/10" : "border-slate-100 bg-white"}`}>
+        <section className={`flex flex-1 flex-col rounded-[22px] border p-4 backdrop-blur-xl ${data?.is_active ? "border-white/10 bg-white/[.045]" : "border-white bg-white/80 shadow-[0_12px_35px_rgba(15,23,42,.05)]"}`}>
           <div className="flex max-h-[310px] min-h-[260px] flex-col overflow-y-auto pr-1">
             <div className="flex flex-col gap-3.5">
               {visibleFeatures.map((feature) => {
@@ -269,6 +281,7 @@ const SubscriptionCard = ({ data, allFeatures, subscribePayment, page = "" }) =>
         </section>
       </div>
     </article>
+    </div>
   );
 };
 
