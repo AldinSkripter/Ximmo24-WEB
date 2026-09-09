@@ -23,13 +23,23 @@ const RegisterForm = ({
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [phoneCountry, setPhoneCountry] = useState(process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase());
+    const defaultDialCode = process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase() === 'de' ? '49' : '';
+    const selectedDialCode = registerFormData?.countryCode || defaultDialCode;
 
     const phoneConfig = getPhoneInputConfig(phoneCountry);
 
-    const handlePhoneChange = (value, data) => {
-        handleRegisterPhoneChange(value, data);
+    const handlePhoneChange = (phone, data) => {
+        const dialCode = data?.dialCode || selectedDialCode;
+        const digits = String(phone || '').replace(/\D/g, '');
+        const nationalNumber = digits;
+        handleRegisterPhoneChange(`${dialCode}${nationalNumber}`, data);
         if (data?.countryCode) setPhoneCountry(data.countryCode);
     };
+
+    const storedPhone = String(registerFormData?.phone || '').replace(/\D/g, '');
+    const nationalPhoneValue = selectedDialCode && storedPhone.startsWith(selectedDialCode)
+        ? storedPhone.substring(selectedDialCode.length)
+        : storedPhone;
     return (
         <form onSubmit={handleRegisterUser}>
             <div className="flex w-full flex-col justify-center gap-3 p-3 sm:gap-4 sm:p-3 md:p-4">
@@ -70,7 +80,7 @@ const RegisterForm = ({
                         {t("phoneNumber")}
                         {isMobileReq && <span className="ms-1 text-red-600">*</span>}
                     </label>
-                    <div className="mobile-number">
+                    <div className="mobile-number relative">
                         <PhoneInput
                             country={process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase()}
                             enableAreaCodes={true}
@@ -84,13 +94,15 @@ const RegisterForm = ({
                             enableLongNumbers={phoneConfig.enableLongNumbers}
                             enableSearch={true}
                             searchPlaceholder={t("search")}
-                            value={registerFormData?.phone}
+                            value={nationalPhoneValue}
                             onChange={handlePhoneChange}
+                            disableCountryCode={true}
                             containerClass="w-full"
                             inputClass="!primaryBackgroundBg !w-full !rounded-lg !h-14 !border !newBorderColor "
                             dropdownClass="!primaryBackgroundBg"
                             buttonClass="!primaryBackgroundBg !w-10 h-14 !rounded-tl-lg !rounded-bl-lg !newBorderColor"
                         />
+                        {selectedDialCode ? <span className="pointer-events-none absolute left-[62px] top-1/2 z-10 -translate-y-1/2 border-r border-slate-300 pr-3 text-sm font-bold text-slate-900 sm:text-base">+{selectedDialCode}</span> : null}
                     </div>
                 </div>
 
