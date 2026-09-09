@@ -2463,7 +2463,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
           </section>
           </div>
           <style jsx global>{`
-            .ximmo-auth-form input:not([type='checkbox']):not([type='radio']) {
+            .ximmo-auth-form input:not([type='checkbox']):not([type='radio']):not(.ximmo-phone-native) {
               min-height: 54px !important;
               border: 1px solid #dbe4ef !important;
               border-radius: 15px !important;
@@ -2478,20 +2478,16 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-color) 13%, transparent), 0 12px 28px rgba(15,23,42,.07) !important;
               transform: translateY(-1px);
             }
-            .ximmo-auth-form .react-tel-input .form-control {
-              padding-left: 72px !important;
-              color: #0f172a !important;
-              opacity: 1 !important;
+            .ximmo-auth-form .ximmo-phone-native,
+            .ximmo-auth-form .ximmo-phone-native:focus {
+              min-height: 0 !important;
+              border: 0 !important;
+              border-radius: 0 !important;
+              background: #fff !important;
+              padding: 0 16px !important;
+              box-shadow: none !important;
+              transform: none !important;
               direction: ltr !important;
-            }
-            .ximmo-auth-form .react-tel-input .flag-dropdown {
-              width: 58px !important;
-              border-right: 1px solid #dbe4ef !important;
-              background: rgba(248,250,252,.95) !important;
-            }
-            .ximmo-auth-form .react-tel-input .selected-flag {
-              width: 58px !important;
-              padding-left: 14px !important;
             }
             .ximmo-auth-form form > div { gap: 16px; padding: 18px 14px; }
             .ximmo-auth-form form button[type='submit'] {
