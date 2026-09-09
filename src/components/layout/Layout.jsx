@@ -1,5 +1,5 @@
 import * as api from "@/api/apiRoutes";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWebSettings } from "@/redux/slices/webSettingSlice";
 import {
@@ -29,13 +29,11 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const t = useTranslation()
   const dispatch = useDispatch();
-  const [isRouteChanging, setIsRouteChanging] = useState(false); // Only for route changes
   const isLoadCompleted = useSelector((state) => state.cacheData.initialLoadComplete); // Track if initial load finished
 
   // Get language settings from Redux
   const defaultLanguage = useSelector((state) => state.LanguageSettings?.default_language);
   const activeLanguage = useSelector((state) => state.LanguageSettings?.active_language);
-  const isFetched = useSelector((state) => state.LanguageSettings?.isFetched);
   const isLanguageLoaded = useSelector((state) => state.LanguageSettings?.isLanguageLoaded);
   const currentLanguage = useSelector((state) => state.LanguageSettings?.current_language);
   const availableLanguages = useSelector((state) => state.LanguageSettings?.languages);
@@ -154,7 +152,7 @@ const Layout = ({ children }) => {
   );
 
   // Fetch web settings using React Query for caching and stale time
-  const webSettingsQuery = useQuery({
+  useQuery({
     queryKey: ['webSettings'],
     queryFn: fetchWebSettings,
     // keepPreviousData: true,
@@ -183,7 +181,7 @@ const Layout = ({ children }) => {
     }
   };
 
-  const fetchUserProfileQuery = useQuery({
+  useQuery({
     queryKey: ['userProfile'],
     queryFn: fetchUserData,
     enabled: !!userData?.id, // Only fetch if user ID is available
