@@ -31,10 +31,10 @@ const HomeIcon = ({ type }) => {
 
 const homepageCopy = {
     de: {
-        badge: "{copy.badge}",
-        heading: "{copy.heading}",
-        intro: "{copy.intro}",
-        discover: "{copy.discover}",
+        badge: "Einfach. Direkt. Immobilien.",
+        heading: "Ihr nächster Schritt beginnt hier",
+        intro: "Wählen Sie, was Sie suchen. Ximmo24 bringt Sie ohne Umwege zum passenden Bereich.",
+        discover: "Jetzt entdecken",
         propertyTitle: "Immobilien entdecken",
         propertyDescription: "Häuser und Wohnungen zum Kaufen oder Mieten.",
         projectTitle: "Neubauprojekte",
@@ -53,24 +53,24 @@ const homepageCopy = {
         advantageRegionalText: "Konzentriert auf Baden-Württemberg und die passenden Angebote vor Ort.",
         advantageSafeTitle: "Sicher entscheiden",
         advantageSafeText: "Klare Exposés, verifizierte Anbieter und direkter Kontakt.",
-        howLabel: "{copy.howLabel}",
-        howTitle: "{copy.howTitle}",
+        howLabel: "So funktioniert Ximmo24",
+        howTitle: "Schneller zur passenden Immobilie",
         stepOneTitle: "Wunsch beschreiben",
         stepOneText: "Ort, PLZ oder Immobilientyp eingeben.",
         stepTwoTitle: "Angebote vergleichen",
         stepTwoText: "Passende Ergebnisse übersichtlich prüfen.",
         stepThreeTitle: "Direkt kontaktieren",
         stepThreeText: "Ohne Umwege mit dem Anbieter sprechen.",
-        offerLabel: "{copy.offerLabel}",
-        offerTitle: "{copy.offerTitle}",
-        offerText: "{copy.offerText}",
-        addProperty: "{copy.addProperty}",
-        privateOwner: "{copy.privateOwner}",
-        publishAgent: "{copy.publishAgent}",
-        professionalProfile: "{copy.professionalProfile}",
-        regionLabel: "{copy.regionLabel}",
-        regionTitle: "{copy.regionTitle}",
-        regionText: "{copy.regionText}",
+        offerLabel: "Immobilie anbieten",
+        offerTitle: "Ihre Immobilie sichtbar machen",
+        offerText: "Als Eigentümer direkt inserieren oder Ximmo24 professionell als Agentur und Makler nutzen.",
+        addProperty: "Immobilie hinzufügen",
+        privateOwner: "Für private Eigentümer",
+        publishAgent: "Als Agentur / Makler veröffentlichen",
+        professionalProfile: "Professionelles Anbieterprofil erstellen",
+        regionLabel: "Zuhause in Baden-Württemberg",
+        regionTitle: "Vom ersten Wunsch bis zur passenden Adresse",
+        regionText: "Starten Sie direkt mit dem Weg, der zu Ihrem Vorhaben passt. Die eigentlichen Angebote laden erst, wenn Sie sie öffnen.",
         featureAi: "KI-gestützte Suche",
         featureVerified: "Verifizierte Anbieter",
         featureContact: "Direkter Kontakt",
@@ -230,13 +230,13 @@ const PremiumHomepageGateway = () => {
                 <div className="mx-auto mb-8 max-w-3xl text-center sm:mb-11">
                     <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700">
                         <span className="h-2 w-2 rounded-full bg-sky-500" />
-                        Einfach. Direkt. Immobilien.
+                        {copy.badge}
                     </div>
                     <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-                        Ihr nächster Schritt beginnt hier
+                        {copy.heading}
                     </h2>
                     <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                        Wählen Sie, was Sie suchen. Ximmo24 bringt Sie ohne Umwege zum passenden Bereich.
+                        {copy.intro}
                     </p>
                 </div>
 
@@ -254,7 +254,7 @@ const PremiumHomepageGateway = () => {
                             <span className="block text-xl font-bold text-slate-950">{choice.title}</span>
                             <span className="mt-2 block text-sm leading-6 text-slate-600">{choice.description}</span>
                             <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-sky-600">
-                                Jetzt entdecken
+                                {copy.discover}
                                 <span className="transition-transform duration-300 group-hover:translate-x-1"><ArrowIcon /></span>
                             </span>
                         </button>
@@ -263,8 +263,8 @@ const PremiumHomepageGateway = () => {
 
                 <div className="mx-auto mt-14 grid max-w-6xl gap-5 lg:grid-cols-[1.15fr_0.85fr]">
                     <div className="rounded-3xl bg-slate-950 p-7 text-white shadow-[0_24px_70px_rgba(15,23,42,0.18)] sm:p-9">
-                        <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-400">So funktioniert Ximmo24</span>
-                        <h3 className="mt-3 text-2xl font-bold sm:text-3xl">Schneller zur passenden Immobilie</h3>
+                        <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-400">{copy.howLabel}</span>
+                        <h3 className="mt-3 text-2xl font-bold sm:text-3xl">{copy.howTitle}</h3>
                         <div className="mt-7 grid gap-5 sm:grid-cols-3">
                             {[
                                 ["01", copy.stepOneTitle, copy.stepOneText],
@@ -283,10 +283,10 @@ const PremiumHomepageGateway = () => {
                     <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 via-white to-cyan-50 p-7 shadow-[0_18px_55px_rgba(14,165,233,0.10)] sm:p-9">
                         <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-200/35 blur-2xl" />
                         <div className="relative">
-                            <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-600">Immobilie anbieten</span>
-                            <h3 className="mt-3 text-2xl font-bold text-slate-950">Ihre Immobilie sichtbar machen</h3>
+                            <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-600">{copy.offerLabel}</span>
+                            <h3 className="mt-3 text-2xl font-bold text-slate-950">{copy.offerTitle}</h3>
                             <p className="mt-3 text-base leading-7 text-slate-600">
-                                Als Eigentümer direkt inserieren oder Ximmo24 professionell als Agentur und Makler nutzen.
+                                {copy.offerText}
                             </p>
                         </div>
                         <div className="relative mt-7 grid gap-3">
@@ -296,8 +296,8 @@ const PremiumHomepageGateway = () => {
                                 className="group inline-flex min-h-12 items-center justify-between gap-3 rounded-xl bg-slate-950 px-5 py-3 text-left font-bold text-white transition hover:bg-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
                             >
                                 <span>
-                                    <span className="block">Immobilie hinzufügen</span>
-                                    <span className="mt-0.5 block text-xs font-medium text-slate-300 group-hover:text-sky-50">Für private Eigentümer</span>
+                                    <span className="block">{copy.addProperty}</span>
+                                    <span className="mt-0.5 block text-xs font-medium text-slate-300 group-hover:text-sky-50">{copy.privateOwner}</span>
                                 </span>
                                 <ArrowIcon />
                             </button>
@@ -307,8 +307,8 @@ const PremiumHomepageGateway = () => {
                                 className="group inline-flex min-h-12 items-center justify-between gap-3 rounded-xl border border-sky-200 bg-white px-5 py-3 text-left font-bold text-slate-900 transition hover:border-sky-500 hover:text-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
                             >
                                 <span>
-                                    <span className="block">Als Agentur / Makler veröffentlichen</span>
-                                    <span className="mt-0.5 block text-xs font-medium text-slate-500">Professionelles Anbieterprofil erstellen</span>
+                                    <span className="block">{copy.publishAgent}</span>
+                                    <span className="mt-0.5 block text-xs font-medium text-slate-500">{copy.professionalProfile}</span>
                                 </span>
                                 <ArrowIcon />
                             </button>
@@ -321,13 +321,13 @@ const PremiumHomepageGateway = () => {
                         <div className="relative overflow-hidden bg-gradient-to-br from-sky-600 via-sky-500 to-cyan-400 p-7 text-white sm:p-10">
                             <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border-[36px] border-white/10" />
                             <span className="relative text-sm font-bold uppercase tracking-[0.18em] text-sky-100">
-                                Zuhause in Baden-Württemberg
+                                {copy.regionLabel}
                             </span>
                             <h3 className="relative mt-3 max-w-lg text-2xl font-bold leading-tight sm:text-4xl">
-                                Vom ersten Wunsch bis zur passenden Adresse
+                                {copy.regionTitle}
                             </h3>
                             <p className="relative mt-4 max-w-xl text-base leading-7 text-sky-50">
-                                Starten Sie direkt mit dem Weg, der zu Ihrem Vorhaben passt. Die eigentlichen Angebote laden erst, wenn Sie sie öffnen.
+                                {copy.regionText}
                             </p>
                             <div className="relative mt-7 grid gap-3 sm:grid-cols-2">
                                 {regionalRoutes.map((item) => (
