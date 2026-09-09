@@ -25,7 +25,7 @@ import {
 } from "firebase/auth";
 import { PhoneNumberUtil } from "google-libphonenumber";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -41,6 +41,7 @@ import EmailLoginForm from "../forms/EmailLoginForm";
 import ForgotPasswordForm from "../forms/ForgotPasswordForm";
 import GoogleForm from "../forms/GoogleForm";
 import { trackEvent } from "@/utils/analytics";
+import { BiCheckCircle, BiHomeHeart, BiKey, BiShieldQuarter } from "react-icons/bi";
 
 const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
@@ -56,6 +57,31 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
   const settingsData = useSelector((state) => state.WebSetting?.data);
   const isDemo = settingsData?.demo_mode;
   const CompanyName = settingsData?.company_name;
+  const authShellRef = useRef(null);
+  const activeLanguage = useSelector((state) => state.LanguageSettings?.active_language);
+  const isGerman = activeLanguage?.toLowerCase().startsWith("de") || lang === "de";
+  const authVisualText = isGerman ? {
+    kicker: "Willkommen bei Ximmo24",
+    title: "Immobilien finden. Angebote veröffentlichen.",
+    body: "Ein sicherer Zugang für Suchende, Eigentümer und Immobilienprofis.",
+    find: "Traumimmobilie entdecken",
+    publish: "Angebot professionell veröffentlichen",
+    secure: "Geschützt & transparent",
+  } : {
+    kicker: "Welcome to Ximmo24",
+    title: "Find property. Publish listings.",
+    body: "One secure account for buyers, owners and real-estate professionals.",
+    find: "Discover your dream property",
+    publish: "Publish a listing professionally",
+    secure: "Protected & transparent",
+  };
+
+  const handleAuthPointerMove = (event) => {
+    if (!authShellRef.current) return;
+    const bounds = authShellRef.current.getBoundingClientRect();
+    authShellRef.current.style.setProperty("--auth-x", `${event.clientX - bounds.left}px`);
+    authShellRef.current.style.setProperty("--auth-y", `${event.clientY - bounds.top}px`);
+  };
 
   const ShowPhoneLogin = settingsData?.number_with_otp_login === "1";
   const AllowSocialLogin = settingsData?.social_login === "1";
@@ -2264,11 +2290,30 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent
           onInteractOutside={(e) => e.preventDefault()}
-          className="mx-auto max-w-md rounded-lg p-0 shadow-lg sm:max-w-lg [&>button]:hidden max-h-screen overflow-y-auto custom-scrollbar"
+          className="mx-auto max-h-[96vh] w-[calc(100%-20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
         >
-          <DialogHeader className="w-full">
-            <DialogTitle className="flex w-full items-center justify-between border-b p-3 sm:p-3 md:p-6">
-              <div className="truncate text-base font-semibold sm:text-xl md:text-2xl">
+          <div ref={authShellRef} onMouseMove={handleAuthPointerMove} className="relative grid min-h-[620px] lg:grid-cols-[.94fr_1.06fr]" style={{ "--auth-x": "50%", "--auth-y": "50%" }}>
+            <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(360px_circle_at_var(--auth-x)_var(--auth-y),rgba(9,168,236,.11),transparent_72%)]" aria-hidden="true" />
+            <aside className="relative hidden min-h-[620px] overflow-hidden lg:flex lg:flex-col lg:justify-between">
+              <div className="absolute inset-0 bg-[url('/assets/auth-luxury.svg')] bg-cover bg-center" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,10,22,.18),rgba(3,10,22,.92))]" />
+              <div className="relative z-10 p-9">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[.16em] text-white backdrop-blur-xl"><BiHomeHeart size={18} className="text-cyan-300" />{authVisualText.kicker}</div>
+              </div>
+              <div className="relative z-10 p-9 pb-10 text-white">
+                <h2 className="max-w-md text-4xl font-black leading-[1.08] tracking-[-.035em]">{authVisualText.title}</h2>
+                <p className="mt-4 max-w-md text-[15px] leading-6 text-white/70">{authVisualText.body}</p>
+                <div className="mt-7 grid gap-3">
+                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3.5 backdrop-blur-xl"><BiCheckCircle size={22} className="shrink-0 text-cyan-300" /><span className="text-sm font-semibold">{authVisualText.find}</span></div>
+                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.08] p-3.5 backdrop-blur-xl"><BiCheckCircle size={22} className="shrink-0 text-violet-300" /><span className="text-sm font-semibold">{authVisualText.publish}</span></div>
+                </div>
+              </div>
+            </aside>
+
+            <section className="relative z-30 flex min-w-0 flex-col overflow-hidden bg-[linear-gradient(145deg,#ffffff,#f8fbff_62%,#f5f2ff)]">
+          <DialogHeader className="w-full shrink-0">
+            <DialogTitle className="flex w-full items-center justify-between border-b border-slate-200/70 px-5 py-5 sm:px-7 md:px-9 md:py-7">
+              <div><div className="mb-1 flex items-center gap-2 text-[11px] font-black uppercase tracking-[.17em] primaryColor"><BiKey size={16} />Ximmo24 Access</div><div className="truncate text-xl font-black tracking-tight text-slate-950 sm:text-2xl md:text-[28px]">
                 {resetMobilePass && t("setPassword")}
                 {showRegisterOptions && t("registerOptions")}
                 {showPhoneLogin && t("loginOrRegister")}
@@ -2277,9 +2322,9 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
                 {AllowSocialLogin && !ShowEmailLogin && !ShowPhoneLogin && t("loginNow")}
                 {showOTPContent && t("verification")}
                 {showRegisterContent && t("registerAccount")}
-              </div>
+              </div></div>
               <AiOutlineClose
-                className="primaryBackgroundBg leadColor font-bold rounded-xl h-6 w-6 flex-shrink-0 p-1 md:p-2 hover:cursor-pointer sm:h-7 sm:w-7 md:h-10 md:w-10"
+                className="h-10 w-10 flex-shrink-0 rounded-full border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm transition hover:cursor-pointer hover:rotate-90 hover:bg-slate-950 hover:text-white"
                 onClick={onCloseLogin}
               />
             </DialogTitle>
@@ -2288,7 +2333,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
             </DialogDescription>
           </DialogHeader>
 
-          {showForgotPasswd ? (
+          <div className="ximmo-auth-form flex-1 overflow-y-auto px-2 py-2 custom-scrollbar sm:px-5 sm:py-4">{showForgotPasswd ? (
             <ForgotPasswordForm
               showLoader={showLoader}
               onBackToLogin={handleBackToLogin}
@@ -2395,12 +2440,44 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               onSubmit={forgotPasswordViaEmail ? handleEmailForgotPasswordUpdate : (firebaseAuthId ? handleForgotPasswordUpdate : handleUpdatePhonePassword)}
               showLoader={showLoader}
             />
-          ) : <GoogleForm handleGoogleSignup={handleGoogleSignup} />}
+          ) : <GoogleForm handleGoogleSignup={handleGoogleSignup} />}</div>
 
-          <div className="w-full border-t p-3 sm:p-3">
+          <div className="flex w-full shrink-0 items-center justify-between gap-3 border-t border-slate-200/70 bg-white/70 px-5 py-3 backdrop-blur-xl sm:px-8">
+            <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500"><BiShieldQuarter size={17} className="primaryColor" />{authVisualText.secure}</div>
             <AuthFooter setShowLogin={setShowLogin} />
           </div>
           <div id="recaptcha-container" style={{ display: "none" }}></div>
+          </section>
+          </div>
+          <style jsx global>{`
+            .ximmo-auth-form input:not([type='checkbox']):not([type='radio']) {
+              min-height: 54px !important;
+              border: 1px solid #dbe4ef !important;
+              border-radius: 15px !important;
+              background: rgba(255,255,255,.88) !important;
+              padding-left: 16px !important;
+              padding-right: 16px !important;
+              box-shadow: 0 8px 24px rgba(15,23,42,.045) !important;
+              transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease !important;
+            }
+            .ximmo-auth-form input:focus {
+              border-color: var(--primary-color) !important;
+              box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-color) 13%, transparent), 0 12px 28px rgba(15,23,42,.07) !important;
+              transform: translateY(-1px);
+            }
+            .ximmo-auth-form form > div { gap: 16px; padding: 18px 14px; }
+            .ximmo-auth-form form button[type='submit'] {
+              min-height: 54px; border-radius: 16px !important; font-weight: 800;
+              box-shadow: 0 14px 32px color-mix(in srgb, var(--primary-color) 28%, transparent);
+            }
+            .ximmo-auth-form .btnBorder {
+              min-height: 52px; border: 1px solid #dbe4ef; border-radius: 16px !important;
+              background: rgba(255,255,255,.9); font-weight: 700; box-shadow: 0 8px 24px rgba(15,23,42,.05);
+            }
+            @media (max-width: 639px) {
+              .ximmo-auth-form form > div { padding: 12px 8px; }
+            }
+          `}</style>
         </DialogContent>
       </Dialog>
     </>
