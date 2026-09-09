@@ -1,4 +1,12 @@
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { useTranslation } from "../context/TranslationContext";
+import { handlePackageCheck } from "@/utils/helperFunction";
+import { PackageTypes } from "@/utils/checkPackages/packageTypes";
+
+const LoginModal = dynamic(() => import("../modal/LoginModal"), { ssr: false });
 
 const ArrowIcon = () => (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8">
@@ -79,6 +87,38 @@ const advantages = [
 
 const PremiumHomepageGateway = () => {
     const router = useRouter();
+    const t = useTranslation();
+    const [showLogin, setShowLogin] = useState(false);
+    const userData = useSelector((state) => state.User?.data);
+    const activeRole = useSelector((state) => state.Auth?.role);
+    const isUserRole = activeRole !== "agent";
+
+    const handlePublishProperty = async (event) => {
+        if (!userData?.id) {
+            setShowLogin(true);
+            return;
+        }
+
+        await handlePackageCheck(
+            event,
+            PackageTypes.PROPERTY_LIST,
+            router,
+            null,
+            null,
+            false,
+            false,
+            t,
+            isUserRole,
+        );
+    };
+
+    const handlePublishAsAgent = () => {
+        if (!userData?.id) {
+            setShowLogin(true);
+            return;
+        }
+        router.push("/become-agent");
+    };
 
     return (
         <section className="relative overflow-hidden border-y border-slate-200/70 bg-white py-12 sm:py-16 lg:py-20">
@@ -139,21 +179,39 @@ const PremiumHomepageGateway = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col justify-between rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-7 shadow-[0_18px_55px_rgba(14,165,233,0.10)] sm:p-9">
-                        <div>
-                            <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-600">Für Eigentümer & Makler</span>
+                    <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 via-white to-cyan-50 p-7 shadow-[0_18px_55px_rgba(14,165,233,0.10)] sm:p-9">
+                        <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-200/35 blur-2xl" />
+                        <div className="relative">
+                            <span className="text-sm font-bold uppercase tracking-[0.18em] text-sky-600">Immobilie anbieten</span>
                             <h3 className="mt-3 text-2xl font-bold text-slate-950">Ihre Immobilie sichtbar machen</h3>
                             <p className="mt-3 text-base leading-7 text-slate-600">
-                                Präsentieren Sie Ihr Angebot professionell und erreichen Sie Interessenten in Ihrer Region.
+                                Als Eigentümer direkt inserieren oder Ximmo24 professionell als Agentur und Makler nutzen.
                             </p>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => router.push("/become-agent")}
-                            className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
-                        >
-                            Angebot veröffentlichen <ArrowIcon />
-                        </button>
+                        <div className="relative mt-7 grid gap-3">
+                            <button
+                                type="button"
+                                onClick={handlePublishProperty}
+                                className="group inline-flex min-h-12 items-center justify-between gap-3 rounded-xl bg-slate-950 px-5 py-3 text-left font-bold text-white transition hover:bg-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+                            >
+                                <span>
+                                    <span className="block">Immobilie hinzufügen</span>
+                                    <span className="mt-0.5 block text-xs font-medium text-slate-300 group-hover:text-sky-50">Für private Eigentümer</span>
+                                </span>
+                                <ArrowIcon />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handlePublishAsAgent}
+                                className="group inline-flex min-h-12 items-center justify-between gap-3 rounded-xl border border-sky-200 bg-white px-5 py-3 text-left font-bold text-slate-900 transition hover:border-sky-500 hover:text-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+                            >
+                                <span>
+                                    <span className="block">Als Agentur / Makler veröffentlichen</span>
+                                    <span className="mt-0.5 block text-xs font-medium text-slate-500">Professionelles Anbieterprofil erstellen</span>
+                                </span>
+                                <ArrowIcon />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -210,6 +268,7 @@ const PremiumHomepageGateway = () => {
                 </div>
             </div>
         </section>
+        {showLogin ? <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} /> : null}
     );
 };
 
