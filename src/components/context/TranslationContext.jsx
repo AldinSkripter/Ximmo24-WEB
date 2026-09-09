@@ -1,5 +1,6 @@
 import { getTranslationByLocale } from "@/utils/translation";
 import React, { createContext, useContext } from "react";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
 const TranslationContext = createContext();
@@ -9,10 +10,11 @@ export const useTranslation = () => {
 };
 
 export const TranslationProvider = ({ children }) => {
-  // Use current_language for translations from Redux
-  const translations = useSelector(
-    (state) => state.LanguageSettings?.current_language?.file_name
+  const router = useRouter();
+  const backendLanguage = useSelector(
+    (state) => state.LanguageSettings?.current_language
   );
+  const translations = backendLanguage?.file_name;
   
   // Use active_language as the current locale (user selected or default)
   const activeLocale = useSelector(
@@ -24,11 +26,19 @@ export const TranslationProvider = ({ children }) => {
     (state) => state.LanguageSettings?.default_language
   );
   
-  const currentLocale = activeLocale || defaultLocale;
+  const routeLanguage = Array.isArray(router.query?.lang)
+    ? router.query.lang[0]
+    : router.query?.lang;
+  const currentLocale = ["de", "en"].includes(routeLanguage)
+    ? routeLanguage
+    : (activeLocale || defaultLocale || "de");
+  const remoteLanguageMatches =
+    backendLanguage?.code === currentLocale || activeLocale === currentLocale;
   
   const t = (label) => {
-    // First try to use translations from Redux
-    if (translations && translations[label]) {
+    // Admin-managed translations remain authoritative once the matching
+    // language response arrives. Until then, use the bundled DE/EN copy.
+    if (remoteLanguageMatches && translations && translations[label]) {
       return translations[label];
     } 
     

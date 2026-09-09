@@ -78,13 +78,30 @@ const Layout = ({ children }) => {
         "--primary-rent-bg",
         data?.rent_web_background_color
       );
+      try {
+        window.localStorage.setItem("ximmo24-theme", JSON.stringify({
+          primary: data?.system_color,
+          category: data?.category_background,
+          sell: data?.sell_web_color,
+          rent: data?.rent_web_color,
+          sellBg: data?.sell_web_background_color,
+          rentBg: data?.rent_web_background_color,
+        }));
+      } catch {
+        // Storage can be unavailable in privacy mode; live settings still apply.
+      }
       document.querySelectorAll("link[rel='icon']").forEach((link) => {
         link.href = data?.web_favicon;
       });
 
       dispatch(setWebSettings({ data }));
-      dispatch(setLanguages({ data: data.languages }));
-      dispatch(setDefaultLanguage({ data: data.default_language }));
+      const supportedLanguages = (data?.languages || []).filter(
+        (language) => language?.code === "de" || language?.code === "en"
+      );
+      dispatch(setLanguages({ data: supportedLanguages }));
+      dispatch(setDefaultLanguage({
+        data: data?.default_language === "en" ? "en" : "de",
+      }));
       document.dir = currentLanguage?.rtl === 1 ? "rtl" : "ltr";
 
       return true;
@@ -108,15 +125,17 @@ const Layout = ({ children }) => {
   const fetchLanguageData = useCallback(
     async (localeCode) => {
       if (!localeCode) return false;
+      const requestedLocale = Array.isArray(localeCode) ? localeCode[0] : localeCode;
+      const safeLocale = requestedLocale === "en" ? "en" : "de";
 
-      // Skip if this is the current active language and data is already loaded
-      if (localeCode === activeLanguage && isLanguageLoaded) {
+      // Ximmo24 intentionally exposes only German and English on the web.
+      if (safeLocale === activeLanguage && isLanguageLoaded) {
         return true;
       }
 
       try {
         const response = await api.getLanguageData({
-          language_code: localeCode,
+          language_code: safeLocale,
           web_language_file: 1,
         });
         if (response?.data?.rtl === 1) {
@@ -125,24 +144,24 @@ const Layout = ({ children }) => {
           document.dir = "ltr";
         }
 
-        document.documentElement.lang = localeCode;
+        document.documentElement.lang = safeLocale;
 
         // Make translations available immediately. Secondary synchronization must
         // never block the first visible render of a public page.
-        dispatch(setActiveLanguage({ data: localeCode }));
+        dispatch(setActiveLanguage({ data: safeLocale }));
         dispatch(setCurrentLanguage({ data: response.data }));
         dispatch(setIsFetched({ data: true }));
         dispatch(setIsLanguageLoaded({ data: true }));
 
         void fetchCategories();
         if (userData) {
-          void changeNotificationLanguage(localeCode);
+          void changeNotificationLanguage(safeLocale);
         }
 
         return true;
       } catch (error) {
         console.error(
-          `Failed to fetch language data for ${localeCode}:`,
+          `Failed to fetch language data for ${safeLocale}:`,
           error,
         );
         return false;
@@ -232,7 +251,7 @@ const Layout = ({ children }) => {
 
       try {
         let shouldUpdateUrl = false;
-        let langToUse = currentLanguage?.code || defaultLanguage || "en";
+        let langToUse = currentLanguage?.code || defaultLanguage || "de";
 
         // Case 1: No lang parameter in URL
         if (!lang) {

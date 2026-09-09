@@ -8,6 +8,6 @@ export const getTranslationByLocale = (locale) => {
     case "en":
       return enTranslation;
     default:
-      return enTranslation;
+      return { ...enTranslation, ...deTranslation };
   }
 };

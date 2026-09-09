@@ -78,7 +78,7 @@ let serverSidePropsFunction = null;
 if (process.env.NEXT_PUBLIC_SEO === "true") {
   serverSidePropsFunction = async (context) => {
     const { query, res } = context;
-    const lang = query?.lang || "en";
+    const lang = query?.lang || "de";
 
     setPublicPageCache(res, { maxAge: 300, staleWhileRevalidate: 3600 });
 
