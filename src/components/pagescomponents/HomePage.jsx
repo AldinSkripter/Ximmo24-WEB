@@ -2,10 +2,14 @@ import React from 'react'
 import Layout from '../layout/Layout'
 import Home from '../home/Home.jsx'
 
-const HomePage = () => {
+const HomePage = ({ initialHomepageSections, initialHomepageOtherSections, initialLanguage }) => {
     return (
         <Layout>
-            <Home />
+            <Home
+                initialHomepageSections={initialHomepageSections}
+                initialHomepageOtherSections={initialHomepageOtherSections}
+                initialLanguage={initialLanguage}
+            />
         </Layout>
     )
 }
