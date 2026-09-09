@@ -19,7 +19,7 @@ import {
 } from '@/components/skeletons/home/index';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { MdInfoOutline } from 'react-icons/md';
@@ -120,10 +120,15 @@ const Home = () => {
     const userSelectedLocation = useSelector(state => state.location);
     const [isLocationInitializing, setIsLocationInitializing] = useState(true);
     const [loadMapData, setLoadMapData] = useState(false);
+    const [loadDeferredHomepage, setLoadDeferredHomepage] = useState(false);
+    const deferredHomepageRef = useRef(null);
 
     useEffect(() => {
         if (sessionStorage.getItem('__scroll_/')) {
-            const immediate = window.setTimeout(() => setLoadMapData(true), 0);
+            const immediate = window.setTimeout(() => {
+                setLoadDeferredHomepage(true);
+                setLoadMapData(true);
+            }, 0);
             return () => window.clearTimeout(immediate);
         }
 
@@ -136,6 +141,23 @@ const Home = () => {
             else window.clearTimeout(schedule);
         };
     }, []);
+
+    useEffect(() => {
+        if (loadDeferredHomepage || !deferredHomepageRef.current) return;
+
+        const target = deferredHomepageRef.current;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return;
+                setLoadDeferredHomepage(true);
+                observer.disconnect();
+            },
+            { rootMargin: "240px 0px", threshold: 0.01 }
+        );
+
+        observer.observe(target);
+        return () => observer.disconnect();
+    }, [loadDeferredHomepage]);
 
     useEffect(() => {
         if (!router.isReady || router.pathname !== "/") return
@@ -233,6 +255,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: loadDeferredHomepage,
     });
 
 
@@ -247,6 +270,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: loadDeferredHomepage,
     });
 
     // 4. Fetch Other Sections (categories, agents, articles, user_recommendations, faqs, slider)
@@ -290,6 +314,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: loadDeferredHomepage,
     });
 
     // 7. Fetch Ad Banners
@@ -446,6 +471,7 @@ const Home = () => {
 
     const allQueriesLoaded =
         !isLocationInitializing &&
+        loadDeferredHomepage &&
         loadMapData &&
         !sectionsQuery.isLoading &&
         !propertySectionsQuery.isLoading &&
@@ -553,8 +579,12 @@ const Home = () => {
             {/* ===================== */}
             {/* HOMEPAGE SECTIONS */}
             {/* ===================== */}
-            <div className="flex flex-col">
-                {homepageSections.map((section, index) => {
+            <div ref={deferredHomepageRef} className="flex flex-col min-h-px">
+                {!loadDeferredHomepage ? (
+                    <div className="container mx-auto px-3 lg:px-0 py-8 lg:py-12" aria-hidden="true">
+                        <div className="h-24 lg:h-28 rounded-2xl lg:rounded-3xl border border-slate-200/80 bg-gradient-to-r from-white via-sky-50/70 to-white shadow-[0_18px_55px_rgba(15,23,42,0.06)]" />
+                    </div>
+                ) : homepageSections.map((section, index) => {
                     const { Component, label, buttonLink, buttonText } =
                         getSectionInfo(section.type);
 
@@ -621,7 +651,7 @@ const Home = () => {
                 {/* ===================== */}
                 {/* ALL PROPERTIES */}
                 {/* ===================== */}
-                {showAllPropertiesSection ? <AllPropertiesSection /> : null}
+                {loadDeferredHomepage && showAllPropertiesSection ? <AllPropertiesSection /> : null}
             </div>
 
             {/* ===================== */}
