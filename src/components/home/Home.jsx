@@ -306,7 +306,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: loadMapData,
+        enabled: loadMapData && !lightweightHomepage,
     });
 
     // 6. Fetch Cities Section Data
@@ -340,6 +340,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: sectionsQuery.isSuccess && !lightweightHomepage,
     });
 
     // Handle location alert
