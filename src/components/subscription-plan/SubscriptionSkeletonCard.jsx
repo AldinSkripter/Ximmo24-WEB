@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 const SubscriptionSkeletonCard = () => {
     return (
-        <article className="flex h-[650px] w-full flex-col justify-between rounded-xl p-4 bg-gray-200 sm:gap-7 md:h-[680px]">
+        <article className="flex min-h-[38rem] w-full flex-col justify-between rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_18px_55px_rgba(15,23,42,.08)] sm:gap-7">
             {/* Header */}
             <header className="mx-5 mt-[30px]">
                 <Skeleton className="mb-3 self-start rounded-lg px-3 py-1.5 text-sm font-normal capitalize sm:px-4 sm:py-2 w-28 h-8" />
