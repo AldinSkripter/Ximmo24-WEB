@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { beforeLogoutApi, getCustomPagesApi } from "@/api/apiRoutes";
-import Logo from "@/assets/logo.png";
+import Ximmo24Brand from "@/components/brand/Ximmo24Brand";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { logout } from "@/redux/slices/authSlice";
 import { setLockedFilter } from "@/redux/slices/propertyListSlice";
@@ -573,14 +573,18 @@ const Header = () => {
                   className="flex shrink-0 items-center"
                   onClick={() => dispatch(setLockedFilter(null))}
                 >
-                  <ImageWithPlaceholder
-                    src={webSettings?.web_logo ? webSettings?.web_logo : Logo}
-                    alt="logo"
-                    width={176}
-                    height={56}
-                    className="md:w-44 md:h-14 w-32 h-10 aspect-[176/56] object-contain"
-                    priority={true}
-                  />
+                  {webSettings?.web_logo ? (
+                    <ImageWithPlaceholder
+                      src={webSettings.web_logo}
+                      alt="Ximmo24"
+                      width={176}
+                      height={56}
+                      className="md:w-44 md:h-14 w-32 h-10 aspect-[176/56] object-contain"
+                      priority={true}
+                    />
+                  ) : (
+                    <Ximmo24Brand className="scale-90 origin-left md:scale-100" />
+                  )}
                 </Link>
                 <div className="hidden h-14 shrink-0 border-r border-gray-200 md:block"></div>
                 <div className="relative min-w-0 max-w-[190px] lg:max-w-[230px] 2xl:max-w-[280px]">
