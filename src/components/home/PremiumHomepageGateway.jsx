@@ -52,6 +52,31 @@ const choices = [
     },
 ];
 
+const regionalRoutes = [
+    { label: "Immobilien kaufen", href: "/properties" },
+    { label: "Immobilien mieten", href: "/properties" },
+    { label: "Neubau entdecken", href: "/projects" },
+    { label: "Lage auf Karte prüfen", href: "/properties-on-map" },
+];
+
+const advantages = [
+    {
+        number: "01",
+        title: "Natürlich suchen",
+        text: "Schreiben Sie einfach Haus, Wohnung, Ort oder PLZ in die KI-Suche.",
+    },
+    {
+        number: "02",
+        title: "Regional entdecken",
+        text: "Konzentriert auf Baden-Württemberg und die passenden Angebote vor Ort.",
+    },
+    {
+        number: "03",
+        title: "Sicher entscheiden",
+        text: "Klare Exposés, verifizierte Anbieter und direkter Kontakt.",
+    },
+];
+
 const PremiumHomepageGateway = () => {
     const router = useRouter();
 
@@ -129,6 +154,48 @@ const PremiumHomepageGateway = () => {
                         >
                             Angebot veröffentlichen <ArrowIcon />
                         </button>
+                    </div>
+                </div>
+
+                <div className="mx-auto mt-14 max-w-6xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.09)]">
+                    <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+                        <div className="relative overflow-hidden bg-gradient-to-br from-sky-600 via-sky-500 to-cyan-400 p-7 text-white sm:p-10">
+                            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border-[36px] border-white/10" />
+                            <span className="relative text-sm font-bold uppercase tracking-[0.18em] text-sky-100">
+                                Zuhause in Baden-Württemberg
+                            </span>
+                            <h3 className="relative mt-3 max-w-lg text-2xl font-bold leading-tight sm:text-4xl">
+                                Vom ersten Wunsch bis zur passenden Adresse
+                            </h3>
+                            <p className="relative mt-4 max-w-xl text-base leading-7 text-sky-50">
+                                Starten Sie direkt mit dem Weg, der zu Ihrem Vorhaben passt. Die eigentlichen Angebote laden erst, wenn Sie sie öffnen.
+                            </p>
+                            <div className="relative mt-7 grid gap-3 sm:grid-cols-2">
+                                {regionalRoutes.map((item) => (
+                                    <button
+                                        key={item.label}
+                                        type="button"
+                                        onClick={() => router.push(item.href)}
+                                        className="group inline-flex min-h-12 items-center justify-between rounded-xl border border-white/25 bg-white/12 px-4 py-3 text-left text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white hover:text-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                                    >
+                                        {item.label}
+                                        <span className="transition-transform group-hover:translate-x-1"><ArrowIcon /></span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="grid gap-0 bg-slate-50/70 sm:grid-cols-3">
+                            {advantages.map((item) => (
+                                <div key={item.number} className="border-b border-slate-200 p-6 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 lg:p-7">
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sm font-black text-sky-700">
+                                        {item.number}
+                                    </span>
+                                    <h4 className="mt-5 text-lg font-bold text-slate-950">{item.title}</h4>
+                                    <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
