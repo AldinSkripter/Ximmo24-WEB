@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "@/redux/slices/authSlice";
 import Swal from "sweetalert2";
 
-const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
+const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true, isSliderLoading = false }) => {
   const router = useRouter();
   const t = useTranslation();
   const lang = router?.query?.lang;
@@ -228,6 +228,12 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
 
   return (
     <div className={showSwiper && showSearchBox ? "relative w-full h-full pb-6 sm:pb-0" : showSearchBox ? "relative w-full pt-4" : "w-full h-full"}>
+      {showSwiper && !hasSlides ? (
+        <div
+          aria-hidden="true"
+          className="w-full aspect-[1920/1080] bg-gradient-to-br from-slate-200 via-sky-100 to-slate-300 animate-pulse lg:aspect-[1920/700] xl:h-[700px] xl:aspect-auto"
+        />
+      ) : null}
       {showSwiper && hasSlides ? (
         <>
           <Carousel
@@ -252,7 +258,11 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
                       src={image?.web_image}
                       alt={`Property ${index + 1}`}
                       className="w-full h-full aspect-[1920/1080] lg:aspect-[1920/700] xl:aspect-[auto/700] object-cover"
-                      priority={true}
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      sizes="100vw"
+                      quality={88}
                     />
                     {image?.property && image?.show_property_details && (
                       <div className="absolute inset-0 pointer-events-none">
@@ -403,7 +413,7 @@ const MainSwiper = ({ slides, showSwiper = true, showSearchBox = true }) => {
         </>
       ) : (
         showSearchBox && (
-          <div className="px-4">
+          <div className={showSwiper ? "absolute inset-x-0 bottom-0 z-20 px-3 md:-bottom-6 md:px-4" : "px-4"}>
             <div className="container mx-auto">
               <SearchBox
                 propertyType={propertyType}
