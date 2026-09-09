@@ -162,6 +162,10 @@ const MapPropertyCard = ({ property, removeCard = null }) => {
                     <ImageWithPlaceholder
                         src={property.title_image}
                         alt={property.title}
+                        width={900}
+                        height={504}
+                        sizes="(max-width: 768px) 100vw, 420px"
+                        quality={90}
                         className="h-56 w-full rounded-t-2xl object-cover"
                         loading="lazy"
                     />
