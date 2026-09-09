@@ -110,7 +110,7 @@ const defaultLocationDetails = {
 }
 
 
-const Home = () => {
+const Home = ({ initialHomepageSections = null, initialHomepageOtherSections = null, initialLanguage = null }) => {
     const t = useTranslation();
     const router = useRouter();
     const dispatch = useDispatch()
@@ -241,6 +241,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        initialData: initialLanguage === activeLanguage ? initialHomepageSections : undefined,
     });
 
     const homepageSectionsPreview = sectionsQuery.data?.data ?? sectionsQuery.data ?? {};
@@ -295,6 +296,10 @@ const Home = () => {
         // Slider data is independent from the section-order response. Starting both
         // requests together removes a full API round trip from the critical hero path.
         enabled: true,
+        initialData:
+            initialLanguage === activeLanguage && homepageSectionsPreview?.lightweight_homepage_section === true
+                ? initialHomepageOtherSections
+                : undefined,
     });
 
     // 5. Fetch Map Section Data
