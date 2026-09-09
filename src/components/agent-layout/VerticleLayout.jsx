@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import withAuth from "../HOC/withAuth";
 import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
 import toast from "react-hot-toast";
+import { applyWebTheme } from "@/utils/applyWebTheme";
 
 const VerticleLayout = ({ children }) => {
     const { signOut } = FirebaseData();
@@ -139,10 +140,7 @@ const VerticleLayout = ({ children }) => {
 
             dispatch(setWebSettings({ data: res.data }));
 
-            // Apply CSS custom properties
-            const root = document.documentElement;
-            root.style.setProperty("--primary-color", res.data?.system_color);
-            root.style.setProperty("--primary-category-background", res.data?.category_background);
+            applyWebTheme(res.data);
         } catch (error) {
             console.error("Failed to fetch web settings:", error);
         }
@@ -210,7 +208,16 @@ const VerticleLayout = ({ children }) => {
         handleAccountDeactivation();
     }, [webSettings?.is_active]);
 
-    // Fetch settings when language is loaded
+    // Theme settings are independent from translations and must always load.
+    useEffect(() => {
+        fetchWebSettings();
+    }, []);
+
+    useEffect(() => {
+        applyWebTheme(webSettings);
+    }, [webSettings]);
+
+    // Refresh user data when language is ready.
     useEffect(() => {
         if (!isLanguageLoaded) return;
 
@@ -220,10 +227,7 @@ const VerticleLayout = ({ children }) => {
             setIsUserDataRefreshing(true);
 
             try {
-                await Promise.all([
-                    fetchWebSettings(),
-                    fetchUserData(),
-                ]);
+                await fetchUserData();
             } finally {
                 if (isMounted) {
                     setHasRefreshedUserData(true);
