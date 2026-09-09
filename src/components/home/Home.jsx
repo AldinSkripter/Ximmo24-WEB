@@ -285,13 +285,14 @@ const Home = () => {
     const otherSectionsQuery = useQuery({
         queryKey: ['homepageOtherSections', homepageLocationParams.latitude || "", homepageLocationParams.longitude || "", homepageLocationParams.radius || "", isUserLoggedIn, activeLanguage],
         queryFn: async () => {
-            const response = await api.getHomepageOtherSectionsApi(homepageLocationParams);
+            const response = await api.getHomepageOtherSectionsApi({ ...homepageLocationParams, lightweight: lightweightHomepage });
             return response?.data || {};
         },
         staleTime: 10 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
+        enabled: sectionsQuery.isSuccess,
     });
 
     // 5. Fetch Map Section Data
