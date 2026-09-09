@@ -78,6 +78,18 @@ const Layout = ({ children }) => {
         "--primary-rent-bg",
         data?.rent_web_background_color
       );
+      try {
+        window.localStorage.setItem("ximmo24-theme", JSON.stringify({
+          primary: data?.system_color,
+          category: data?.category_background,
+          sell: data?.sell_web_color,
+          rent: data?.rent_web_color,
+          sellBg: data?.sell_web_background_color,
+          rentBg: data?.rent_web_background_color,
+        }));
+      } catch {
+        // Storage can be unavailable in privacy mode; live settings still apply.
+      }
       document.querySelectorAll("link[rel='icon']").forEach((link) => {
         link.href = data?.web_favicon;
       });
