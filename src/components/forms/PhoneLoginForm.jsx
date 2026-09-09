@@ -34,20 +34,24 @@ const PhoneLoginForm = ({
     const [showPassword, setShowPassword] = useState(false);
     const [phoneCountry, setPhoneCountry] = useState(process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase());
 
-    const handleInputChange = (value, data) => {
+    const handleInputChange = (phone, data) => {
+        const selectedDialCode = data?.dialCode || "49";
+        const digits = String(phone || "").replace(/\D/g, "");
+        const nationalNumber = digits;
         setValue((prev) => ({
             ...prev,
-            number: value,
-            countryCode: data?.dialCode
+            number: `${selectedDialCode}${nationalNumber}`,
+            countryCode: selectedDialCode
         }));
         if (data?.countryCode) setPhoneCountry(data.countryCode);
     }
 
     const phoneConfig = getPhoneInputConfig(phoneCountry);
     const dialCode = value?.countryCode || "49";
-    const normalizedPhoneValue = value?.number
-        ? (String(value.number).startsWith(dialCode) ? String(value.number) : `${dialCode}${value.number}`)
-        : dialCode;
+    const storedPhone = String(value?.number || "").replace(/\D/g, "");
+    const nationalPhoneValue = storedPhone.startsWith(dialCode)
+        ? storedPhone.substring(dialCode.length)
+        : storedPhone;
 
     return (
         <form
@@ -79,7 +83,7 @@ const PhoneLoginForm = ({
                         {t("phoneNumber")}
                         <span className="ms-1 text-red-600">*</span>
                     </label>
-                    <div className="mobile-number">
+                    <div className="mobile-number relative">
                         <PhoneInput
                             country={process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase()}
                             enableAreaCodes={true}
@@ -93,14 +97,16 @@ const PhoneLoginForm = ({
                             enableLongNumbers={phoneConfig.enableLongNumbers}
                             enableSearch={true}
                             searchPlaceholder={t("search")}
-                            value={normalizedPhoneValue}
+                            value={nationalPhoneValue}
                             onChange={(phone, data) => handleInputChange(phone, data)}
+                            disableCountryCode={true}
                             containerClass="w-full"
                             inputClass="!primaryBackgroundBg !w-full !rounded-lg !h-14 !border !newBorderColor "
                             dropdownClass="!primaryBackgroundBg"
                             buttonClass="!primaryBackgroundBg !w-10 h-14 !rounded-tl-lg !rounded-bl-lg !newBorderColor "
                             disabled={showPasswordInput}
                         />
+                        <span className="pointer-events-none absolute left-[62px] top-1/2 z-10 -translate-y-1/2 border-r border-slate-300 pr-3 text-sm font-bold text-slate-900 sm:text-base">+{dialCode}</span>
                     </div>
                 </div>
                 {showPasswordInput && (

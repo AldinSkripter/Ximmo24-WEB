@@ -2479,7 +2479,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               transform: translateY(-1px);
             }
             .ximmo-auth-form .react-tel-input .form-control {
-              padding-left: 72px !important;
+              padding-left: 112px !important;
               color: #0f172a !important;
               opacity: 1 !important;
             }
