@@ -251,7 +251,7 @@ const Layout = ({ children }) => {
 
       try {
         let shouldUpdateUrl = false;
-        let langToUse = currentLanguage?.code || defaultLanguage || "en";
+        let langToUse = currentLanguage?.code || defaultLanguage || "de";
 
         // Case 1: No lang parameter in URL
         if (!lang) {
