@@ -29,59 +29,154 @@ const HomeIcon = ({ type }) => {
     );
 };
 
-const choices = [
+const homepageCopy = {
+    de: {
+        badge: "{copy.badge}",
+        heading: "{copy.heading}",
+        intro: "{copy.intro}",
+        discover: "{copy.discover}",
+        propertyTitle: "Immobilien entdecken",
+        propertyDescription: "Häuser und Wohnungen zum Kaufen oder Mieten.",
+        projectTitle: "Neubauprojekte",
+        projectDescription: "Moderne Projekte und attraktive Neubauangebote.",
+        mapTitle: "Auf der Karte",
+        mapDescription: "Immobilien direkt in Ihrer Wunschlage erkunden.",
+        agentTitle: "Makler finden",
+        agentDescription: "Verifizierte Immobilienprofis in Ihrer Nähe.",
+        routeBuy: "Immobilien kaufen",
+        routeRent: "Immobilien mieten",
+        routeProjects: "Neubau entdecken",
+        routeMap: "Lage auf Karte prüfen",
+        advantageNaturalTitle: "Natürlich suchen",
+        advantageNaturalText: "Schreiben Sie einfach Haus, Wohnung, Ort oder PLZ in die KI-Suche.",
+        advantageRegionalTitle: "Regional entdecken",
+        advantageRegionalText: "Konzentriert auf Baden-Württemberg und die passenden Angebote vor Ort.",
+        advantageSafeTitle: "Sicher entscheiden",
+        advantageSafeText: "Klare Exposés, verifizierte Anbieter und direkter Kontakt.",
+        howLabel: "{copy.howLabel}",
+        howTitle: "{copy.howTitle}",
+        stepOneTitle: "Wunsch beschreiben",
+        stepOneText: "Ort, PLZ oder Immobilientyp eingeben.",
+        stepTwoTitle: "Angebote vergleichen",
+        stepTwoText: "Passende Ergebnisse übersichtlich prüfen.",
+        stepThreeTitle: "Direkt kontaktieren",
+        stepThreeText: "Ohne Umwege mit dem Anbieter sprechen.",
+        offerLabel: "{copy.offerLabel}",
+        offerTitle: "{copy.offerTitle}",
+        offerText: "{copy.offerText}",
+        addProperty: "{copy.addProperty}",
+        privateOwner: "{copy.privateOwner}",
+        publishAgent: "{copy.publishAgent}",
+        professionalProfile: "{copy.professionalProfile}",
+        regionLabel: "{copy.regionLabel}",
+        regionTitle: "{copy.regionTitle}",
+        regionText: "{copy.regionText}",
+        featureAi: "KI-gestützte Suche",
+        featureVerified: "Verifizierte Anbieter",
+        featureContact: "Direkter Kontakt",
+        featureRegion: "Für Baden-Württemberg",
+    },
+    en: {
+        badge: "Simple. Direct. Real estate.",
+        heading: "Your next step starts here",
+        intro: "Choose what you are looking for. Ximmo24 takes you directly to the right place.",
+        discover: "Discover now",
+        propertyTitle: "Discover properties",
+        propertyDescription: "Houses and apartments to buy or rent.",
+        projectTitle: "New-build projects",
+        projectDescription: "Modern developments and attractive new-build opportunities.",
+        mapTitle: "Explore the map",
+        mapDescription: "Discover properties directly in your preferred location.",
+        agentTitle: "Find an agent",
+        agentDescription: "Verified real estate professionals near you.",
+        routeBuy: "Buy property",
+        routeRent: "Rent property",
+        routeProjects: "Discover new builds",
+        routeMap: "Explore locations on the map",
+        advantageNaturalTitle: "Search naturally",
+        advantageNaturalText: "Simply enter a house, apartment, city or postcode in the AI search.",
+        advantageRegionalTitle: "Discover locally",
+        advantageRegionalText: "Focused on Baden-Württemberg and suitable local listings.",
+        advantageSafeTitle: "Decide with confidence",
+        advantageSafeText: "Clear listings, verified providers and direct contact.",
+        howLabel: "How Ximmo24 works",
+        howTitle: "Find the right property faster",
+        stepOneTitle: "Describe your needs",
+        stepOneText: "Enter a location, postcode or property type.",
+        stepTwoTitle: "Compare listings",
+        stepTwoText: "Review suitable results at a glance.",
+        stepThreeTitle: "Contact directly",
+        stepThreeText: "Speak with the provider without detours.",
+        offerLabel: "List a property",
+        offerTitle: "Make your property visible",
+        offerText: "List directly as an owner or use Ximmo24 professionally as an agency or agent.",
+        addProperty: "Add property",
+        privateOwner: "For private owners",
+        publishAgent: "Publish as an agency / agent",
+        professionalProfile: "Create a professional provider profile",
+        regionLabel: "At home in Baden-Württemberg",
+        regionTitle: "From your first idea to the right address",
+        regionText: "Choose the path that fits your plans. Property listings load only when you open them.",
+        featureAi: "AI-powered search",
+        featureVerified: "Verified providers",
+        featureContact: "Direct contact",
+        featureRegion: "For Baden-Württemberg",
+    },
+};
+
+const getChoices = (copy) => [
     {
-        title: "Immobilien entdecken",
-        description: "Häuser und Wohnungen zum Kaufen oder Mieten.",
+        title: copy.propertyTitle,
+        description: copy.propertyDescription,
         href: "/properties",
         type: "property",
         accent: "from-sky-500 to-cyan-400",
     },
     {
-        title: "Neubauprojekte",
-        description: "Moderne Projekte und attraktive Neubauangebote.",
+        title: copy.projectTitle,
+        description: copy.projectDescription,
         href: "/projects",
         type: "project",
         accent: "from-slate-900 to-slate-700",
     },
     {
-        title: "Auf der Karte",
-        description: "Immobilien direkt in Ihrer Wunschlage erkunden.",
+        title: copy.mapTitle,
+        description: copy.mapDescription,
         href: "/properties-on-map",
         type: "map",
         accent: "from-cyan-500 to-blue-500",
     },
     {
-        title: "Makler finden",
-        description: "Verifizierte Immobilienprofis in Ihrer Nähe.",
+        title: copy.agentTitle,
+        description: copy.agentDescription,
         href: "/all/agents",
         type: "agent",
         accent: "from-neutral-900 to-black",
     },
 ];
 
-const regionalRoutes = [
-    { label: "Immobilien kaufen", href: "/properties" },
-    { label: "Immobilien mieten", href: "/properties" },
-    { label: "Neubau entdecken", href: "/projects" },
-    { label: "Lage auf Karte prüfen", href: "/properties-on-map" },
+const getRegionalRoutes = (copy) => [
+    { label: copy.routeBuy, href: "/properties" },
+    { label: copy.routeRent, href: "/properties" },
+    { label: copy.routeProjects, href: "/projects" },
+    { label: copy.routeMap, href: "/properties-on-map" },
 ];
 
-const advantages = [
+const getAdvantages = (copy) => [
     {
         number: "01",
-        title: "Natürlich suchen",
-        text: "Schreiben Sie einfach Haus, Wohnung, Ort oder PLZ in die KI-Suche.",
+        title: copy.advantageNaturalTitle,
+        text: copy.advantageNaturalText,
     },
     {
         number: "02",
-        title: "Regional entdecken",
-        text: "Konzentriert auf Baden-Württemberg und die passenden Angebote vor Ort.",
+        title: copy.advantageRegionalTitle,
+        text: copy.advantageRegionalText,
     },
     {
         number: "03",
-        title: "Sicher entscheiden",
-        text: "Klare Exposés, verifizierte Anbieter und direkter Kontakt.",
+        title: copy.advantageSafeTitle,
+        text: copy.advantageSafeText,
     },
 ];
 
@@ -91,6 +186,11 @@ const PremiumHomepageGateway = () => {
     const [showLogin, setShowLogin] = useState(false);
     const userData = useSelector((state) => state.User?.data);
     const activeRole = useSelector((state) => state.Auth?.role);
+    const activeLanguage = useSelector((state) => state.LanguageSettings?.current_language?.code);
+    const copy = homepageCopy[activeLanguage === "en" ? "en" : "de"];
+    const choices = getChoices(copy);
+    const regionalRoutes = getRegionalRoutes(copy);
+    const advantages = getAdvantages(copy);
     const isUserRole = activeRole !== "agent";
 
     const handlePublishProperty = async (event) => {
@@ -167,9 +267,9 @@ const PremiumHomepageGateway = () => {
                         <h3 className="mt-3 text-2xl font-bold sm:text-3xl">Schneller zur passenden Immobilie</h3>
                         <div className="mt-7 grid gap-5 sm:grid-cols-3">
                             {[
-                                ["01", "Wunsch beschreiben", "Ort, PLZ oder Immobilientyp eingeben."],
-                                ["02", "Angebote vergleichen", "Passende Ergebnisse übersichtlich prüfen."],
-                                ["03", "Direkt kontaktieren", "Ohne Umwege mit dem Anbieter sprechen."],
+                                ["01", copy.stepOneTitle, copy.stepOneText],
+                                ["02", copy.stepTwoTitle, copy.stepTwoText],
+                                ["03", copy.stepThreeTitle, copy.stepThreeText],
                             ].map(([number, title, text]) => (
                                 <div key={number}>
                                     <span className="text-2xl font-black text-sky-400">{number}</span>
@@ -259,13 +359,13 @@ const PremiumHomepageGateway = () => {
                 </div>
 
                 <div className="mx-auto mt-8 flex max-w-5xl flex-wrap items-center justify-center gap-x-7 gap-y-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 px-5 py-4 text-sm font-medium text-slate-600">
-                    <span>KI-gestützte Suche</span>
+                    <span>{copy.featureAi}</span>
                     <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:block" />
-                    <span>Verifizierte Anbieter</span>
+                    <span>{copy.featureVerified}</span>
                     <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:block" />
-                    <span>Direkter Kontakt</span>
+                    <span>{copy.featureContact}</span>
                     <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:block" />
-                    <span>Für Baden-Württemberg</span>
+                    <span>{copy.featureRegion}</span>
                 </div>
             </div>
         </section>
