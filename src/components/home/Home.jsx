@@ -283,7 +283,7 @@ const Home = () => {
 
     // 4. Fetch Other Sections (categories, agents, articles, user_recommendations, faqs, slider)
     const otherSectionsQuery = useQuery({
-        queryKey: ['homepageOtherSections', homepageLocationParams.latitude || "", homepageLocationParams.longitude || "", homepageLocationParams.radius || "", isUserLoggedIn, activeLanguage],
+        queryKey: ['homepageOtherSections', homepageLocationParams.latitude || "", homepageLocationParams.longitude || "", homepageLocationParams.radius || "", isUserLoggedIn, activeLanguage, lightweightHomepage],
         queryFn: async () => {
             const response = await api.getHomepageOtherSectionsApi({ ...homepageLocationParams, lightweight: lightweightHomepage });
             return response?.data || {};
