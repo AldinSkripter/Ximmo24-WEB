@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BiSolidCheckCircle, BiSolidXCircle, BiCrown, BiShieldQuarter } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -22,6 +22,7 @@ const SubscriptionCard = ({ data, index = 1, allFeatures, subscribePayment, page
   const t = useTranslation();
   const [isUploading, setIsUploading] = useState(false);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
+  const cardRef = useRef(null);
   const router = useRouter();
   const { lang } = router?.query;
   const isRtl = isRTL();
@@ -54,6 +55,14 @@ const SubscriptionCard = ({ data, index = 1, allFeatures, subscribePayment, page
     { ring: "conic-gradient(from 135deg,#f59e0b,#ef4444,#a855f7,#0ea5e9,#f59e0b)", glow: "rgba(245,158,11,.17)", badge: "linear-gradient(135deg,#fff8e7,#fff0f2)" },
   ];
   const visualTheme = visualThemes[(Math.max(1, index) - 1) % visualThemes.length];
+
+  const handlePointerMove = (event) => {
+    if (!cardRef.current) return;
+    const bounds = cardRef.current.getBoundingClientRect();
+    cardRef.current.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+    cardRef.current.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+    cardRef.current.style.setProperty("--pointer-opacity", "1");
+  };
 
   const formatPlanPrice = (value) =>
     new Intl.NumberFormat(undefined, {
@@ -178,14 +187,16 @@ const SubscriptionCard = ({ data, index = 1, allFeatures, subscribePayment, page
   };
 
   return (
-    <div className="group relative h-full w-full overflow-hidden rounded-[31px] p-[2px] transition duration-500 hover:-translate-y-2" style={{ boxShadow: `0 22px 65px ${visualTheme.glow}` }}>
+    <div ref={cardRef} onMouseMove={handlePointerMove} onMouseLeave={() => cardRef.current?.style.setProperty("--pointer-opacity", "0")} className="group relative h-full w-full overflow-hidden rounded-[34px] p-[2px] transition duration-500 hover:-translate-y-2" style={{ boxShadow: `0 22px 65px ${visualTheme.glow}`, "--pointer-opacity": 0 }}>
       <div className="pointer-events-none absolute inset-[-65%] animate-[spin_9s_linear_infinite] motion-reduce:animate-none" style={{ background: visualTheme.ring }} aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 z-[3] rounded-[34px] opacity-[var(--pointer-opacity)] transition-opacity duration-300" style={{ background: `radial-gradient(260px circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,.7), ${visualTheme.glow} 38%, transparent 72%)`, mixBlendMode: "screen" }} aria-hidden="true" />
     <article
-      className={`relative z-[1] flex h-full min-h-[38rem] w-full flex-col overflow-hidden rounded-[29px] p-5 sm:p-6 ${data?.is_active ? "bg-[linear-gradient(145deg,#07111f,#101b31_55%,#111827)]" : "bg-[linear-gradient(150deg,#ffffff,#fbfdff_58%,#f7f8fc)]"}`}
+      className={`relative z-[1] flex h-full min-h-[38rem] w-full flex-col overflow-hidden rounded-[32px] p-5 sm:p-6 ${data?.is_active ? "bg-[linear-gradient(145deg,#050a12,#0b1728_55%,#111827)]" : "bg-[linear-gradient(150deg,#ffffff,#f8fbff_50%,#f3f0ff)]"}`}
       aria-label={`Subscription plan: ${planName}`}
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 opacity-70" style={{ background: `radial-gradient(circle at 80% 0%, ${visualTheme.glow}, transparent 68%)` }} />
-      <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full border border-white/20 bg-white/5 backdrop-blur-3xl" />
+      <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full border border-white/30 bg-white/10 backdrop-blur-3xl transition-transform duration-700 group-hover:scale-125" />
+      <div className="pointer-events-none absolute bottom-24 left-[-70px] h-44 w-44 rounded-full opacity-30 blur-3xl" style={{ background: visualTheme.ring }} />
       <div className="relative flex flex-1 flex-col gap-5">
         <header className="flex flex-col gap-4">
           <div className="flex items-start justify-between gap-3"><span className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-extrabold ${data?.is_active ? "bg-white/10 text-white ring-1 ring-white/15" : "bg-white/80 text-slate-800 ring-1 ring-slate-200/80"}`}>
