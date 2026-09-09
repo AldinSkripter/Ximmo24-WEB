@@ -1,7 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import CustomLocationAutocomplete from "./CustomLocationAutocomplete";
 import { IoLocationOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,10 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MdOutlineMyLocation } from "react-icons/md";
-import { isOpenStreetMapProvider } from "@/utils/mapProvider";
-import BwGoogleOverlay from "../maps/BwGoogleOverlay";
-import { BW_RESTRICTION_BOUNDS, BW_MIN_ZOOM } from "@/utils/bwRegion";
-import GoogleMapsScript, { isGoogleMapsReady } from "../google-maps/GoogleMapsScript";
 
 const LeafletMapView = dynamic(() => import("../maps/LeafletMapView"), { ssr: false });
 
@@ -45,7 +40,10 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     const isMobile = useIsMobile();
     const isRtl = isRTL();
     const webSettings = useSelector(state => state.WebSetting?.data);
-    const useOpenStreetMaps = isOpenStreetMapProvider(webSettings);
+    // The header location picker deliberately always uses Leaflet. Loading the
+    // Google Maps constructor during rapid client-side navigation can race with
+    // script cleanup/reinitialisation and crash the whole page.
+    const useOpenStreetMaps = true;
     const systemSettings = webSettings || {};
     const currentLocation = useSelector(state => state.location);
     const minRadius = systemSettings?.min_radius ?? 1;
@@ -77,15 +75,6 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     const mapRef = useRef(null);
     const tooltipRef = useRef(null);
     const typingTimeoutRef = useRef(null);
-    const [mapType, setMapType] = useState("roadmap");
-    const [isGoogleReady, setIsGoogleReady] = useState(false);
-
-    const googleMapsScript = (
-        <GoogleMapsScript
-            enabled={isOpen && !useOpenStreetMaps}
-            onReady={() => setIsGoogleReady(isGoogleMapsReady())}
-        />
-    );
 
 
     // API-based reverse geocoding for address lookup
@@ -399,18 +388,6 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
     };
 
     useEffect(() => {
-        if (useOpenStreetMaps) return;
-
-        const updateGoogleReady = () => {
-            setIsGoogleReady(Boolean(window.google?.maps));
-        };
-
-        updateGoogleReady();
-        const interval = setInterval(updateGoogleReady, 100);
-        return () => clearInterval(interval);
-    }, [useOpenStreetMaps]);
-
-    useEffect(() => {
         if (currentLocation?.latitude && currentLocation?.longitude && isOpen) {
             setLocation({
                 lat: parseFloat(currentLocation.latitude),
@@ -551,7 +528,6 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
 
     return (
         <>
-        {googleMapsScript}
         <Dialog open={isOpen} onOpenChange={(open) => {
             // Only close if explicitly clicking outside or pressing escape
             if (!open) {
@@ -633,73 +609,19 @@ const LocationSearchWithRadius = ({ isOpen, onClose }) => {
                     {/* Map */}
                     <div className="mb-4">
                         <div className="relative rounded-lg overflow-hidden h-[13rem] md:h-[21rem]" >
-                            {useOpenStreetMaps ? (
-                                <LeafletMapView
-                                    key={mapKey}
-                                    containerStyle={mapContainerStyle}
-                                    center={location}
-                                    zoom={12}
-                                    radiusKm={radius}
-                                    circleColor={webSettings?.system_color}
-                                    markerDraggable
-                                    onClick={handleMapClick}
-                                    onMarkerDragEnd={handleMarkerDragEnd}
-                                    bwOverlay
-                                    restrictToBw
-                                />
-                            ) : !isGoogleReady ? (
-                                <div className="flex h-full w-full items-center justify-center bg-gray-100 text-sm text-gray-500">
-                                    {t("loading")}
-                                </div>
-                            ) : (
-                                <GoogleMap
-                                    mapContainerStyle={mapContainerStyle}
-                                    center={selectedLocation || location || defaultCenter}
-                                    zoom={12}
-                                    onLoad={(map) => {
-                                        mapRef.current = map;
-                                        setMap(map);
-                                        setMapType(map.getMapTypeId()); // initial type
-                                    }}
-                                    onClick={handleMapClick}
-                                    options={{
-                                        draggable: true,
-                                        fullscreenControl: false,
-                                        cameraControl: false,
-                                        streetViewControl: false,
-                                        minZoom: BW_MIN_ZOOM,
-                                        restriction: {
-                                            latLngBounds: BW_RESTRICTION_BOUNDS,
-                                            strictBounds: true,
-                                        },
-                                    }}
-                                    onMapTypeIdChanged={() => {
-                                        if (mapRef.current) {
-                                            setMapType(mapRef.current.getMapTypeId());
-                                        }
-                                    }}
-
-                                >
-                                    <BwGoogleOverlay />
-                                    <Marker
-                                        position={location}
-                                        draggable={true}
-                                        onDragEnd={handleMarkerDragEnd}
-                                    />
-                                    <Circle
-
-                                        center={location}
-                                        radius={radius * 1000}
-                                        options={{
-                                            strokeColor: mapType === "hybrid" || mapType === "satellite" ? "#ffffff" : webSettings?.system_color,
-                                            fillColor: mapType === "hybrid" || mapType === "satellite" ? "#ffffff" : webSettings?.system_color,
-                                            strokeOpacity: 0.8,
-                                            strokeWeight: 2,
-                                            fillOpacity: 0.2,
-                                        }}
-                                    />
-                                </GoogleMap>
-                            )}
+                            <LeafletMapView
+                                key={mapKey}
+                                containerStyle={mapContainerStyle}
+                                center={location}
+                                zoom={12}
+                                radiusKm={radius}
+                                circleColor={webSettings?.system_color}
+                                markerDraggable
+                                onClick={handleMapClick}
+                                onMarkerDragEnd={handleMarkerDragEnd}
+                                bwOverlay
+                                restrictToBw
+                            />
                         </div>
                     </div>
 
