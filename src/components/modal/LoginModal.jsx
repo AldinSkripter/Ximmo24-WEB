@@ -2295,20 +2295,20 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
       <Dialog open={showLogin} onOpenChange={setShowLogin}>
         <DialogContent
           onInteractOutside={(e) => e.preventDefault()}
-          className="mx-auto max-h-[96vh] w-[calc(100%-20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
+          className="mx-auto h-[min(760px,96vh)] max-h-[96vh] w-[calc(100%-20px)] max-w-[1120px] overflow-hidden rounded-[26px] border border-white/20 bg-[#07111f] p-0 shadow-[0_40px_120px_rgba(2,8,23,.48)] sm:rounded-[34px] [&>button]:hidden"
         >
-          <div ref={authShellRef} onMouseMove={handleAuthPointerMove} className="relative grid min-h-[620px] lg:grid-cols-[.94fr_1.06fr]" style={{ "--auth-x": "50%", "--auth-y": "50%" }}>
+          <div ref={authShellRef} onMouseMove={handleAuthPointerMove} className="relative grid h-full min-h-0 lg:grid-cols-[.94fr_1.06fr]" style={{ "--auth-x": "50%", "--auth-y": "50%" }}>
             <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(360px_circle_at_var(--auth-x)_var(--auth-y),rgba(9,168,236,.11),transparent_72%)]" aria-hidden="true" />
-            <aside className="relative hidden min-h-[620px] overflow-hidden lg:flex lg:flex-col lg:justify-between">
+            <aside className="relative hidden h-full min-h-0 overflow-hidden lg:block">
               <div className="absolute inset-0 bg-[url('/assets/auth-luxury.svg')] bg-cover bg-center" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,10,22,.18),rgba(3,10,22,.92))]" />
-              <div className="relative z-10 flex items-center justify-between gap-3 p-7">
+              <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-3 p-7">
                 <div className="inline-flex min-h-14 items-center gap-3 rounded-2xl border border-white/20 bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-[.13em] text-slate-900 shadow-xl backdrop-blur-xl">
                   {webLogo ? <img src={webLogo} alt="Ximmo24" className="h-9 w-auto max-w-[155px] object-contain" /> : <BiHomeHeart size={24} className="primaryColor" />}
                 </div>
                 <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-[10px] font-black uppercase tracking-[.14em] text-cyan-100">BW · DE</span>
               </div>
-              <div className="relative z-10 p-7 pb-7 text-white">
+              <div className="absolute inset-x-0 top-[270px] z-10 p-7 pb-6 text-white">
                 <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[.16em] text-cyan-300"><BiHomeHeart size={17} />{authVisualText.region}</div>
                 <h2 className="max-w-md text-[32px] font-black leading-[1.08] tracking-[-.035em]">{authVisualText.title}</h2>
                 <p className="mt-3 max-w-md text-sm leading-5 text-white/70">{authVisualText.body}</p>
@@ -2323,7 +2323,7 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               </div>
             </aside>
 
-            <section className="relative z-30 flex min-w-0 flex-col overflow-hidden bg-[linear-gradient(145deg,#ffffff,#f8fbff_62%,#f5f2ff)]">
+            <section className="relative z-30 flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-[linear-gradient(145deg,#ffffff,#f8fbff_62%,#f5f2ff)]">
           <DialogHeader className="w-full shrink-0">
             <DialogTitle className="flex w-full items-center justify-between border-b border-slate-200/70 px-5 py-5 sm:px-7 md:px-9 md:py-7">
               <div><div className="mb-1 flex items-center gap-2 text-[11px] font-black uppercase tracking-[.17em] primaryColor"><BiKey size={16} />Ximmo24 Access</div><div className="truncate text-xl font-black tracking-tight text-slate-950 sm:text-2xl md:text-[28px]">
