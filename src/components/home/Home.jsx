@@ -49,6 +49,7 @@ const CategoriesSection = dynamic(() => import('../homepagesections/HomeNewSecti
 const UserRecommendationsSection = dynamic(() => import('../homepagesections/HomeNewSectionOne'), { ssr: false, loading: () => <UserRecommendationSkeleton /> });
 const MapSection = dynamic(() => import('../homepagesections/HomePropertiesOnMap'), { ssr: false, loading: () => <MapSkeleton /> });
 const AllPropertiesSection = dynamic(() => import('../homepagesections/AllPropertiesSection'), { ssr: false, loading: () => <PropertySectionSkeleton /> });
+const PremiumHomepageGateway = dynamic(() => import('./PremiumHomepageGateway'), { ssr: false });
 
 // Mapping section types to API response keys
 const SECTION_TYPE_TO_KEY_MAP = {
@@ -242,6 +243,9 @@ const Home = () => {
         refetchOnMount: false,
     });
 
+    const homepageSectionsPreview = sectionsQuery.data?.data ?? sectionsQuery.data ?? {};
+    const lightweightHomepage = homepageSectionsPreview?.lightweight_homepage_section === true;
+
     // 2. Fetch Property Sections (nearby, featured, most_viewed, most_liked, premium)
     const propertySectionsQuery = useQuery({
         queryKey: ['homepagePropertySections', homepageLocationParams.latitude || "", homepageLocationParams.longitude || "", homepageLocationParams.radius || "", isUserLoggedIn, activeLanguage],
@@ -259,7 +263,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: loadDeferredHomepage,
+        enabled: loadDeferredHomepage && !lightweightHomepage,
     });
 
 
@@ -274,7 +278,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: loadDeferredHomepage,
+        enabled: loadDeferredHomepage && !lightweightHomepage,
     });
 
     // 4. Fetch Other Sections (categories, agents, articles, user_recommendations, faqs, slider)
@@ -318,7 +322,7 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: loadDeferredHomepage,
+        enabled: loadDeferredHomepage && !lightweightHomepage,
     });
 
     // 7. Fetch Ad Banners
@@ -581,8 +585,14 @@ const Home = () => {
             ) : null}
 
             {/* ===================== */}
-            {/* HOMEPAGE SECTIONS */}
+            {/* LIGHTWEIGHT PREMIUM HOME */}
             {/* ===================== */}
+            {lightweightHomepage ? <PremiumHomepageGateway /> : null}
+
+            {/* ===================== */}
+            {/* ADMIN HOMEPAGE SECTIONS */}
+            {/* ===================== */}
+            {!lightweightHomepage ? (
             <div ref={deferredHomepageRef} className="flex flex-col min-h-px">
                 {!loadDeferredHomepage ? (
                     <div className="container mx-auto px-3 lg:px-0 py-8 lg:py-12" aria-hidden="true">
@@ -657,6 +667,7 @@ const Home = () => {
                 {/* ===================== */}
                 {loadDeferredHomepage && showAllPropertiesSection ? <AllPropertiesSection /> : null}
             </div>
+            ) : null}
 
             {/* ===================== */}
             {/* ABOVE FOOTER AD */}
