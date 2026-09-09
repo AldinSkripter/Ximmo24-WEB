@@ -31,7 +31,7 @@ import { useRouter } from "next/router";
 import { getCurrentLocationData, isDemoMode } from "@/utils/helperFunction";
 import { setIsLocationBasedHomepageData } from "@/redux/slices/cacheSlice";
 import { setLocationAction } from "@/redux/slices/locationSlice";
-const MainSwiper = dynamic(() => import('../mainswiper/MainSwiper'), { ssr: false, loading: () => <MainSwiperSkeleton /> });
+import MainSwiper from '../mainswiper/MainSwiper';
 const Faqs = dynamic(() => import('../faqs/Faqs'), { ssr: false, loading: () => <FaqsSkeleton /> });
 
 // Specific Dynamic Components with specific Skeletons to prevent CLS
@@ -292,7 +292,9 @@ const Home = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        enabled: sectionsQuery.isSuccess,
+        // Slider data is independent from the section-order response. Starting both
+        // requests together removes a full API round trip from the critical hero path.
+        enabled: true,
     });
 
     // 5. Fetch Map Section Data
@@ -533,8 +535,11 @@ const Home = () => {
     const aboveFooterAdBanner = addBannersQuery?.data?.find((banner) => banner.placement === "above_footer");
     const homepageSectionsResponse = sectionsQuery.data?.data ?? sectionsQuery.data ?? {};
     const homepageSections = homepageSectionsResponse?.section_data ?? [];
-    const showMainSwiper = homepageSectionsResponse?.slider_section === true || homepageSectionsResponse?.search_section === true;
-    const showSearchBox = homepageSectionsResponse?.search_section === true;
+    // Render the hero shell and search immediately while settings load. Once the
+    // response arrives, admin switches remain authoritative.
+    const homepageConfigLoading = sectionsQuery.isLoading;
+    const showMainSwiper = homepageConfigLoading || homepageSectionsResponse?.slider_section === true || homepageSectionsResponse?.search_section === true;
+    const showSearchBox = homepageConfigLoading || homepageSectionsResponse?.search_section === true;
     const showAllPropertiesSection = homepageSectionsResponse?.all_properties_section === true;
 
     return (
@@ -547,10 +552,13 @@ const Home = () => {
             {/* ===================== */}
             {/* MAIN SWIPER */}
             {/* ===================== */}
-            {otherSectionsQuery?.isLoading ? (
-                <MainSwiperSkeleton />
-            ) : showMainSwiper ? (
-                <MainSwiper slides={sliderData} showSwiper={homepageSectionsResponse?.slider_section === true} showSearchBox={showSearchBox} />
+            {showMainSwiper ? (
+                <MainSwiper
+                    slides={sliderData}
+                    showSwiper={homepageConfigLoading || homepageSectionsResponse?.slider_section === true}
+                    showSearchBox={showSearchBox}
+                    isSliderLoading={otherSectionsQuery.isLoading}
+                />
             ) : null}
 
             {/* ===================== */}
