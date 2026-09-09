@@ -241,7 +241,7 @@ const Home = ({ initialHomepageSections = null, initialHomepageOtherSections = n
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        initialData: initialLanguage === activeLanguage ? initialHomepageSections : undefined,
+        initialData: !activeLanguage || initialLanguage === activeLanguage ? initialHomepageSections : undefined,
     });
 
     const homepageSectionsPreview = sectionsQuery.data?.data ?? sectionsQuery.data ?? {};
@@ -297,7 +297,7 @@ const Home = ({ initialHomepageSections = null, initialHomepageOtherSections = n
         // requests together removes a full API round trip from the critical hero path.
         enabled: true,
         initialData:
-            initialLanguage === activeLanguage && homepageSectionsPreview?.lightweight_homepage_section === true
+            (!activeLanguage || initialLanguage === activeLanguage) && homepageSectionsPreview?.lightweight_homepage_section === true
                 ? initialHomepageOtherSections
                 : undefined,
     });
