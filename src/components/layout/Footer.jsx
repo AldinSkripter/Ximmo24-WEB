@@ -1,320 +1,158 @@
 "use client";
+
 import { useSelector } from "react-redux";
-import {
-  FaFacebookF, FaPhoneAlt, FaYoutube
-} from "react-icons/fa";
-import Image from "next/image";
-import { useTranslation } from "../context/TranslationContext";
-import Link from "next/link";
-import { PiMapPinFill } from "react-icons/pi";
-import { BiSolidEnvelope } from "react-icons/bi";
-import CustomLink from "../context/CustomLink";
-import playStore from "@/assets/playStore.svg";
-import AppleStore from "@/assets/Apple.svg";
+import { FaFacebookF, FaPhoneAlt, FaYoutube } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
+import { PiMapPinFill } from "react-icons/pi";
+import { BiSolidEnvelope } from "react-icons/bi";
+import Image from "next/image";
+import Link from "next/link";
+import { useTranslation } from "../context/TranslationContext";
+import CustomLink from "../context/CustomLink";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
+import playStore from "@/assets/playStore.svg";
+import AppleStore from "@/assets/Apple.svg";
 import Logo from "@/assets/whitelogo.png";
 import { getProjectFilters } from "@/utils/helperFunction";
-// Helper: Render only if value exists
-function RenderIf({ condition, children }) {
-  return condition ? children : null;
-}
+
+const RenderIf = ({ condition, children }) => condition ? children : null;
 
 const Footer = () => {
   const t = useTranslation();
-  // Get webSettings from redux
   const webSettings = useSelector((state) => state.WebSetting?.data);
   const cacheData = useSelector((state) => state.cacheData);
   const currentYear = new Date().getFullYear();
 
   const propertyLinks = [
-    { href: "/properties", label: t("allProperties") },
-    { href: `/projects/featured-projects${getProjectFilters("", { flags: { promoted: 1 } })}`, label: t("featuredProjects") },
-    { href: "/properties/featured-properties", label: t("featuredProperties") },
-    { href: "/properties-on-map", label: t("propertiesOnMap") },
-    {
-      href: "/properties/most-viewed-properties",
-      label: t("mostViewedProperties"),
-    },
-    {
-      href: "/properties/most-favourite-properties",
-      label: t("mostFavouriteProperties"),
-    },
-    {
-      href: "/properties/properties-nearby-city",
-      label: t("propertiesNearbyCity"),
-    },
-    { href: "/projects", label: t("upcomingProjects") },
-  ];
+    ["/properties", t("allProperties")],
+    [`/projects/featured-projects${getProjectFilters("", { flags: { promoted: 1 } })}`, t("featuredProjects")],
+    ["/properties/featured-properties", t("featuredProperties")],
+    ["/properties-on-map", t("propertiesOnMap")],
+    ["/properties/most-viewed-properties", t("mostViewedProperties")],
+    ["/properties/most-favourite-properties", t("mostFavouriteProperties")],
+    ["/properties/properties-nearby-city", t("propertiesNearbyCity")],
+    ["/projects", t("upcomingProjects")],
+  ].map(([href, label]) => ({ href, label }));
 
   const quickLinks = [
-    { href: "/", label: t("home") },
-    { href: "/faqs", label: t("faqs") },
-    { href: "/about-us", label: t("aboutUs") },
-    { href: "/terms-and-conditions", label: t("termsAndConditions") },
-    { href: "/subscription-plan", label: t("subscriptionPlan") },
-    { href: "/privacy-policy", label: t("privacyPolicy") },
-    { href: "/all/articles", label: t("articles") },
-    { href: "/contact-us", label: t("contactUs") },
-    ...(cacheData?.customPages?.map((page) => ({
-      href: `/more-pages/${page?.slug_id}`,
-      label: page?.title,
-    })) || []),
-  ];
+    ["/", t("home")], ["/faqs", t("faqs")], ["/about-us", t("aboutUs")],
+    ["/terms-and-conditions", t("termsAndConditions")],
+    ["/subscription-plan", t("subscriptionPlan")],
+    ["/privacy-policy", t("privacyPolicy")], ["/all/articles", t("articles")],
+    ["/contact-us", t("contactUs")],
+  ].map(([href, label]) => ({ href, label })).concat(
+    cacheData?.customPages?.map((page) => ({ href: `/more-pages/${page?.slug_id}`, label: page?.title })) || [],
+  );
+
   const appLinks = [
     { href: webSettings?.appstore_id, label: t("appStore"), icon: "apple" },
     { href: webSettings?.playstore_id, label: t("googlePlay"), icon: "google" },
-  ];
-  const socialLinks = {
-    facebook: webSettings?.facebook_id,
-    twitter: webSettings?.twitter_id,
-    instagram: webSettings?.instagram_id,
-    youtube: webSettings?.youtube_id,
-  };
+  ].filter(({ href }) => Boolean(href));
 
   const companyName = webSettings?.company_name;
   const companyDescription = webSettings?.translated_company_description || webSettings?.company_description;
   const address = webSettings?.company_address;
   const email = webSettings?.company_email;
-  const phone1 = webSettings?.company_tel1;
-  const phone2 = webSettings?.company_tel2;
+  const phoneNumbers = [webSettings?.company_tel1, webSettings?.company_tel2].filter(Boolean);
 
-  const phoneNumbers = [phone1, phone2].filter(Boolean);
+  const socialItems = [
+    [webSettings?.facebook_id, "Facebook", FaFacebookF],
+    [webSettings?.twitter_id, "Twitter", FaXTwitter],
+    [webSettings?.instagram_id, "Instagram", AiFillInstagram],
+    [webSettings?.youtube_id, "YouTube", FaYoutube],
+  ].filter(([href]) => Boolean(href));
+
+  const contactItems = [
+    address && { key: "address", icon: PiMapPinFill, content: address },
+    email && { key: "email", icon: BiSolidEnvelope, content: email, href: `mailto:${email}`, label: `${t("emailUs")}: ${email}` },
+    ...phoneNumbers.map((number, index) => ({ key: `phone-${index}`, icon: FaPhoneAlt, content: number, href: `tel:${number}`, label: `${t("phoneNumber")}: ${number}`, ltr: true })),
+  ].filter(Boolean);
+
+  const FooterLinks = ({ links }) => (
++    <ul className="grid gap-1.5">
+      {links.map((link) => (
++        <li key={`${link.href}-${link.label}`}>
+          <CustomLink href={link.href} className="group flex min-h-10 items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm font-medium text-white/65 transition hover:bg-white/[.06] hover:text-white" aria-label={link.label}>
+            <span className="min-w-0 truncate">{link.label}</span>
+            <span className="primaryColor text-base opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100" aria-hidden="true">↗</span>
+          </CustomLink>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
-    <footer className="brandBg">
-      <div className="container w-full min-h-[400px]">
-        {/* Top Contact Bar */}
-        <RenderIf
-          condition={address || email || (phoneNumbers && phoneNumbers.length)}
-        >
-          <div className="grid grid-cols-1 gap-4 px-4 py-6 md:grid-cols-12 md:px-4 md:py-12">
-            <div className="col-span-12 flex flex-col gap-4 md:col-span-4 lg:col-span-12 xl:col-span-4">
-              <CustomLink href="/" className="flex items-center" aria-label={`${companyName || t("home")}`}>
-                <ImageWithPlaceholder
-                  src={webSettings?.web_footer_logo ? webSettings?.web_footer_logo : Logo}
-                  alt={companyName || "logo"}
-                  width={176}
-                  height={56}
-                  className="h-14 w-44 aspect-[17/56] object-cover"
-                  loading="lazy"
-                />
-              </CustomLink>
-              <div className="min-h-[60px]">
-                <h2 className="primaryTextColor text-base font-medium leading-relaxed">
-                  {companyDescription ||
-                    t("companyFooterDescription")}
-                </h2>
+    <footer className="relative overflow-hidden bg-[#06101d] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,color-mix(in_srgb,var(--primary-color)_18%,transparent),transparent_30%),radial-gradient(circle_at_92%_90%,color-mix(in_srgb,var(--primary-color)_10%,transparent),transparent_28%)]" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--primary-color),transparent)]" aria-hidden="true" />
+      <div className="container relative mx-auto px-4 pb-8 pt-12 sm:pt-16 lg:pt-20">
+        <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.05fr_1.95fr] lg:items-start lg:gap-14 lg:pb-16">
+          <div>
+            <CustomLink href="/" className="inline-flex max-w-[210px] items-center" aria-label={companyName || t("home")}>
+              <ImageWithPlaceholder src={webSettings?.web_footer_logo || Logo} alt={companyName || "logo"} width={210} height={68} className="h-auto max-h-[68px] w-auto max-w-full object-contain" loading="lazy" />
+            </CustomLink>
+            <p className="mt-6 max-w-md text-sm font-medium leading-7 text-white/60 sm:text-base">{companyDescription || t("companyFooterDescription")}</p>
+            <RenderIf condition={socialItems.length}>
+              <div className="mt-7">
+                <p className="mb-3 text-[11px] font-black uppercase tracking-[.18em] text-white/40">{t("followUs")}</p>
+                <ul className="flex flex-wrap gap-2.5">
+                  {socialItems.map(([href, label, Icon]) => (
+                    <li key={label}><Link href={href} target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] text-white/75 transition hover:-translate-y-1 hover:border-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white" aria-label={`${t("followUs")} ${t("on")} ${label}`}><Icon size={18} /></Link></li>
+                  ))}
+                </ul>
               </div>
+            </RenderIf>
+          </div>
+
+          <RenderIf condition={contactItems.length}>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {contactItems.map(({ key, icon: Icon, content, href, label, ltr }) => {
+                const inner = <><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[var(--primary-color)] [background-color:color-mix(in_srgb,var(--primary-color)_13%,transparent)]"><Icon size={19} /></span><span className={`min-w-0 break-words text-sm font-semibold leading-6 text-white/80 ${ltr ? "ltr-number" : ""}`}>{content}</span></>;
+                const classes = "flex min-h-[76px] items-center gap-3 rounded-2xl border border-white/10 bg-white/[.045] p-4 transition hover:-translate-y-1 hover:border-[var(--primary-color)] hover:bg-white/[.075]";
+                return href ? <Link key={key} href={href} aria-label={label} className={classes}>{inner}</Link> : <div key={key} className={classes}>{inner}</div>;
+              })}
             </div>
-            <div className="col-span-12 flex flex-col gap-4 rounded-2xl bg-black p-4 md:col-span-8 lg:col-span-12 xl:col-span-8 md:flex-row lg:flex-col xl:flex-row md:px-2 lg:px-4 lg:justify-evenly md:flex-wrap xl:flex-nowrap">
-              {/* Address */}
-              <RenderIf condition={address}>
-                <div className="flex items-center gap-2 md:w-auto lg:border-b lg:border-[#F5F5F429] lg:py-4 xl:border-none xl:py-0">
-                  <span className="inline-flex items-center justify-center rounded-md bg-[#F5F5F429] bg-opacity-10 p-3">
-                    <PiMapPinFill className="fill-white" size={24} />
-                  </span>
-                  <span className="max-w-sm text-base text-white">
-                    {address}
-                  </span>
-                  <div className="ml-6 hidden h-10 w-px bg-white/20 xl:block"></div>
-                </div>
-              </RenderIf>
-              {/* Email */}
-              <RenderIf condition={email}>
-                <div className="flex items-center gap-2 md:w-auto lg:border-b lg:border-[#F5F5F429] lg:py-4 xl:border-none xl:py-0">
-                  <span className="inline-flex items-center justify-center rounded-md bg-[#F5F5F429] bg-opacity-10 p-3">
-                    <BiSolidEnvelope className="fill-white" size={24} />
-                  </span>
-                  <Link
-                    href={`mailto:${email}`}
-                    target="_blank"
-                    className="h-fit w-fit text-base text-white"
-                    tabIndex={0}
-                    aria-label={`${t("emailUs")}: ${email}`}
-                  >
-                    {email}
-                  </Link>
-                  {phoneNumbers.length > 0 && <div className="ml-6 hidden h-10 w-px bg-white/20 xl:block"></div>}
-                </div>
-              </RenderIf>
-              {/* Phone Numbers */}
-              <RenderIf condition={phoneNumbers && phoneNumbers.length}>
-                <div className="flex items-center gap-2 md:w-auto  lg:py-4 xl:border-none xl:py-0">
-                  <span className="inline-flex items-center justify-center rounded-md bg-[#F5F5F429] bg-opacity-10 p-3">
-                    <FaPhoneAlt className="fill-white" size={24} />
-                  </span>
-                  <div className="flex flex-col text-base text-white">
-                    {phoneNumbers.map((num, idx) => (
-                      <Link
-                        key={idx}
-                        href={`tel:${num}`}
-                        className="h-fit w-fit"
-                        tabIndex={0}
-                        aria-label={`${t("phoneNumber")}: ${num}`}
-                      >
-                        <span className="ltr-number">{num}</span>
+          </RenderIf>
+        </div>
+
+        <div className={`grid gap-10 py-12 sm:grid-cols-2 lg:py-16 ${appLinks.length ? "xl:grid-cols-[1fr_1fr_.9fr]" : "xl:grid-cols-2"}`}>
+          <section>
+            <div className="mb-5 flex items-center gap-3"><span className="h-2 w-2 rounded-full primaryBg" /><h2 className="text-lg font-bold tracking-tight">{t("propertyListing")}</h2></div>
+            <FooterLinks links={propertyLinks} />
+          </section>
+          <section>
+            <div className="mb-5 flex items-center gap-3"><span className="h-2 w-2 rounded-full primaryBg" /><h2 className="text-lg font-bold tracking-tight">{t("quickLinks")}</h2></div>
+            <FooterLinks links={quickLinks} />
+          </section>
+          <RenderIf condition={appLinks.length}>
+            <section className="sm:col-span-2 xl:col-span-1">
+              <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-white/[.055] p-6 sm:p-7">
+                <div className="absolute -right-14 -top-14 h-36 w-36 rounded-full [background-color:color-mix(in_srgb,var(--primary-color)_12%,transparent)]" aria-hidden="true" />
+                <div className="relative">
+                  <p className="primaryColor text-[11px] font-black uppercase tracking-[.18em]">Ximmo24 Mobile</p>
+                  <h2 className="mt-3 text-xl font-bold">{t("downloadOurApp")}</h2>
+                  <p className="mt-3 text-sm leading-6 text-white/55">{t("downloadApp1")} {companyName} {t("downloadApp2")}</p>
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                    {appLinks.map((app) => (
+                      <Link key={app.href} href={app.href} target="_blank" rel="noopener noreferrer" className="flex min-h-[62px] items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-2.5 text-[#07111f] shadow-lg transition hover:-translate-y-1 hover:border-[var(--primary-color)]" aria-label={`${t("downloadOn")} ${app.label}`}>
+                        <span className="relative h-9 w-9 shrink-0"><Image src={app.icon === "google" ? playStore : AppleStore} alt="" fill className="object-contain" sizes="36px" /></span>
+                        <span className="flex min-w-0 flex-col text-left"><span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{t("downloadOn")}</span><span className="truncate text-base font-black">{app.label}</span></span>
                       </Link>
                     ))}
                   </div>
                 </div>
-              </RenderIf>
-            </div>
-          </div>
-        </RenderIf>
-        {/* Main Footer Grid */}
-        <div className={`primaryTextColor grid gap-y-12 sm:gap-12 px-4 py-6 grid-cols-12`}>
-          {/* Property Listing */}
-          <div className={`col-span-12 sm:col-span-6 ${appLinks?.every((link) => link.href !== null)
-            ? 'lg:col-span-6 xl:col-span-4'
-            : 'lg:col-span-6'
-            }`}>
-            <h2 className="mb-3 border-b border-white/20 pb-3 text-xl font-semibold md:mb-6 md:pb-6">
-              {t("propertyListing")}
-            </h2>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {propertyLinks?.map((link) => (
-                <CustomLink
-                  key={link.href}
-                  href={link.href}
-                  className="hover-underline-animation h-fit w-fit text-white"
-                  tabIndex={0}
-                  aria-label={link.label}
-                >
-                  {link.label}
-                </CustomLink>
-              ))}
-            </div>
-          </div>
-          {/* Quick Links */}
-          <div className={`col-span-12 sm:col-span-6 ${appLinks?.every((link) => link.href !== null)
-            ? 'lg:col-span-6 xl:col-span-4'
-            : 'lg:col-span-6'
-            }`}>
-            <h2 className="mb-3 border-b border-white/20 pb-3 text-xl font-semibold md:mb-6 md:pb-6">
-              {t("quickLinks")}
-            </h2>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {quickLinks?.map((link) => (
-                <CustomLink
-                  key={link.href}
-                  href={link.href}
-                  className="hover-underline-animation truncate h-6 w-fit text-white max-w-[190px] text-ellipsis whitespace-nowrap"
-                  tabIndex={0}
-                  aria-label={link.label}
-                >
-                  {link.label}
-                </CustomLink>
-              ))}
-            </div>
-          </div>
-          {/* Download App */}
-          <RenderIf condition={appLinks?.every((link) => link.href !== null)}>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-12 xl:col-span-4">
-              <h2 className="mb-3 border-b border-white/20 pb-3 text-xl font-semibold md:mb-6 md:pb-6">
-                {t("downloadOurApp")}
-              </h2>
-              <p className="mb-6 text-white/80">
-                {t("downloadApp1")} {companyName} {t("downloadApp2")}
-              </p>
-              <div className="mb-6 flex flex-wrap gap-4">
-                {appLinks?.map((app) => (
-                  <Link
-                    key={app.href || app.label}
-                    href={app.href || "#"}
-                    target="_blank"
-                    className="flex items-center gap-2 rounded-md !bg-white bg-opacity-10 px-4 py-2 hover:bg-opacity-20"
-                    tabIndex={0}
-                    aria-label={`${t("downloadOn")} ${app.label}`}
-                  >
-                    <div className="w-9 h-9 relative flex-shrink-0">
-                      <Image
-                        src={app.icon === "google" ? playStore : AppleStore}
-                        alt={app.icon === "google" ? "Google Play" : "Apple Store"}
-                        fill
-                        className="object-contain"
-                        sizes="36px"
-                      />
-                    </div>
-                    <span className="flex flex-col text-left">
-                      <span className="leadColor text-xs font-medium">
-                        {t("downloadOn")}
-                      </span>
-                      <span className="brandColor text-lg font-bold">
-                        {app.label}
-                      </span>
-                    </span>
-                  </Link>
-                ))}
               </div>
-            </div>
+            </section>
           </RenderIf>
         </div>
-      </div>
-      {/* Bottom Bar */}
-      <div className="bg-black w-full">
-        <div className="primaryTextColor container mx-auto flex flex-col items-center justify-center gap-2 py-3 md:flex-row md:justify-between">
-          <p className="w-full text-center md:w-auto">
-            {t("copyright")} &copy; {currentYear} {companyName}.{" "}
-            {t("allRightsReserved")}
-          </p>
-          <RenderIf condition={[socialLinks?.facebook, socialLinks?.instagram, socialLinks?.twitter, socialLinks?.youtube]?.some((link) => link)}>
-            <div className="flex w-full items-center justify-center gap-3 md:w-auto md:justify-end">
-              <span className="text-base font-semibold">{t("followUs")} :</span>
-              <ul className="flex gap-4">
-                {socialLinks?.facebook && (
-                  <li>
-                    <Link
-                      href={socialLinks.facebook}
-                      className="transition-opacity hover:opacity-80"
-                      aria-label={`${t("followUs")} ${t("on")} Facebook`}
-                      tabIndex={0}
-                    >
-                      <FaFacebookF size={20} className="w-5 h-5" aria-hidden="true" />
-                    </Link>
-                  </li>
-                )}
-                {socialLinks?.twitter && (
-                  <li>
-                    <Link
-                      href={socialLinks.twitter}
-                      className="transition-opacity hover:opacity-80"
-                      aria-label={`${t("followUs")} ${t("on")} Twitter`}
-                      tabIndex={0}
-                    >
-                      <FaXTwitter size={20} className="w-5 h-5" aria-hidden="true" />
-                    </Link>
-                  </li>
-                )}
-                {socialLinks?.instagram && (
-                  <li>
-                    <Link
-                      href={socialLinks.instagram}
-                      className="transition-opacity hover:opacity-80"
-                      aria-label={`${t("followUs")} ${t("on")} Instagram`}
-                      tabIndex={0}
-                    >
-                      <AiFillInstagram size={20} className="w-5 h-5 !fill-white" aria-hidden="true" />
-                    </Link>
-                  </li>
-                )}
-                {socialLinks?.youtube && (
-                  <li>
-                    <Link
-                      href={socialLinks.youtube}
-                      className="transition-opacity hover:opacity-80"
-                      aria-label={`${t("followUs")} ${t("on")} Youtube`}
-                      tabIndex={0}
-                    >
-                      <FaYoutube size={20} className="w-5 h-5" aria-hidden="true" />
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </div>
 
-          </RenderIf>
+        <div className="flex flex-col gap-4 border-t border-white/10 pt-7 text-center text-xs font-medium text-white/45 sm:flex-row sm:items-center sm:justify-between sm:text-left">
+          <p>{t("copyright")} &copy; {currentYear} {companyName}. {t("allRightsReserved")}</p>
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 sm:justify-end">
+            <CustomLink href="/privacy-policy" className="transition hover:text-white">{t("privacyPolicy")}</CustomLink>
+            <CustomLink href="/terms-and-conditions" className="transition hover:text-white">{t("termsAndConditions")}</CustomLink>
+          </div>
         </div>
       </div>
     </footer>
