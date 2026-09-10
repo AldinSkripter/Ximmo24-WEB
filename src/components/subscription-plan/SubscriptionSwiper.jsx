@@ -446,7 +446,7 @@ const SubscriptionSwiper = ({ isAgentSubscriptionSwiper = false, page = "" }) =>
 
   return (
     <div>
-      {!isAgentSubscriptionSwiper && (
+      {!isAgentSubscriptionSwiper && page !== "subscription-plan" && (
         <NewBreadcrumb
           title={t("subscriptionPlan")}
           items={[{ href: "/subscription-plan", label: t("subscriptionPlan") }]}
@@ -473,7 +473,7 @@ const SubscriptionSwiper = ({ isAgentSubscriptionSwiper = false, page = "" }) =>
 
             {loading ? (
               <Carousel opts={carouselOptions} className="relative w-full">
-                <CarouselContent>
+                <CarouselContent className={page === "subscription-plan" && packagedata.length < 3 ? "md:justify-center" : ""}>
                   {renderSkeletonCards()}
                 </CarouselContent>
                 {renderCarouselControls()}
