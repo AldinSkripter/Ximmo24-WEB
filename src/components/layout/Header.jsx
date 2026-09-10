@@ -87,6 +87,12 @@ const Header = () => {
   const isBecomeAgentPage = router?.pathname === "/become-agent";
   const isHomePage = router?.pathname === "/";
   const useHeroHeader = isHomePage && !isScrolled;
+  const navTextClass = useHeroHeader
+    ? "text-white/90 hover:text-white"
+    : "text-slate-700 hover:text-slate-950";
+  const subtleControlClass = useHeroHeader
+    ? "border-white/20 bg-slate-950/25 text-white hover:bg-white/15"
+    : "border-slate-200 bg-slate-50 text-slate-800 hover:border-slate-300 hover:bg-white";
   const isAgentOwnListingDetailsPage =
     router?.pathname?.startsWith("/agent/my-property") ||
     router?.pathname?.startsWith("/agent/my-project");
@@ -96,7 +102,7 @@ const Header = () => {
       : `/?lang=${lang || "de"}`;
   const { signOut } = FirebaseData();
   const agentStatusButtonClass =
-    `hidden xl:flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold max-h-14 justify-center transition-all duration-200 ${useHeroHeader ? "border-white/70 bg-white text-slate-900 hover:bg-white/90" : "border-white/25 bg-white/10 text-white hover:bg-white hover:text-slate-900"}`;
+    `hidden xl:flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold max-h-14 justify-center transition-all duration-200 ${useHeroHeader ? "border-white/70 bg-white text-slate-900 hover:bg-white/90" : "border-slate-900 bg-slate-900 text-white hover:bg-slate-800"}`;
   const handleBecomeAgentClick = () => {
     if (userData) {
       router.push(`/become-agent?lang=${currentLang}`);
@@ -437,9 +443,9 @@ const Header = () => {
   return (
     <>
       <div
-        className={`w-full z-50 transform transition-all duration-500 ${isHomePage ? "absolute left-0 top-0 h-20" : "relative h-20 md:h-32"} ${isScrolled ? "fixed left-0 top-0 h-20 shadow-xl" : ""} ${!isHeaderVisible ? "-translate-y-full" : "translate-y-0"}`}
+        className={`w-full z-50 h-20 transform transition-all duration-500 ${isHomePage ? "absolute left-0 top-0" : "relative"} ${isScrolled ? "fixed left-0 top-0 shadow-xl" : ""} ${!isHeaderVisible ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className={`${isHomePage ? "hidden" : "primaryBg hidden md:block"} h-12 py-2 text-white`}>
+        <div className="hidden">
           <div className="container h-8 px-3 md:px-2 lg:px-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 lg:gap-4">
@@ -565,14 +571,14 @@ const Header = () => {
           </div>
         </div>
 
-        <header className={`relative z-50 w-full h-20 transition-all duration-500 ${useHeroHeader ? "bg-gradient-to-b from-slate-950/75 via-slate-950/35 to-transparent" : "bg-[#07111f] shadow-[0_10px_35px_rgba(2,8,23,0.18)]"}`}>
+        <header className={`relative z-50 h-20 w-full transition-all duration-500 ${useHeroHeader ? "bg-gradient-to-b from-slate-950/75 via-slate-950/35 to-transparent" : "border-b border-slate-200/80 bg-white/95 shadow-[0_12px_35px_rgba(15,23,42,0.08)] backdrop-blur-xl"}`}>
           <div className="container h-full px-3 md:px-4 lg:px-5 2xl:px-0">
             <div className="flex h-full items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3 lg:gap-5">
                 <Link
                   href={logoHref}
                   title="Home"
-                  className="flex shrink-0 items-center rounded-xl bg-white/95 px-2.5 py-1.5 shadow-lg ring-1 ring-white/30 transition-transform hover:scale-[1.02]"
+                  className="flex shrink-0 items-center transition-transform hover:scale-[1.02]"
                   onClick={() => dispatch(setLockedFilter(null))}
                 >
                   {webSettings?.web_logo ? (
@@ -581,7 +587,7 @@ const Header = () => {
                       alt="Ximmo24"
                       width={176}
                       height={56}
-                      className="h-9 w-28 object-contain md:h-10 md:w-32 xl:w-36"
+                      className={`h-10 w-32 object-contain md:h-11 md:w-36 xl:w-40 ${useHeroHeader ? "drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" : ""}`}
                       priority={true}
                     />
                   ) : (
@@ -590,7 +596,7 @@ const Header = () => {
                 </Link>
                 <div className="relative hidden min-w-0 max-w-[170px] lg:block xl:hidden 2xl:block 2xl:max-w-[230px]">
                   <div
-                    className="relative cursor-pointer rounded-xl border border-white/20 bg-slate-950/25 px-3 py-2 text-white backdrop-blur-md transition-all hover:bg-white/15"
+                    className={`relative cursor-pointer rounded-xl border px-3 py-2 backdrop-blur-md transition-all ${subtleControlClass}`}
                     role="button"
                     tabIndex={0}
                     onClick={() => setIsLocationDialogOpen(true)}
@@ -601,16 +607,16 @@ const Header = () => {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2">
-                      <div className="shrink-0 rounded-lg bg-white/15 p-1.5">
+                      <div className={`shrink-0 rounded-lg p-1.5 ${useHeroHeader ? "bg-white/15" : "bg-slate-200/70"}`}>
                         <BiMapPin size={22} />
                       </div>
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1 text-white/75">
+                        <div className={`flex items-center gap-1 ${useHeroHeader ? "text-white/75" : "text-slate-500"}`}>
                           <span className="text-xs">{t("location")}</span>
                           <FaChevronDown size={10} className="mb-0.5" />
                         </div>
                         <div
-                          className="mt-0.5 truncate text-sm font-semibold text-white"
+                          className={`mt-0.5 truncate text-sm font-semibold ${useHeroHeader ? "text-white" : "text-slate-900"}`}
                           title={location?.filter(Boolean)?.join(", ") || t("selectLocation")}
                         >
                           {location && location?.filter(Boolean)?.length > 0
@@ -679,13 +685,13 @@ const Header = () => {
                   handleShowLogin={handleShowLogin}
                   handleLogout={handleLogout}
                   handleShowAreaConverter={handleShowAreaConverter}
-                  darkHeader
+                  darkHeader={useHeroHeader}
                 />
 
                 <ul className="hidden items-center gap-4 xl:flex 2xl:gap-6">
-                  <li className="font-semibold text-white/90 transition-colors hover:text-white">
+                  <li className={`font-semibold transition-colors ${navTextClass}`}>
                     <Link href={`/`} className="flex flex-col items-center" onClick={() => dispatch(setLockedFilter(null))}>
-                      <span className={router.pathname === '/' ? 'text-white font-bold' : ''}>
+                      <span className={router.pathname === '/' ? (useHeroHeader ? 'text-white font-bold' : 'primaryColor font-bold') : ''}>
                         {t("home")}
                       </span>
                     </Link>
@@ -693,7 +699,7 @@ const Header = () => {
                   {menus.map((menu) => (
                     <li key={menu.name} className="relative dropdown-menu flex flex-col items-center">
                       <button
-                        className="dropdown-trigger flex items-center gap-1 bg-transparent p-0 text-sm font-semibold text-white/90 transition-all hover:text-white 2xl:text-base"
+                        className={`dropdown-trigger flex items-center gap-1 bg-transparent p-0 text-sm font-semibold transition-all 2xl:text-base ${navTextClass}`}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -702,14 +708,14 @@ const Header = () => {
                       >
                         <span className={menu?.links?.some(link => {
                           return router.pathname.includes(link.route) && link.route !== '/';
-                        }) ? 'text-white font-bold' : ''}>
+                        }) ? (useHeroHeader ? 'text-white font-bold' : 'primaryColor font-bold') : ''}>
                           {t(menu.name)}
                         </span>
                         <FaChevronDown
                           size={10}
                           className={`transition-transform duration-200 ${openMenu === menu.name ? 'rotate-180' : ''} ${menu?.links?.some(link => {
                             return router.pathname.includes(link.route) && link.route !== '/';
-                          }) ? 'text-white' : ''
+                          }) ? (useHeroHeader ? 'text-white' : 'primaryColor') : ''
                             }`}
                         />
                       </button>
@@ -749,7 +755,7 @@ const Header = () => {
                   <button
                     type="button"
                     onClick={handleShowLanguageDropdown}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                    className={`flex items-center gap-1.5 rounded-xl border px-3 py-2.5 text-sm font-semibold transition-colors ${subtleControlClass}`}
                   >
                     <span className="2xl:hidden">{String(currentLang || "de").toUpperCase()}</span>
                     <span className="hidden 2xl:inline">
@@ -791,7 +797,7 @@ const Header = () => {
                 <div className="hidden items-center gap-3 font-medium xl:flex">
                   {userData === null ? (
                     <button
-                      className="flex items-center gap-2 rounded-xl border border-white/55 bg-transparent px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white hover:text-slate-900"
+                      className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all ${useHeroHeader ? "border-white/55 bg-transparent text-white hover:bg-white hover:text-slate-900" : "border-slate-900 bg-slate-900 text-white hover:bg-slate-800"}`}
                       onClick={handleShowLogin}
                     >
                       <FaRegUserCircle size={16} />
@@ -802,7 +808,7 @@ const Header = () => {
                     userData?.mobile ? (
                     <div className="relative dropdown-menu">
                       <button
-                        className="dropdown-trigger flex w-max items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white transition-all hover:bg-white/20"
+                        className={`dropdown-trigger flex w-max items-center gap-2 rounded-xl border px-2.5 py-1.5 text-sm font-semibold transition-all ${subtleControlClass}`}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
