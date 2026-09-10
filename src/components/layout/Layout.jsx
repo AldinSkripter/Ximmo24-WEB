@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
   const webSettings = useSelector((state) => state.WebSetting?.data);
   const userData = useSelector((state) => state.User?.data);
   const currentRole = useSelector((state) => state?.User)?.role
-  const underMaintenance = ["1", 1, true, "true"].includes(webSettings?.web_maintenance_mode);
+  const underMaintenance = webSettings?.web_maintenance_mode === "1";
   const allowCookies = webSettings?.allow_cookies;
 
   // Get locale from router query params
@@ -153,12 +153,10 @@ const Layout = ({ children }) => {
     queryKey: ['webSettings'],
     queryFn: fetchWebSettings,
     // keepPreviousData: true,
-    // System Settings include operational switches such as maintenance mode.
-    // Refresh stale settings on mount so an admin change is reflected reliably.
-    staleTime: 60 * 1000,
+    staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchOnMount: true,
+    refetchOnMount: false,
   })
 
   // Re-apply the selected System Settings theme whenever Redux is restored or
@@ -303,15 +301,6 @@ const Layout = ({ children }) => {
     return () => { };
   }, [urlLocale, isLoadCompleted]);
 
-
-  if (underMaintenance) {
-    return (
-      <>
-        <UnderMaintenance />
-        {allowCookies && <CookieComponent />}
-      </>
-    );
-  }
 
   return (
     <>
