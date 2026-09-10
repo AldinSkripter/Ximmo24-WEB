@@ -85,6 +85,8 @@ const Header = () => {
   const isAgentRequestPending = userData?.become_agent_status === "pending";
   const isAgentNotApplied = userData?.become_agent_status === "not_applied";
   const isBecomeAgentPage = router?.pathname === "/become-agent";
+  const isHomePage = router?.pathname === "/";
+  const useHeroHeader = isHomePage && !isScrolled;
   const isAgentOwnListingDetailsPage =
     router?.pathname?.startsWith("/agent/my-property") ||
     router?.pathname?.startsWith("/agent/my-project");
@@ -94,7 +96,7 @@ const Header = () => {
       : `/?lang=${lang || "de"}`;
   const { signOut } = FirebaseData();
   const agentStatusButtonClass =
-    "hidden m-2 xl:flex items-center gap-2 rounded-lg border brandBorder px-4 py-2 text-base font-medium brandColor max-h-14 justify-center hover:brandBg hover:text-white";
+    `hidden xl:flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold max-h-14 justify-center transition-all duration-200 ${useHeroHeader ? "border-white/70 bg-white text-slate-900 hover:bg-white/90" : "border-white/25 bg-white/10 text-white hover:bg-white hover:text-slate-900"}`;
   const handleBecomeAgentClick = () => {
     if (userData) {
       router.push(`/become-agent?lang=${currentLang}`);
@@ -435,9 +437,9 @@ const Header = () => {
   return (
     <>
       <div
-        className={`flex flex-col h-20 md:h-32 w-full ${!isHeaderVisible ? "-translate-y-full" : ""} ${isScrolled ? "bg-white shadow-md fixed left-0 top-0 z-50 transform transition-transform duration-700 ease-in-out" : ""}`}
+        className={`w-full z-50 transform transition-all duration-500 ${isHomePage ? "absolute left-0 top-0 h-20" : "relative h-20 md:h-32"} ${isScrolled ? "fixed left-0 top-0 h-20 shadow-xl" : ""} ${!isHeaderVisible ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className={`primaryBg hidden h-12 py-2 text-white md:block`}>
+        <div className={`${isHomePage ? "hidden" : "primaryBg hidden md:block"} h-12 py-2 text-white`}>
           <div className="container h-8 px-3 md:px-2 lg:px-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 lg:gap-4">
@@ -563,14 +565,14 @@ const Header = () => {
           </div>
         </div>
 
-        <header className="relative z-50 w-full h-20 bg-white">
-          <div className="container px-2 md:px-0 h-14">
-            <div className="my-3 flex items-center justify-between">
-              <div className="flex min-w-0 items-center gap-4 lg:gap-6">
+        <header className={`relative z-50 w-full h-20 transition-all duration-500 ${useHeroHeader ? "bg-gradient-to-b from-slate-950/75 via-slate-950/35 to-transparent" : "bg-[#07111f] shadow-[0_10px_35px_rgba(2,8,23,0.18)]"}`}>
+          <div className="container h-full px-3 md:px-4 lg:px-5 2xl:px-0">
+            <div className="flex h-full items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3 lg:gap-5">
                 <Link
                   href={logoHref}
                   title="Home"
-                  className="flex shrink-0 items-center"
+                  className="flex shrink-0 items-center rounded-xl bg-white/95 px-2.5 py-1.5 shadow-lg ring-1 ring-white/30 transition-transform hover:scale-[1.02]"
                   onClick={() => dispatch(setLockedFilter(null))}
                 >
                   {webSettings?.web_logo ? (
@@ -579,17 +581,16 @@ const Header = () => {
                       alt="Ximmo24"
                       width={176}
                       height={56}
-                      className="md:w-44 md:h-14 w-32 h-10 aspect-[176/56] object-contain"
+                      className="h-9 w-28 object-contain md:h-10 md:w-32 xl:w-36"
                       priority={true}
                     />
                   ) : (
                     <Ximmo24Brand className="scale-90 origin-left md:scale-100" />
                   )}
                 </Link>
-                <div className="hidden h-14 shrink-0 border-r border-gray-200 md:block"></div>
-                <div className="relative min-w-0 max-w-[190px] lg:max-w-[230px] 2xl:max-w-[280px]">
+                <div className="relative hidden min-w-0 max-w-[170px] lg:block xl:hidden 2xl:block 2xl:max-w-[230px]">
                   <div
-                    className="relative hidden cursor-pointer transition-all md:block"
+                    className="relative cursor-pointer rounded-xl border border-white/20 bg-slate-950/25 px-3 py-2 text-white backdrop-blur-md transition-all hover:bg-white/15"
                     role="button"
                     tabIndex={0}
                     onClick={() => setIsLocationDialogOpen(true)}
@@ -600,16 +601,16 @@ const Header = () => {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2">
-                      <div className="shrink-0 rounded bg-[#0000001A] p-2">
-                        <BiMapPin size={28} />
+                      <div className="shrink-0 rounded-lg bg-white/15 p-1.5">
+                        <BiMapPin size={22} />
                       </div>
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1 text-gray-700">
-                          <span className="text-sm">{t("location")}</span>
+                        <div className="flex items-center gap-1 text-white/75">
+                          <span className="text-xs">{t("location")}</span>
                           <FaChevronDown size={10} className="mb-0.5" />
                         </div>
                         <div
-                          className="mt-0.5 truncate text-sm text-gray-600"
+                          className="mt-0.5 truncate text-sm font-semibold text-white"
                           title={location?.filter(Boolean)?.join(", ") || t("selectLocation")}
                         >
                           {location && location?.filter(Boolean)?.length > 0
@@ -622,7 +623,7 @@ const Header = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 xl:gap-3">
                 <div className="xl:hidden">
                   {userData ?
                     (
@@ -678,12 +679,13 @@ const Header = () => {
                   handleShowLogin={handleShowLogin}
                   handleLogout={handleLogout}
                   handleShowAreaConverter={handleShowAreaConverter}
+                  darkHeader
                 />
 
-                <ul className="hidden items-center gap-4 xl:flex">
-                  <li className="hover:primaryColor font-medium text-gray-700">
+                <ul className="hidden items-center gap-4 xl:flex 2xl:gap-6">
+                  <li className="font-semibold text-white/90 transition-colors hover:text-white">
                     <Link href={`/`} className="flex flex-col items-center" onClick={() => dispatch(setLockedFilter(null))}>
-                      <span className={router.pathname === '/' ? 'primaryColor font-bold' : ''}>
+                      <span className={router.pathname === '/' ? 'text-white font-bold' : ''}>
                         {t("home")}
                       </span>
                     </Link>
@@ -691,7 +693,7 @@ const Header = () => {
                   {menus.map((menu) => (
                     <li key={menu.name} className="relative dropdown-menu flex flex-col items-center">
                       <button
-                        className="dropdown-trigger hover:primaryColor flex items-center gap-1 bg-transparent p-0 text-base font-medium text-gray-700 transition-all"
+                        className="dropdown-trigger flex items-center gap-1 bg-transparent p-0 text-sm font-semibold text-white/90 transition-all hover:text-white 2xl:text-base"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -700,14 +702,14 @@ const Header = () => {
                       >
                         <span className={menu?.links?.some(link => {
                           return router.pathname.includes(link.route) && link.route !== '/';
-                        }) ? 'primaryColor font-bold' : ''}>
+                        }) ? 'text-white font-bold' : ''}>
                           {t(menu.name)}
                         </span>
                         <FaChevronDown
                           size={10}
                           className={`transition-transform duration-200 ${openMenu === menu.name ? 'rotate-180' : ''} ${menu?.links?.some(link => {
                             return router.pathname.includes(link.route) && link.route !== '/';
-                          }) ? 'primaryColor' : ''
+                          }) ? 'text-white' : ''
                             }`}
                         />
                       </button>
@@ -743,6 +745,38 @@ const Header = () => {
                   ))}
                 </ul>
 
+                <div className="language-dropdown relative hidden xl:block">
+                  <button
+                    type="button"
+                    onClick={handleShowLanguageDropdown}
+                    className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20"
+                  >
+                    <span className="2xl:hidden">{String(currentLang || "de").toUpperCase()}</span>
+                    <span className="hidden 2xl:inline">
+                      {(languages || []).find((item) => item.code === currentLang)?.name || t("language")}
+                    </span>
+                    {languages?.length > 1 && <FaChevronDown size={10} />}
+                  </button>
+                  {showLangDropdown && (
+                    <div className="absolute right-0 top-full z-[9999] mt-2 w-32 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 text-slate-900 shadow-2xl">
+                      {(languages || []).map((item) => (
+                        <button
+                          type="button"
+                          key={item.code}
+                          className="block w-full px-4 py-2 text-left text-sm font-medium transition-colors hover:bg-slate-100"
+                          onClick={() => {
+                            handleLanguageChange(item.code);
+                            setShowLangDropdown(false);
+                            setOpenMenu(null);
+                          }}
+                        >
+                          {item.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 {agentStatusButton && (
                   <button
                     onClick={agentStatusButton.onClick}
@@ -757,7 +791,7 @@ const Header = () => {
                 <div className="hidden items-center gap-3 font-medium xl:flex">
                   {userData === null ? (
                     <button
-                      className="hover:primaryBg flex items-center gap-2 rounded bg-gray-900 px-4 py-2 text-white transition-all"
+                      className="flex items-center gap-2 rounded-xl border border-white/55 bg-transparent px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white hover:text-slate-900"
                       onClick={handleShowLogin}
                     >
                       <FaRegUserCircle size={16} />
@@ -768,7 +802,7 @@ const Header = () => {
                     userData?.mobile ? (
                     <div className="relative dropdown-menu">
                       <button
-                        className="dropdown-trigger hover:primaryColor flex w-max items-center gap-1 bg-transparent p-0 text-base font-medium text-gray-700 transition-all"
+                        className="dropdown-trigger flex w-max items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white transition-all hover:bg-white/20"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
