@@ -70,9 +70,9 @@ const Footer = () => {
   ].filter(Boolean);
 
   const FooterLinks = ({ links }) => (
-+    <ul className="grid gap-1.5">
+    <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
       {links.map((link) => (
-+        <li key={`${link.href}-${link.label}`}>
+        <li key={`${link.href}-${link.label}`}>
           <CustomLink href={link.href} className="group flex min-h-10 items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm font-medium text-white/65 transition hover:bg-white/[.06] hover:text-white" aria-label={link.label}>
             <span className="min-w-0 truncate">{link.label}</span>
             <span className="primaryColor text-base opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100" aria-hidden="true">↗</span>
@@ -86,15 +86,15 @@ const Footer = () => {
     <footer className="relative overflow-hidden bg-[#06101d] text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,color-mix(in_srgb,var(--primary-color)_18%,transparent),transparent_30%),radial-gradient(circle_at_92%_90%,color-mix(in_srgb,var(--primary-color)_10%,transparent),transparent_28%)]" aria-hidden="true" />
       <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--primary-color),transparent)]" aria-hidden="true" />
-      <div className="container relative mx-auto px-4 pb-8 pt-12 sm:pt-16 lg:pt-20">
-        <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.05fr_1.95fr] lg:items-start lg:gap-14 lg:pb-16">
+      <div className="container relative mx-auto px-4 pb-6 pt-10 sm:pt-12 lg:pt-14">
+        <div className="grid gap-8 border-b border-white/10 pb-9 lg:grid-cols-[1fr_2fr] lg:items-start lg:gap-10 lg:pb-10">
           <div>
             <CustomLink href="/" className="inline-flex max-w-[210px] items-center" aria-label={companyName || t("home")}>
               <ImageWithPlaceholder src={webSettings?.web_footer_logo || Logo} alt={companyName || "logo"} width={210} height={68} className="h-auto max-h-[68px] w-auto max-w-full object-contain" loading="lazy" />
             </CustomLink>
-            <p className="mt-6 max-w-md text-sm font-medium leading-7 text-white/60 sm:text-base">{companyDescription || t("companyFooterDescription")}</p>
+            <p className="mt-4 max-w-md text-sm font-medium leading-6 text-white/60">{companyDescription || t("companyFooterDescription")}</p>
             <RenderIf condition={socialItems.length}>
-              <div className="mt-7">
+              <div className="mt-5">
                 <p className="mb-3 text-[11px] font-black uppercase tracking-[.18em] text-white/40">{t("followUs")}</p>
                 <ul className="flex flex-wrap gap-2.5">
                   {socialItems.map(([href, label, Icon]) => (
@@ -116,7 +116,7 @@ const Footer = () => {
           </RenderIf>
         </div>
 
-        <div className={`grid gap-10 py-12 sm:grid-cols-2 lg:py-16 ${appLinks.length ? "xl:grid-cols-[1fr_1fr_.9fr]" : "xl:grid-cols-2"}`}>
+        <div className={`grid items-start gap-7 py-9 sm:grid-cols-2 lg:gap-8 lg:py-10 ${appLinks.length ? "lg:grid-cols-[1fr_1fr_.9fr]" : "lg:grid-cols-2"}`}>
           <section>
             <div className="mb-5 flex items-center gap-3"><span className="h-2 w-2 rounded-full primaryBg" /><h2 className="text-lg font-bold tracking-tight">{t("propertyListing")}</h2></div>
             <FooterLinks links={propertyLinks} />
@@ -126,14 +126,14 @@ const Footer = () => {
             <FooterLinks links={quickLinks} />
           </section>
           <RenderIf condition={appLinks.length}>
-            <section className="sm:col-span-2 xl:col-span-1">
-              <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-white/[.055] p-6 sm:p-7">
+            <section className="sm:col-span-2 lg:col-span-1">
+              <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-white/[.055] p-5 sm:p-6">
                 <div className="absolute -right-14 -top-14 h-36 w-36 rounded-full [background-color:color-mix(in_srgb,var(--primary-color)_12%,transparent)]" aria-hidden="true" />
                 <div className="relative">
                   <p className="primaryColor text-[11px] font-black uppercase tracking-[.18em]">Ximmo24 Mobile</p>
                   <h2 className="mt-3 text-xl font-bold">{t("downloadOurApp")}</h2>
                   <p className="mt-3 text-sm leading-6 text-white/55">{t("downloadApp1")} {companyName} {t("downloadApp2")}</p>
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+                  <div className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
                     {appLinks.map((app) => (
                       <Link key={app.href} href={app.href} target="_blank" rel="noopener noreferrer" className="flex min-h-[62px] items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-2.5 text-[#07111f] shadow-lg transition hover:-translate-y-1 hover:border-[var(--primary-color)]" aria-label={`${t("downloadOn")} ${app.label}`}>
                         <span className="relative h-9 w-9 shrink-0"><Image src={app.icon === "google" ? playStore : AppleStore} alt="" fill className="object-contain" sizes="36px" /></span>
