@@ -57,7 +57,6 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
   const settingsData = useSelector((state) => state.WebSetting?.data);
   const isDemo = settingsData?.demo_mode;
   const CompanyName = settingsData?.company_name;
-  const webLogo = settingsData?.web_logo || settingsData?.header_logo || settingsData?.logo;
   const authShellRef = useRef(null);
   const activeLanguage = useSelector((state) => state.LanguageSettings?.active_language);
   const isGerman = activeLanguage?.toLowerCase().startsWith("de") || lang === "de";
@@ -2303,8 +2302,8 @@ const LoginModal = ({ showLogin, setShowLogin }) => {
               <div className="absolute inset-0 bg-[url('/assets/auth-luxury.svg')] bg-cover bg-center" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,10,22,.18),rgba(3,10,22,.92))]" />
               <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-3 p-7">
-                <div className="inline-flex min-h-14 items-center gap-3 text-xs font-bold uppercase tracking-[.13em] text-white drop-shadow-[0_3px_10px_rgba(255,255,255,.35)]">
-                  {webLogo ? <img src={webLogo} alt="Ximmo24" className="h-11 w-auto max-w-[175px] object-contain" /> : <BiHomeHeart size={24} className="text-cyan-300" />}
+                <div className="inline-flex min-h-14 items-center text-[29px] font-black tracking-[-.055em] text-white drop-shadow-[0_3px_18px_rgba(255,255,255,.22)]" aria-label="Ximmo24">
+                  Ximmo24
                 </div>
                 <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-[10px] font-black uppercase tracking-[.14em] text-cyan-100">BW · DE</span>
               </div>
