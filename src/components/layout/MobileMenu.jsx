@@ -34,6 +34,7 @@ const MobileMenu = ({
   handleShowLogin,
   handleLogout,
   handleShowAreaConverter,
+  darkHeader = false,
 }) => {
   const t = useTranslation();
   const isRtl = isRTL();
@@ -152,10 +153,13 @@ const MobileMenu = ({
     <>
       <Sheet open={isMenuOpen} onOpenChange={toggleMenu}>
         <SheetTrigger asChild>
-          <button className="xl:hidden" aria-label="MobileMenuToggler">
+          <button
+            className={`xl:hidden flex h-11 w-11 items-center justify-center rounded-xl border transition-colors ${darkHeader ? "border-white/25 bg-white/10 text-white" : "border-gray-200 bg-white text-slate-900"}`}
+            aria-label="MobileMenuToggler"
+          >
             <GiHamburgerMenu
-              size={30}
-              className="text-black"
+              size={25}
+              className="text-current"
             />
           </button>
         </SheetTrigger>
