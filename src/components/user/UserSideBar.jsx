@@ -1,4 +1,3 @@
-import ImageWithPlaceholder from "@/components/image-with-placeholder/ImageWithPlaceholder";
 import { BiBuildingHouse, BiMessageSquareDetail, BiBell, BiDollarCircle, BiUserX, BiCreditCard, BiLogOut, BiNews, BiHeart } from "react-icons/bi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { RiAdvertisementLine } from "react-icons/ri";
@@ -7,7 +6,7 @@ import { useTranslation } from "../context/TranslationContext";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getAuth } from "firebase/auth";
-import { isDemoMode, VerifiedUserBadge } from "@/utils/helperFunction";
+import { isDemoMode } from "@/utils/helperFunction";
 import Swal from "sweetalert2";
 import { beforeLogoutApi, deleteUserAccountApi } from "@/api/apiRoutes";
 import { logout, setRole } from "@/redux/slices/authSlice";
@@ -15,55 +14,19 @@ import FirebaseData from "@/utils/Firebase";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const UserAvatar = ({ user, compact = false }) => {
-    const sizeClass = compact ? "h-12 w-12" : "h-20 w-20";
-
-    if (user?.profile) {
-        return (
-            <ImageWithPlaceholder
-                src={user.profile}
-                alt={user?.name || "User"}
-                width={compact ? 48 : 80}
-                height={compact ? 48 : 80}
-                sizes={compact ? "48px" : "80px"}
-                quality={95}
-                unoptimized
-                className={`${sizeClass} shrink-0 rounded-2xl border border-white/20 object-cover shadow-lg`}
-            />
-        );
-    }
-
-    return (
-        <div className={`${sizeClass} primaryBg flex shrink-0 items-center justify-center rounded-2xl border border-white/20 text-xl font-extrabold uppercase text-white shadow-lg`}>
-            {user?.name?.charAt(0) || "U"}
-        </div>
-    );
-};
-
 const UserSidebarSkeleton = () => (
     <>
-        <div className="mb-4 rounded-[22px] border border-white/80 bg-white p-3 shadow-lg xl:hidden">
-            <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 rounded-2xl" />
-                <div className="flex-1">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="mt-2 h-3 w-44" />
-                </div>
-            </div>
-            <div className="mt-3 flex gap-2 overflow-hidden">
-                {Array.from({ length: 4 }).map((_, index) => (
-                    <Skeleton key={index} className="h-10 w-28 shrink-0 rounded-xl" />
-                ))}
-            </div>
+        <div className="mb-4 flex gap-2 overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-sm xl:hidden">
+            {Array.from({ length: 4 }).map((_, index) => (
+                <Skeleton key={index} className="h-11 w-32 shrink-0 rounded-xl" />
+            ))}
         </div>
-        <aside className="hidden w-full overflow-hidden rounded-[30px] bg-[#071426] shadow-[0_24px_70px_rgba(15,23,42,0.18)] xl:block">
-            <div className="p-5">
-                <Skeleton className="h-32 w-full rounded-2xl bg-white/10" />
-                <div className="mt-5 flex flex-col gap-2">
-                    {Array.from({ length: 10 }).map((_, index) => (
-                        <Skeleton key={index} className="h-12 w-full rounded-xl bg-white/10" />
-                    ))}
-                </div>
+        <aside className="hidden w-full rounded-[26px] bg-[#071426] p-4 shadow-[0_24px_70px_rgba(15,23,42,0.18)] xl:block">
+            <Skeleton className="mb-4 h-14 w-full rounded-2xl bg-white/10" />
+            <div className="flex flex-col gap-2">
+                {Array.from({ length: 10 }).map((_, index) => (
+                    <Skeleton key={index} className="h-11 w-full rounded-xl bg-white/10" />
+                ))}
             </div>
         </aside>
     </>
@@ -78,7 +41,6 @@ const UserSidebar = ({ isLoading }) => {
     const lang = router?.query?.lang;
     const pathname = router?.asPath;
     const user = useSelector((state) => state?.User?.data);
-    const webSettings = useSelector((state) => state.WebSetting?.data);
     const FcmToken = useSelector((state) => state.WebSetting?.fcmToken);
 
     if (isLoading) {
@@ -208,79 +170,61 @@ const UserSidebar = ({ isLoading }) => {
 
     return (
         <>
-            <div className="mb-4 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_16px_45px_rgba(15,23,42,0.09)] backdrop-blur-xl xl:hidden">
-                <div className="flex items-center gap-3 border-b border-slate-100 p-3.5">
-                    <UserAvatar user={user} compact />
-                    <div className="min-w-0 flex-1">
-                        <p className="flex min-w-0 items-center gap-1.5 font-extrabold text-slate-900">
-                            <span className="truncate">{user?.name}</span>
-                            {user?.is_user_verified ? (
-                                <VerifiedUserBadge color={webSettings?.system_color} width={17} height={17} />
-                            ) : null}
-                        </p>
-                        <p className="truncate text-xs text-slate-500">{user?.email}</p>
-                    </div>
-                </div>
-                <nav aria-label="User navigation" className="flex gap-2 overflow-x-auto p-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                    {menuItems.map((item) => {
-                        const Icon = item.icon;
-                        const active = isActiveRoute(item.route);
-                        return (
-                            <button
-                                key={item.route}
-                                type="button"
-                                onClick={() => navigate(item)}
-                                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-3.5 text-sm font-bold transition-all ${active ? "primaryBg primaryBorderColor text-white shadow-md" : "border-slate-200 bg-white text-slate-700"}`}
-                            >
-                                <Icon className="h-5 w-5" />
-                                <span>{item.label}</span>
-                            </button>
-                        );
-                    })}
-                    {accountActions.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <button
-                                key={item.label}
-                                type="button"
-                                onClick={() => navigate(item)}
-                                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-3.5 text-sm font-bold ${item.danger ? "border-red-100 bg-red-50 text-red-600" : "border-slate-200 bg-white text-slate-700"}`}
-                            >
-                                <Icon className="h-5 w-5" />
-                                <span>{item.label}</span>
-                            </button>
-                        );
-                    })}
-                </nav>
-            </div>
+            <nav
+                aria-label="User navigation"
+                className="mb-4 flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2.5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:hidden"
+            >
+                {menuItems.map((item) => {
+                    const Icon = item.icon;
+                    const active = isActiveRoute(item.route);
+                    return (
+                        <button
+                            key={item.route}
+                            type="button"
+                            onClick={() => navigate(item)}
+                            aria-current={active ? "page" : undefined}
+                            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-3.5 text-sm font-bold transition-all ${active ? "primaryBg text-white shadow-md" : "bg-slate-50 text-slate-700 active:bg-slate-100"}`}
+                        >
+                            <Icon className="h-[18px] w-[18px]" />
+                            <span>{item.label}</span>
+                        </button>
+                    );
+                })}
+                {accountActions.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                        <button
+                            key={item.label}
+                            type="button"
+                            onClick={() => navigate(item)}
+                            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-3.5 text-sm font-bold ${item.danger ? "bg-red-50 text-red-600" : "bg-slate-50 text-slate-700"}`}
+                        >
+                            <Icon className="h-[18px] w-[18px]" />
+                            <span>{item.label}</span>
+                        </button>
+                    );
+                })}
+            </nav>
 
-            <aside className="sticky top-24 hidden w-full overflow-hidden rounded-[30px] bg-[#071426] text-white shadow-[0_28px_75px_rgba(15,23,42,0.2)] xl:block">
-                <div className="relative overflow-hidden p-5">
+            <aside className="sticky top-24 hidden w-full overflow-hidden rounded-[26px] bg-[#071426] text-white shadow-[0_28px_75px_rgba(15,23,42,0.18)] xl:block">
+                <div className="relative border-b border-white/10 px-5 py-5">
                     <div
                         aria-hidden="true"
-                        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-30 blur-3xl"
+                        className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full opacity-30 blur-3xl"
                         style={{ backgroundColor: "var(--primary-color)" }}
                     />
-                    <div className="relative rounded-[22px] border border-white/10 bg-white/[0.07] p-4 backdrop-blur">
-                        <div className="flex items-center gap-3">
-                            <UserAvatar user={user} />
-                            <div className="min-w-0 flex-1">
-                                <p className="flex min-w-0 items-center gap-1.5 text-base font-extrabold">
-                                    <span className="truncate" title={user?.name}>{user?.name}</span>
-                                    {user?.is_user_verified ? (
-                                        <VerifiedUserBadge color={webSettings?.system_color} width={18} height={18} />
-                                    ) : null}
-                                </p>
-                                <p className="mt-1 truncate text-xs text-slate-400" title={user?.email}>{user?.email}</p>
-                            </div>
-                        </div>
-                        <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
-                            <div className="h-full w-2/3 rounded-full primaryBg" />
+                    <div className="relative flex items-center gap-3">
+                        <span className="primaryBg flex h-11 w-11 items-center justify-center rounded-2xl shadow-lg">
+                            <FaRegCircleUser className="h-5 w-5" />
+                        </span>
+                        <div>
+                            <p className="text-[11px] font-black uppercase tracking-[0.18em] primaryColor">Ximmo24</p>
+                            <p className="mt-0.5 text-sm font-extrabold text-white">{t("myProfile")}</p>
                         </div>
                     </div>
                 </div>
 
-                <nav aria-label="User navigation" className="relative px-3 pb-3">
+                <nav aria-label="User navigation" className="px-3 py-3">
                     <div className="flex flex-col gap-1">
                         {menuItems.map((item) => {
                             const Icon = item.icon;
@@ -290,10 +234,11 @@ const UserSidebar = ({ isLoading }) => {
                                     key={item.route}
                                     type="button"
                                     onClick={() => navigate(item)}
-                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3.5 text-left text-sm font-semibold transition-all duration-200 ${active ? "primaryBg translate-x-1 text-white shadow-lg" : "text-slate-300 hover:translate-x-1 hover:bg-white/[0.08] hover:text-white"}`}
+                                    aria-current={active ? "page" : undefined}
+                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-semibold transition-all duration-200 ${active ? "primaryBg text-white shadow-lg" : "text-slate-300 hover:bg-white/[0.08] hover:text-white"}`}
                                 >
                                     <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${active ? "bg-white/15" : "bg-white/[0.06] group-hover:bg-white/10"}`}>
-                                        <Icon className="h-[19px] w-[19px]" />
+                                        <Icon className="h-[18px] w-[18px]" />
                                     </span>
                                     <span className="min-w-0 truncate">{item.label}</span>
                                     {active ? <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white" /> : null}
@@ -312,10 +257,10 @@ const UserSidebar = ({ isLoading }) => {
                                     key={item.label}
                                     type="button"
                                     onClick={() => navigate(item)}
-                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3.5 text-left text-sm font-semibold transition-all ${item.danger ? "text-red-300 hover:bg-red-500/10 hover:text-red-200" : "text-slate-300 hover:bg-white/[0.08] hover:text-white"}`}
+                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-semibold transition-all ${item.danger ? "text-red-300 hover:bg-red-500/10 hover:text-red-200" : "text-slate-300 hover:bg-white/[0.08] hover:text-white"}`}
                                 >
                                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06]">
-                                        <Icon className="h-[19px] w-[19px]" />
+                                        <Icon className="h-[18px] w-[18px]" />
                                     </span>
                                     <span className="truncate">{item.label}</span>
                                 </button>
