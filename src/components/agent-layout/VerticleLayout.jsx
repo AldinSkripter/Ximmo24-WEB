@@ -12,8 +12,10 @@ import { logout, setRole, updateUserProfile } from "@/redux/slices/authSlice";
 import {
     setActiveLanguage,
     setCurrentLanguage,
+    setDefaultLanguage,
     setIsFetched,
     setIsLanguageLoaded,
+    setLanguages,
 } from "@/redux/slices/languageSlice";
 import FirebaseData from "@/utils/Firebase";
 import Swal from "sweetalert2";
@@ -140,6 +142,14 @@ const VerticleLayout = ({ children }) => {
             if (res?.error) return;
 
             dispatch(setWebSettings({ data: res.data }));
+
+            const supportedLanguages = (res.data?.languages || []).filter(
+                (language) => language?.code === "de" || language?.code === "en"
+            );
+            dispatch(setLanguages({ data: supportedLanguages }));
+            dispatch(setDefaultLanguage({
+                data: res.data?.default_language === "en" ? "en" : "de",
+            }));
 
             applyWebTheme(res.data);
         } catch (error) {
