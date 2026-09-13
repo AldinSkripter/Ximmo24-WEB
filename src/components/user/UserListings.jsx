@@ -643,21 +643,21 @@ const MyListings = () => {
     ];
 
     return (
-        <div className="flex flex-col rounded-xl md:rounded-2xl border newBorderColor w-full h-full bg-white overflow-auto">
-            <div className="flex flex-col items-center gap-4 p-6 border-b newBorderColor lg:flex-row lg:items-center lg:justify-between">
-                <h1 className="text-xl font-bold brandColor">
+        <div className="flex min-h-[640px] w-full flex-col overflow-auto bg-white">
+            <div className="relative flex flex-col gap-5 overflow-hidden border-b border-slate-100 bg-gradient-to-br from-white via-white to-slate-50 p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+                <h1 className="relative text-2xl font-extrabold tracking-[-0.03em] text-slate-900 sm:text-[28px]">
                     {activeTab === "properties" ? t("myProperties") : t("myProjects")}
                 </h1>
                 <div className="w-full sm:w-fit flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <button type="button" onClick={handleAddListing} className="px-3 py-2 brandBg text-white font-medium text-base rounded-lg cursor-pointer">
+                    <button type="button" onClick={handleAddListing} className="primaryBg primaryBorderColor min-h-11 rounded-xl border px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_color-mix(in_srgb,var(--primary-color)_28%,transparent)] transition-all hover:-translate-y-0.5 hover:brightness-95 sm:text-base">
                         {activeTab === "projects" ? t("addProject") : t("addProperty")}
                     </button>
-                    <div className="w-full flex items-center justify-between sm:w-fit gap-1 rounded-lg newBorder primaryBackgroundBg p-2">
+                    <div className="flex w-full items-center justify-between gap-1 rounded-xl border border-slate-200 bg-slate-100/80 p-1.5 sm:w-fit">
                         <button
                             type="button"
                             onClick={() => handleTabChange("properties")}
                             aria-pressed={activeTab === "properties"}
-                            className={`w-full sm:w-fit rounded-lg px-3 py-2 text-base font-medium transition-colors ${activeTab === "properties" ? "primaryBg text-white shadow-sm" : "brandColor hover:bg-white"}`}
+                            className={`min-h-10 w-full rounded-lg px-4 py-2 text-sm font-bold transition-all sm:w-fit ${activeTab === "properties" ? "primaryBg text-white shadow-md" : "text-slate-600 hover:bg-white hover:text-slate-900"}`}
                         >
                             {t("properties")}
                         </button>
@@ -665,7 +665,7 @@ const MyListings = () => {
                             type="button"
                             onClick={() => handleTabChange("projects")}
                             aria-pressed={activeTab === "projects"}
-                            className={`w-full sm:w-fit rounded-lg px-3 py-2 text-base font-medium transition-colors ${activeTab === "projects" ? "primaryBg text-white shadow-sm" : "brandColor hover:bg-white"}`}
+                            className={`min-h-10 w-full rounded-lg px-4 py-2 text-sm font-bold transition-all sm:w-fit ${activeTab === "projects" ? "primaryBg text-white shadow-md" : "text-slate-600 hover:bg-white hover:text-slate-900"}`}
                         >
                             {t("projects")}
                         </button>
