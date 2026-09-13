@@ -177,8 +177,8 @@ const AgentHeader = ({ isMobile }) => {
 
     return (
         <header className="w-full h-24 flex items-center justify-between px-4 sm:px-6 transition-all duration-300 ease-out">
-            {/* Left Section - Sidebar Toggle and public home link */}
-            <div className="flex min-w-0 flex-shrink-0 items-center gap-2">
+            {/* Left Section - Sidebar Toggle */}
+            <div className="flex-shrink-0">
                 {(sidebarIsMobile || sidebarState === "expanded") && (
                     <button
                         onClick={toggleSidebar}
@@ -193,17 +193,6 @@ const AgentHeader = ({ isMobile }) => {
                         </div>
                     </button>
                 )}
-
-                <button
-                    type="button"
-                    onClick={() => router.push(`/?lang=${lang || currentLang?.code || currentLang || defaultLang || "de"}`)}
-                    className="group flex h-10 items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 text-sm font-semibold text-gray-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--system-color)] hover:text-[var(--system-color)] hover:shadow-md"
-                    aria-label={t("backToHome")}
-                    title={t("backToHome")}
-                >
-                    <IoHomeOutline className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                    <span className="hidden lg:inline">{t("backToHome")}</span>
-                </button>
             </div>
 
             {/* Right Section - User Controls */}
