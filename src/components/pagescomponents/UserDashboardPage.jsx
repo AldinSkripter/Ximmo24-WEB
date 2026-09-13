@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import { Building2, CreditCard, Heart, MessageSquare, UserRound } from 'lucide-react'
+import { Building2 } from 'lucide-react'
 import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder'
 import { useTranslation } from '@/components/context/TranslationContext'
 import { VerifiedUserBadge } from '@/utils/helperFunction'
@@ -58,22 +58,9 @@ const UserDashboardPage = () => {
         'verification-form',
     ].includes(mainSection)
     const isLoading = userLoading || !router.isReady
-    const lang = router?.query?.lang
-
     const handleNotificationReceived = (data) => {
         setNotificationData(data)
     }
-
-    const openPage = (path) => {
-        router.push(`${path}?lang=${lang || 'de'}`)
-    }
-
-    const quickActions = [
-        { label: t('myProfile'), icon: UserRound, path: '/user/profile' },
-        { label: t('messages'), icon: MessageSquare, path: '/user/chat' },
-        { label: t('favourites'), icon: Heart, path: '/user/favourites' },
-        { label: t('mySubscriptions'), icon: CreditCard, path: '/user/my-subscriptions' },
-    ]
 
     return (
         <Layout>
@@ -128,25 +115,6 @@ const UserDashboardPage = () => {
 
                                 </div>
 
-                                <div className="relative flex overflow-x-auto border-t border-white/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4">
-                                    {quickActions.map((action) => {
-                                        const Icon = action.icon
-                                        const active = router.asPath?.includes(action.path)
-                                        return (
-                                            <button
-                                                key={action.path}
-                                                type="button"
-                                                onClick={() => openPage(action.path)}
-                                                className={`group flex min-h-[68px] min-w-[170px] items-center gap-3 border-r border-white/10 px-4 text-left transition-colors last:border-r-0 hover:bg-white/[0.08] sm:min-h-[74px] sm:min-w-0 sm:px-6 ${active ? 'bg-white/[0.1]' : ''}`}
-                                            >
-                                                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all ${active ? 'primaryBg text-white' : 'bg-white/10 text-slate-300 group-hover:text-white'}`}>
-                                                    <Icon className="h-[18px] w-[18px]" />
-                                                </span>
-                                                <span className="min-w-0 truncate text-xs font-bold text-slate-200 sm:text-sm">{action.label}</span>
-                                            </button>
-                                        )
-                                    })}
-                                </div>
                             </section>
                         ) : null}
 
