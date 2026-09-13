@@ -106,11 +106,14 @@ const VerticleLayout = ({ children }) => {
 
             const isRtl = response?.data?.rtl === 1;
             applyLanguageToHtml(localeCode, isRtl);
-            await changeNotificationLanguage(localeCode);
             dispatch(setActiveLanguage({ data: localeCode }));
             dispatch(setCurrentLanguage({ data: response.data }));
             dispatch(setIsFetched({ data: true }));
             dispatch(setIsLanguageLoaded({ data: true }));
+
+            // Notification-language synchronization is secondary and must never
+            // block the dashboard or its admin-managed translations.
+            void changeNotificationLanguage(localeCode);
         } catch (error) {
             console.error(`Language fetch failed for ${localeCode}:`, error);
         }
