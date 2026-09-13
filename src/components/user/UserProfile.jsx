@@ -320,192 +320,21 @@ const UserProfile = () => {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="flex w-full h-full flex-col overflow-hidden rounded-2xl border newBorderColor bg-white shadow-sm"
-        >
-            <div className="border-b newBorderColor px-3 py-2 sm:p-3 md:px-4">
-                <h1 className="text-base md:text-xl font-bold brandColor">
-                    {t("myProfile")}
-                </h1>
-            </div>
-
-            <div className="flex flex-col gap-7 p-4 sm:p-6">
-                <section className="flex w-full flex-col gap-6">
-
-                    {profileQuery.isError && !profileData ? (
-                        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-                            {profileQuery.error?.message || t("somethingWentWrong")}
+        <div className="min-h-[640px] bg-[#f7f9fc]">
+            <form onSubmit={handleSubmit}>
+                <header className="flex flex-col gap-4 border-b border-slate-100 bg-white px-5 py-6 sm:px-7 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                        <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] primaryColor">
+                            <span className="primaryBg h-2 w-2 rounded-full" />
+                            Ximmo24
                         </div>
-                    ) : null}
-
-                    <div className="flex flex-col justify-center md:items-start gap-3">
-                        <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                            {t("profilePicture")}
-                            <span className="ml-1 text-red-500">*</span>
-                        </Label>
-                        <div className="flex flex-col gap-4 rounded-lg border-2 border-dashed newBorderColor bg-white p-4 sm:flex-row sm:items-center sm:justify-between w-full">
-                            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
-                                <div className="w-[72px] h-[72px] overflow-hidden rounded-xl primaryBackgroundBg">
-                                    {previewImage ? (
-                                        <ImageWithPlaceholder
-                                            src={previewImage}
-                                            alt={profileData?.name || t("profilePicture")}
-                                            width={72}
-                                            height={72}
-                                            sizes="72px"
-                                            quality={95}
-                                            unoptimized
-                                            className="h-full w-full rounded-xl aspect-[72/72] object-cover"
-                                        />
-                                    ) : (
-                                        <div className="flex h-full w-full items-center justify-center leadColor">
-                                            <FaUser size={28} />
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-base text-center md:text-start font-bold brandColor">
-                                        {profileData?.name || t("myProfile")}
-                                    </p>
-                                    <div className="flex w-fit rounded-md redBgLight12 p-2">
-                                        <p className="text-xs md:text-sm text-center font-medium redColorText">
-                                            {t("profilePictureNote")}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <Button
-                                type="button"
-                                className="flex h-12 rounded-lg brandBg px-2 md:px-4 py-1 md:py-3 text-base md:text-xl font-medium text-white hover:primaryBg"
-                                onClick={handleUploadClick}
-                            >
-                                <span className="flex items-center gap-2">
-                                    <BiSolidImageAdd className="shrink-0 size-4 md:size-6" />
-                                    {t("uploadProfile")}
-                                </span>
-                            </Button>
-                            <input
-                                ref={fileInputRef}
-                                id="profileImage"
-                                name="profileImage"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="hidden"
-                            />
-                        </div>
+                        <h1 className="text-2xl font-black tracking-[-0.035em] text-slate-950 sm:text-3xl">
+                            {t("myProfile")}
+                        </h1>
                     </div>
-
-                    <VerifyUserCTA />
-
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                        <div className="flex flex-col gap-2">
-                            <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                                {t("fullName")}
-                                <span className="ml-1 text-red-500">*</span>
-                            </Label>
-                            <Input
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                placeholder={t("enterFullName")}
-                                className="h-14 rounded-lg border newBorderColor primaryBackgroundBg px-4 text-base brandColor placeholder:text-gray-500 focus-visible:ring-0 focus:!primaryBorderColor"
-                                required
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                                {t("emailAddress")}
-                                <span className="ml-1 text-red-500">*</span>
-                            </Label>
-                            <Input
-                                name="email"
-                                type="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                disabled={profileData?.logintype != "1"}
-                                placeholder={t("enterEmail")}
-                                className="h-14 rounded-lg border newBorderColor primaryBackgroundBg px-4 text-base brandColor placeholder:text-gray-500 focus-visible:ring-0 focus:!primaryBorderColor"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                        <div className="flex flex-col gap-2">
-                            <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                                {t("phoneNumber")}
-                                <span className="ml-1 text-red-500">*</span>
-                            </Label>
-                            <PhoneInput
-                                country={process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase()}
-                                enableAreaCodes
-                                enableSearch
-                                searchPlaceholder={t("search")}
-                                value={formData.phone}
-                                onChange={handlePhoneNumberChange}
-                                containerClass="w-full"
-                                inputClass="!w-full !h-14 !rounded-r-lg !border !newBorderColor !primaryBackgroundBg p-4 !text-base !brandColor placeholder:!text-gray-500 placeholder:p-3"
-                                buttonClass="!h-14 !rounded-l-lg !border !newBorderColor !primaryBackgroundBg"
-                                disabled={profileData?.logintype == "1"}
-                                inputProps={{ name: "phone", id: "phone", required: true, maxLength: phoneConfig.maxLength }}
-                                enableLongNumbers={phoneConfig.enableLongNumbers}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                                {t("location")}
-                                <span className="ml-1 text-red-500">*</span>
-                            </Label>
-                            <div className="flex items-end gap-4">
-                                <CustomLocationAutocomplete
-                                    value={formData.location}
-                                    onChange={handleInputChange}
-                                    onPlaceSelect={handlePlaceSelect}
-                                    placeholder={t("searchLocation")}
-                                    className="h-14 rounded-lg border newBorderColor primaryBackgroundBg px-4 text-base brandColor placeholder:text-gray-500 focus:outline-none focus:!primaryBorderColor"
-                                    debounceMs={1000}
-                                    maxResults={10}
-                                    inputProps={{ name: "location" }}
-                                />
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="icon"
-                                    aria-label={t("selectLocation")}
-                                    className="h-14 w-14 shrink-0 rounded-lg border newBorderColor primaryBackgroundBg leadColor"
-                                    onClick={() => setIsLocationModalOpen(true)}
-                                >
-                                    <HiOutlineMapPin className="shrink-0 size-8" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <Label className="mb-2 flex items-center gap-1 text-base font-medium brandColor">
-                            {t("address")}
-                            <span className="ml-1 text-red-500">*</span>
-                        </Label>
-                        <Textarea
-                            name="address"
-                            value={formData.address}
-                            onChange={handleInputChange}
-                            placeholder={t("enterYourAddress")}
-                            className="min-h-32 resize-none rounded-lg border newBorderColor primaryBackgroundBg px-4 py-4 text-base brandColor placeholder:text-gray-500 focus-visible:!primaryBorderColor"
-                            required
-                        />
-                    </div>
-
-                </section>
-
-                <div className="flex justify-end">
                     <Button
                         type="submit"
-                        className="h-12 rounded-lg brandBg px-6 py-3 text-base font-medium hover:primaryBg text-white"
+                        className="primaryBg h-12 w-full rounded-xl px-7 text-sm font-extrabold text-white shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition-all hover:-translate-y-0.5 hover:brightness-95 sm:w-auto sm:text-base"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? (
@@ -517,8 +346,195 @@ const UserProfile = () => {
                             t("updateProfile")
                         )}
                     </Button>
+                </header>
+
+                <div className="grid items-start gap-5 p-4 sm:p-6 lg:p-7 xl:grid-cols-[300px_minmax(0,1fr)]">
+                    <aside className="overflow-hidden rounded-[24px] bg-[#071426] text-white shadow-[0_20px_55px_rgba(15,23,42,0.16)] xl:sticky xl:top-24">
+                        <div className="relative overflow-hidden p-6">
+                            <div
+                                aria-hidden="true"
+                                className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-40 blur-3xl"
+                                style={{ backgroundColor: "var(--primary-color)" }}
+                            />
+                            <div className="relative flex flex-col items-center text-center">
+                                <div className="relative">
+                                    <div className="h-28 w-28 overflow-hidden rounded-[30px] border-2 border-white/20 bg-white/10 shadow-2xl">
+                                        {previewImage ? (
+                                            <ImageWithPlaceholder
+                                                src={previewImage}
+                                                alt={profileData?.name || t("profilePicture")}
+                                                width={112}
+                                                height={112}
+                                                sizes="112px"
+                                                quality={95}
+                                                unoptimized
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-slate-300">
+                                                <FaUser size={36} />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleUploadClick}
+                                        aria-label={t("uploadProfile")}
+                                        className="primaryBg absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-xl border-4 border-[#071426] text-white shadow-lg transition-transform hover:scale-105"
+                                    >
+                                        <BiSolidImageAdd className="h-5 w-5" />
+                                    </button>
+                                </div>
+                                <h2 className="mt-5 max-w-full truncate text-xl font-black">{profileData?.name || t("myProfile")}</h2>
+                                <p className="mt-1 max-w-full truncate text-sm text-slate-400">{profileData?.email}</p>
+                                <button
+                                    type="button"
+                                    onClick={handleUploadClick}
+                                    className="mt-5 w-full rounded-xl border border-white/15 bg-white/[0.08] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-white/[0.13]"
+                                >
+                                    {t("uploadProfile")}
+                                </button>
+                                <input
+                                    ref={fileInputRef}
+                                    id="profileImage"
+                                    name="profileImage"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="hidden"
+                                />
+                                <p className="mt-3 text-xs leading-5 text-slate-400">{t("profilePictureNote")}</p>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div className="min-w-0 space-y-5">
+                        {profileQuery.isError && !profileData ? (
+                            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                                {profileQuery.error?.message || t("somethingWentWrong")}
+                            </div>
+                        ) : null}
+
+                        <VerifyUserCTA />
+
+                        <section className="rounded-[24px] border border-slate-100 bg-white p-5 shadow-[0_12px_35px_rgba(15,23,42,0.05)] sm:p-7">
+                            <div className="mb-6 flex items-center gap-3 border-b border-slate-100 pb-5">
+                                <span className="primaryBgLight12 primaryColor flex h-11 w-11 items-center justify-center rounded-2xl">
+                                    <FaUser className="h-5 w-5" />
+                                </span>
+                                <h2 className="text-lg font-black text-slate-900">{t("myProfile")}</h2>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                                <div className="flex flex-col gap-2">
+                                    <Label className="text-sm font-bold text-slate-700">
+                                        {t("fullName")} <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                        name="firstName"
+                                        value={formData.firstName}
+                                        onChange={handleInputChange}
+                                        placeholder={t("enterFullName")}
+                                        className="h-14 rounded-xl border-slate-200 bg-slate-50 px-4 text-base text-slate-900 shadow-none transition-colors focus-visible:primaryBorderColor focus-visible:ring-0"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <Label className="text-sm font-bold text-slate-700">
+                                        {t("emailAddress")} <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                        name="email"
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        disabled={profileData?.logintype != "1"}
+                                        placeholder={t("enterEmail")}
+                                        className="h-14 rounded-xl border-slate-200 bg-slate-50 px-4 text-base text-slate-900 shadow-none disabled:cursor-not-allowed disabled:opacity-60 focus-visible:primaryBorderColor focus-visible:ring-0"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <Label className="text-sm font-bold text-slate-700">
+                                        {t("phoneNumber")} <span className="text-red-500">*</span>
+                                    </Label>
+                                    <PhoneInput
+                                        country={process.env.NEXT_PUBLIC_DEFAULT_COUNTRY?.toLowerCase()}
+                                        enableAreaCodes
+                                        enableSearch
+                                        searchPlaceholder={t("search")}
+                                        value={formData.phone}
+                                        onChange={handlePhoneNumberChange}
+                                        containerClass="w-full"
+                                        inputClass="!h-14 !w-full !rounded-r-xl !border-slate-200 !bg-slate-50 !pl-14 !text-base !text-slate-900"
+                                        buttonClass="!h-14 !rounded-l-xl !border-slate-200 !bg-slate-50"
+                                        disabled={profileData?.logintype == "1"}
+                                        inputProps={{ name: "phone", id: "phone", required: true, maxLength: phoneConfig.maxLength }}
+                                        enableLongNumbers={phoneConfig.enableLongNumbers}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <Label className="text-sm font-bold text-slate-700">
+                                        {t("location")} <span className="text-red-500">*</span>
+                                    </Label>
+                                    <div className="flex items-end gap-2">
+                                        <CustomLocationAutocomplete
+                                            value={formData.location}
+                                            onChange={handleInputChange}
+                                            onPlaceSelect={handlePlaceSelect}
+                                            placeholder={t("searchLocation")}
+                                            className="h-14 rounded-xl border border-slate-200 bg-slate-50 px-4 text-base text-slate-900 focus:outline-none focus:primaryBorderColor"
+                                            debounceMs={1000}
+                                            maxResults={10}
+                                            inputProps={{ name: "location" }}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="icon"
+                                            aria-label={t("selectLocation")}
+                                            className="primaryBgLight12 primaryColor h-14 w-14 shrink-0 rounded-xl border-0"
+                                            onClick={() => setIsLocationModalOpen(true)}
+                                        >
+                                            <HiOutlineMapPin className="h-6 w-6" />
+                                        </Button>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2 lg:col-span-2">
+                                    <Label className="text-sm font-bold text-slate-700">
+                                        {t("address")} <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Textarea
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleInputChange}
+                                        placeholder={t("enterYourAddress")}
+                                        className="min-h-32 resize-none rounded-xl border-slate-200 bg-slate-50 px-4 py-4 text-base text-slate-900 shadow-none focus-visible:primaryBorderColor focus-visible:ring-0"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="flex justify-end rounded-[22px] border border-slate-100 bg-white p-4 shadow-sm sm:p-5">
+                            <Button
+                                type="submit"
+                                className="primaryBg h-12 w-full rounded-xl px-8 text-base font-extrabold text-white transition-all hover:brightness-95 sm:w-auto"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <span className="flex items-center gap-2">
+                                        <ButtonLoader />
+                                        {t("updating")}
+                                    </span>
+                                ) : (
+                                    t("updateProfile")
+                                )}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <LocationPickerModal
                 isOpen={isLocationModalOpen}
@@ -533,7 +549,7 @@ const UserProfile = () => {
                     country: formData.country,
                 }}
             />
-        </form>
+        </div>
     );
 };
 
