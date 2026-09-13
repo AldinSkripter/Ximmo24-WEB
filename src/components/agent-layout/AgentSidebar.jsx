@@ -480,6 +480,27 @@ const AgentSidebar = ({ isMobile = false }) => {
         </div>
       </SidebarHeader>
 
+      {/* Clear return to the public website */}
+      <div className="px-2 pt-3">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="brandColor hover:bg-black/5 font-semibold"
+              tooltip={sidebarState === "collapsed" ? t("home") : undefined}
+            >
+              <CustomLink
+                href={`/?lang=${currentLang || "de"}`}
+                onClick={handleBackToHome}
+              >
+                <IoHomeOutline size={sidebarState === "collapsed" ? 24 : 20} aria-hidden="true" />
+                {sidebarState === "expanded" && <span>{t("home")}</span>}
+              </CustomLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </div>
+
       {/* Navigation Content */}
       <SidebarContent className="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         <TooltipProvider>
