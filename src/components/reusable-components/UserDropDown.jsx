@@ -165,11 +165,11 @@ export default function UserDropDown({ user, handleLogout, onClose }) {
     const isActiveRoute = (route) => router?.asPath?.includes(route?.split("?")[0]);
 
     return (
-        <div className="dropdown-content fixed inset-x-3 top-[76px] z-[100] flex max-h-[calc(100dvh-92px)] flex-col overflow-hidden rounded-[24px] border border-white/25 bg-[rgba(7,20,38,0.58)] text-white shadow-[0_28px_90px_rgba(2,8,23,0.34)] backdrop-blur-[24px] backdrop-saturate-150 xl:absolute xl:inset-x-auto xl:right-0 xl:top-full xl:mt-3 xl:w-[390px]">
+        <div className="dropdown-content fixed inset-x-3 top-[76px] z-[100] flex max-h-[calc(100dvh-92px)] flex-col overflow-hidden rounded-[24px] border border-white/25 bg-[rgba(15,23,42,0.38)] text-white shadow-[0_28px_90px_rgba(2,8,23,0.34)] backdrop-blur-[24px] backdrop-saturate-150 xl:absolute xl:inset-x-auto xl:right-0 xl:top-full xl:mt-3 xl:w-[390px]">
             <div
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
-                style={{ backgroundColor: "var(--primary-color)" }}
+                style={{ backgroundColor: "rgba(255,255,255,0.18)" }}
             />
 
             <div className="relative flex items-center gap-3 border-b border-white/10 p-4 sm:p-5">
