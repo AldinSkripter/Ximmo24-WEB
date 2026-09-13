@@ -164,14 +164,14 @@ const MobileMenu = ({
           </button>
         </SheetTrigger>
         <SheetContent
-          className="cardBg flex h-full flex-col justify-between p-0 overflow-y-auto [&>button]:hidden"
+          className="flex h-full flex-col justify-between overflow-y-auto border-l border-white/25 bg-[rgba(15,23,42,0.82)] p-0 text-white shadow-[-24px_0_70px_rgba(2,8,23,0.30)] backdrop-blur-[24px] backdrop-saturate-150 [&>button]:hidden"
           aria-describedby={"mobile-menu"}
           side={isRtl ? "left" : "right"}
         >
           <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
           <SheetDescription className="sr-only"></SheetDescription>
           <div>
-            <div className="flex items-center justify-between border-b p-3 md:p-4">
+            <div className="flex items-center justify-between border-b border-white/10 p-3 md:p-4">
               <div
                 className="h-full max-w-[160px] w-full flex items-center cursor-pointer"
                 onClick={handleLogoClick}
@@ -201,18 +201,18 @@ const MobileMenu = ({
 
               {/* Location Selection */}
               <li
-                className="cursor-pointer border-b-2 border-dashed border-gray-300 p-4 font-medium hover:primaryBgLight hover:primaryColor"
+                className="m-2 cursor-pointer rounded-xl border border-white/10 bg-white/[0.06] p-4 font-medium text-white transition-all hover:bg-white/[0.13]"
                 onClick={handleLocationClick}
               >
                 <div className="flex items-center gap-3">
-                  <div className="rounded bg-[#0000001A] p-2">
+                  <div className="rounded-lg bg-white/10 p-2">
                     <BiMapPin size={20} />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-1 text-gray-700">
+                    <div className="flex items-center gap-1 text-white/80">
                       <span className="text-sm font-medium">{t("location")}</span>
                     </div>
-                    <div className="mt-0.5 text-xs text-gray-600">
+                    <div className="mt-0.5 text-xs text-white/65">
                       {location && location?.length > 0
                         ? location?.join(", ")
                         : t("selectLocation")}
@@ -225,8 +225,7 @@ const MobileMenu = ({
               </li>
 
               <li
-                className={`cursor-pointer border-b-2 border-dashed border-gray-300 p-4 font-medium ${activeMenu === "home" ? `primaryBgLight primaryColor` : ""
-                  } hover:primaryBgLight hover:primaryColor`}
+                className={`mx-2 cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition-all ${activeMenu === "home" ? "bg-white/[0.14] ring-1 ring-inset ring-white/15" : ""} hover:bg-white/[0.10]`}
                 onClick={() => handleMenuClick("home", `/`)}
               >
                 {t("home")}
@@ -236,10 +235,7 @@ const MobileMenu = ({
               {menus.map((menu) => (
                 <React.Fragment key={menu.name}>
                   <li
-                    className={`cursor-pointer border-b-2 border-dashed border-gray-300 p-4 font-medium ${activeMenu === menu.name
-                      ? `primaryBgLight primaryColor`
-                      : ""
-                      } hover:primaryBgLight hover:primaryColor`}
+                    className={`mx-2 cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition-all ${activeMenu === menu.name ? "bg-white/[0.14] ring-1 ring-inset ring-white/15" : ""} hover:bg-white/[0.10]`}
                     onClick={() => toggleSubMenu(menu.name)}
                   >
                     <div className="flex items-center justify-between">
@@ -259,10 +255,7 @@ const MobileMenu = ({
                     {menu.links.map((link) => (
                       <li
                         key={link.name}
-                        className={`flex cursor-pointer items-center justify-between p-4 py-2 font-medium ${activeMenu === link.name
-                          ? `primaryBgLight primaryColor`
-                          : ""
-                          } hover:primaryBgLight hover:primaryColor last:border-b-2 last:border-dashed last:border-gray-300`}
+                        className={`mx-4 flex cursor-pointer items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium text-white/85 transition-all ${activeMenu === link.name ? "bg-white/[0.14] text-white" : ""} hover:bg-white/[0.10] hover:text-white`}
                         onClick={() => {
                           if (link.name === "areaConverter") {
                             handleShowAreaConverter();
@@ -282,7 +275,7 @@ const MobileMenu = ({
                 className={`font-medium`}
               >
                 <div
-                  className="flex cursor-pointer items-center justify-between border-b-2 border-dashed border-gray-300 p-4 font-medium"
+                  className="mx-2 flex cursor-pointer items-center justify-between rounded-xl px-4 py-3 font-medium text-white transition-all hover:bg-white/[0.10]"
                   onClick={() => toggleSubMenu("language")}
                 >
                   {t("language")}:{" "}
@@ -303,10 +296,7 @@ const MobileMenu = ({
                     languages.map((lang) => (
                       <li
                         key={lang.code}
-                        className={`flex cursor-pointer items-center justify-between p-4 py-2 ${currentLang === lang.code
-                          ? "primaryColor font-semibold"
-                          : ""
-                          } hover:primaryBgLight hover:primaryColor last:border-b-2 last:border-dashed last:border-gray-300`}
+                        className={`mx-4 flex cursor-pointer items-center justify-between rounded-xl px-4 py-2.5 text-sm text-white/85 transition-all ${currentLang === lang.code ? "bg-white/[0.14] font-semibold text-white ring-1 ring-inset ring-white/15" : ""} hover:bg-white/[0.10] hover:text-white`}
                         onClick={() => {
                           handleLanguageChange(lang.code);
                           toggleSubMenu("language");
