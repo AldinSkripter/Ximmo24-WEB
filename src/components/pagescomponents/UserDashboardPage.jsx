@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import { ArrowUpRight, Building2, CreditCard, Heart, MessageSquare, Plus, UserRound } from 'lucide-react'
+import { Building2, CreditCard, Heart, MessageSquare, UserRound } from 'lucide-react'
 import ImageWithPlaceholder from '@/components/image-with-placeholder/ImageWithPlaceholder'
 import { useTranslation } from '@/components/context/TranslationContext'
 import { VerifiedUserBadge } from '@/utils/helperFunction'
@@ -103,7 +103,7 @@ const UserDashboardPage = () => {
                                     <Building2 className="absolute right-7 top-1/2 h-36 w-36 -translate-y-1/2 text-white" strokeWidth={1.2} />
                                 </div>
 
-                                <div className="relative grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:p-9">
+                                <div className="relative p-5 sm:p-7 lg:p-9">
                                     <div className="flex min-w-0 items-center gap-4 sm:gap-6">
                                         <DashboardAvatar user={user} />
                                         <div className="min-w-0">
@@ -125,18 +125,10 @@ const UserDashboardPage = () => {
                                         </div>
                                     </div>
 
-                                    <button
-                                        type="button"
-                                        onClick={() => openPage('/user/add-property')}
-                                        className="primaryBg group flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-extrabold text-white shadow-[0_14px_35px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:brightness-95 lg:w-auto"
-                                    >
-                                        <Plus className="h-5 w-5" />
-                                        <span>{t('addProperty')}</span>
-                                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                                    </button>
+
                                 </div>
 
-                                <div className="relative grid grid-cols-2 border-t border-white/10 sm:grid-cols-4">
+                                <div className="relative flex overflow-x-auto border-t border-white/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4">
                                     {quickActions.map((action) => {
                                         const Icon = action.icon
                                         const active = router.asPath?.includes(action.path)
@@ -145,7 +137,7 @@ const UserDashboardPage = () => {
                                                 key={action.path}
                                                 type="button"
                                                 onClick={() => openPage(action.path)}
-                                                className={`group flex min-h-[74px] items-center gap-3 border-r border-white/10 px-4 text-left transition-colors last:border-r-0 hover:bg-white/[0.08] sm:px-6 ${active ? 'bg-white/[0.1]' : ''}`}
+                                                className={`group flex min-h-[68px] min-w-[170px] items-center gap-3 border-r border-white/10 px-4 text-left transition-colors last:border-r-0 hover:bg-white/[0.08] sm:min-h-[74px] sm:min-w-0 sm:px-6 ${active ? 'bg-white/[0.1]' : ''}`}
                                             >
                                                 <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all ${active ? 'primaryBg text-white' : 'bg-white/10 text-slate-300 group-hover:text-white'}`}>
                                                     <Icon className="h-[18px] w-[18px]" />
