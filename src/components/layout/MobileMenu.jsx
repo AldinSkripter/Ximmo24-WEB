@@ -119,7 +119,7 @@ const MobileMenu = ({
           <div>
             <div className="flex items-center justify-between border-b border-white/10 p-3 md:p-4">
               <div
-                className="flex h-full min-w-0 max-w-[155px] cursor-pointer items-center rounded-2xl border border-white/25 bg-white/[0.22] px-2.5 py-2 shadow-[0_8px_24px_rgba(2,8,23,0.12)] backdrop-blur-xl"
+                className="flex h-full min-w-0 max-w-[155px] cursor-pointer items-center"
                 onClick={handleLogoClick}
               >
                 {webSettings?.web_logo ? (
@@ -131,7 +131,7 @@ const MobileMenu = ({
                     sizes="160px"
                     quality={95}
                     loading="eager"
-                    className="h-auto w-full object-contain drop-shadow-[0_1px_5px_rgba(255,255,255,0.75)]"
+                    className="h-auto w-full object-contain drop-shadow-[0_1px_4px_rgba(255,255,255,0.45)]"
                   />
                 ) : (
                   <Ximmo24Brand className="scale-90 origin-left" />
