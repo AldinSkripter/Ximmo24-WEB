@@ -649,7 +649,7 @@ const MyListings = () => {
                     {activeTab === "properties" ? t("myProperties") : t("myProjects")}
                 </h1>
                 <div className="w-full sm:w-fit flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <button type="button" onClick={handleAddListing} className="primaryBg primaryBorderColor min-h-11 rounded-xl border px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_color-mix(in_srgb,var(--primary-color)_28%,transparent)] transition-all hover:-translate-y-0.5 hover:brightness-95 sm:text-base">
+                    <button type="button" onClick={handleAddListing} className="primaryBg primaryBorderColor min-h-11 rounded-xl border px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(15,23,42,0.14)] transition-all hover:-translate-y-0.5 hover:brightness-95 sm:text-base">
                         {activeTab === "projects" ? t("addProject") : t("addProperty")}
                     </button>
                     <div className="flex w-full items-center justify-between gap-1 rounded-xl border border-slate-200 bg-slate-100/80 p-1.5 sm:w-fit">
