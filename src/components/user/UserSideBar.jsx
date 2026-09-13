@@ -15,28 +15,59 @@ import FirebaseData from "@/utils/Firebase";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const UserAvatar = ({ user, webSettings, compact = false }) => {
+    const sizeClass = compact ? "h-12 w-12" : "h-20 w-20";
+
+    if (user?.profile) {
+        return (
+            <ImageWithPlaceholder
+                src={user.profile}
+                alt={user?.name || "User"}
+                width={compact ? 48 : 80}
+                height={compact ? 48 : 80}
+                sizes={compact ? "48px" : "80px"}
+                quality={95}
+                unoptimized
+                className={`${sizeClass} shrink-0 rounded-2xl border border-white/20 object-cover shadow-lg`}
+            />
+        );
+    }
+
+    return (
+        <div className={`${sizeClass} primaryBg flex shrink-0 items-center justify-center rounded-2xl border border-white/20 text-xl font-extrabold uppercase text-white shadow-lg`}>
+            {user?.name?.charAt(0) || "U"}
+        </div>
+    );
+};
+
 const UserSidebarSkeleton = () => (
-    <div className="hidden h-full w-1/4 max-w-[318px] flex-col rounded-2xl border bg-white xl:flex">
-        <div className="border-b p-4 newBorderColor">
-            <div className="flex flex-col items-center justify-center gap-4 rounded-lg primaryBgLight08 p-6">
-                <Skeleton className="h-16 w-16 rounded-full" />
-                <div className="flex flex-col items-center gap-2">
-                    <Skeleton className="h-5 w-32" />
-                    <Skeleton className="h-4 w-40" />
+    <>
+        <div className="mb-4 rounded-[22px] border border-white/80 bg-white p-3 shadow-lg xl:hidden">
+            <div className="flex items-center gap-3">
+                <Skeleton className="h-12 w-12 rounded-2xl" />
+                <div className="flex-1">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="mt-2 h-3 w-44" />
                 </div>
             </div>
+            <div className="mt-3 flex gap-2 overflow-hidden">
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton key={index} className="h-10 w-28 shrink-0 rounded-xl" />
+                ))}
+            </div>
         </div>
-
-        <div className="flex flex-col gap-4 px-4 py-4">
-            {Array.from({ length: 10 }).map((_, index) => (
-                <div key={index} className="flex items-center gap-4 rounded-lg p-3">
-                    <Skeleton className="h-5 w-5 shrink-0 rounded-full" />
-                    <Skeleton className="h-4 w-40" />
+        <aside className="hidden w-full overflow-hidden rounded-[30px] bg-[#071426] shadow-[0_24px_70px_rgba(15,23,42,0.18)] xl:block">
+            <div className="p-5">
+                <Skeleton className="h-32 w-full rounded-2xl bg-white/10" />
+                <div className="mt-5 flex flex-col gap-2">
+                    {Array.from({ length: 10 }).map((_, index) => (
+                        <Skeleton key={index} className="h-12 w-full rounded-xl bg-white/10" />
+                    ))}
                 </div>
-            ))}
-        </div>
-    </div>
-)
+            </div>
+        </aside>
+    </>
+);
 
 const UserSidebar = ({ isLoading }) => {
     const t = useTranslation();
@@ -46,13 +77,12 @@ const UserSidebar = ({ isLoading }) => {
 
     const lang = router?.query?.lang;
     const pathname = router?.asPath;
-
-    const user = useSelector(state => state?.User?.data)
-    const webSettings = useSelector(state => state.WebSetting?.data);
+    const user = useSelector((state) => state?.User?.data);
+    const webSettings = useSelector((state) => state.WebSetting?.data);
     const FcmToken = useSelector((state) => state.WebSetting?.fcmToken);
 
     if (isLoading) {
-        return <UserSidebarSkeleton />
+        return <UserSidebarSkeleton />;
     }
 
     const clearDeletedAccountSession = () => {
@@ -61,7 +91,6 @@ const UserSidebar = ({ isLoading }) => {
         signOut();
     };
 
-    // handle logout functionality
     const handleLogout = async () => {
         Swal.fire({
             title: t("areYouSure"),
@@ -75,32 +104,25 @@ const UserSidebar = ({ isLoading }) => {
             confirmButtonText: t("yesLogout"),
             cancelButtonText: t("cancel"),
         }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    if (FcmToken) {
-                        const res = await beforeLogoutApi({ fcm_id: FcmToken });
-                        if (!res.error) {
-                            dispatch(logout());
-                            dispatch(setRole({ data: "user" }))
-                            signOut();
-                            toast.success(t("logoutSuccess"));
-                            router.push("/");
-                        }
-                    } else {
-                        dispatch(logout());
-                        dispatch(setRole({ data: "user" }))
-                        signOut();
-                        toast.success(t("logoutSuccess"));
-                        router.push("/");
-                    }
-                } catch (error) {
-                    console.error("Error logging out:", error);
+            if (!result.isConfirmed) return;
+
+            try {
+                if (FcmToken) {
+                    const res = await beforeLogoutApi({ fcm_id: FcmToken });
+                    if (res.error) return;
                 }
+
+                dispatch(logout());
+                dispatch(setRole({ data: "user" }));
+                signOut();
+                toast.success(t("logoutSuccess"));
+                router.push("/");
+            } catch (error) {
+                console.error("Error logging out:", error);
             }
         });
     };
 
-    // Handle delete account functionality
     const handleDeleteAccount = async () => {
         if (isDemoMode() && user?.is_demo_user) {
             Swal.fire({
@@ -115,14 +137,11 @@ const UserSidebar = ({ isLoading }) => {
                 confirmButtonText: t("ok"),
                 cancelButtonText: t("cancel"),
             });
-            return; // Stop further execution
+            return;
         }
 
-        // Initialize Firebase Authentication
         const auth = getAuth();
-
-        // Get the currently signed-in user
-        const user = auth?.currentUser;
+        const firebaseUser = auth?.currentUser;
 
         Swal.fire({
             title: t("areYouSure"),
@@ -137,113 +156,176 @@ const UserSidebar = ({ isLoading }) => {
             confirmButtonText: t("yes"),
             cancelButtonText: t("cancel"),
         }).then(async (result) => {
-            if (result.isConfirmed) {
-                // Delete the user
-                if (user) {
-                    try {
-                        // Firebase deleteUser returns undefined on success
-                        await deleteUser(user);
+            if (!result.isConfirmed) return;
 
-                        // After successful Firebase deletion, call the API
-                        await deleteUserAccountApi();
+            try {
+                if (firebaseUser) {
+                    await deleteUser(firebaseUser);
+                }
 
-                        // Handle success
-                        clearDeletedAccountSession();
-                        toast.success(t("accountDeletedSuccessfully"));
-                        router.push("/");
-                    } catch (error) {
-                        console.error("Error deleting user:", error.message);
-                        if (error.code === "auth/requires-recent-login") {
-                            clearDeletedAccountSession();
-                            toast.error(error.message);
-                            router.push("/");
-                        }
-                    }
-                } else {
-                    try {
-                        await deleteUserAccountApi();
-                        clearDeletedAccountSession();
-                        toast.success(t("accountDeletedSuccessfully"));
-                        router.push("/");
-                    } catch (err) {
-                        console.error(err);
-                    }
+                await deleteUserAccountApi();
+                clearDeletedAccountSession();
+                toast.success(t("accountDeletedSuccessfully"));
+                router.push("/");
+            } catch (error) {
+                console.error("Error deleting user:", error?.message || error);
+                if (error?.code === "auth/requires-recent-login") {
+                    clearDeletedAccountSession();
+                    toast.error(error.message);
+                    router.push("/");
                 }
             }
         });
     };
 
     const menuItems = [
-        { icon: <BiBuildingHouse className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("myListing"), route: `/user/listings?tab=properties&lang=${lang}` },
-        { icon: <RiAdvertisementLine className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("myAdvertisements"), route: `/user/advertisement?lang=${lang}` },
-        { icon: <FaRegCalendarAlt className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("myAppointments"), route: `/user/appointments?lang=${lang}` },
-        { icon: <BiMessageSquareDetail className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("messages"), route: `/user/chat?lang=${lang}` },
-        { icon: <BiBell className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("notifications"), route: `/user/notifications?lang=${lang}` },
-        { icon: <BiNews className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("personalizedFeeds"), route: `/user/personalized-feeds?lang=${lang}` },
-        { icon: <BiCreditCard className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("mySubscriptions"), route: `/user/my-subscriptions?lang=${lang}` },
-        { icon: <BiDollarCircle className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("transactionHistory"), route: `/user/transaction-history?lang=${lang}` },
-        { icon: <FaRegCircleUser className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("myProfile"), route: `/user/profile?lang=${lang}` },
-        { icon: <BiHeart className="size-4 md:size-5" />, label: t("favourites"), route: `/user/favourites?lang=${lang}` },
-        { icon: <BiLogOut className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("logout"), route: `/user/logout?lang=${lang}`, onClick: handleLogout },
-        { icon: <BiUserX className="w-4 h-4 xl:w-6 xl:h-6" />, label: t("deleteAccount"), route: `/user/delete-account?lang=${lang}`, onClick: handleDeleteAccount },
+        { icon: BiBuildingHouse, label: t("myListing"), route: `/user/listings?tab=properties&lang=${lang}` },
+        { icon: RiAdvertisementLine, label: t("myAdvertisements"), route: `/user/advertisement?lang=${lang}` },
+        { icon: FaRegCalendarAlt, label: t("myAppointments"), route: `/user/appointments?lang=${lang}` },
+        { icon: BiMessageSquareDetail, label: t("messages"), route: `/user/chat?lang=${lang}` },
+        { icon: BiBell, label: t("notifications"), route: `/user/notifications?lang=${lang}` },
+        { icon: BiNews, label: t("personalizedFeeds"), route: `/user/personalized-feeds?lang=${lang}` },
+        { icon: BiCreditCard, label: t("mySubscriptions"), route: `/user/my-subscriptions?lang=${lang}` },
+        { icon: BiDollarCircle, label: t("transactionHistory"), route: `/user/transaction-history?lang=${lang}` },
+        { icon: FaRegCircleUser, label: t("myProfile"), route: `/user/profile?lang=${lang}` },
+        { icon: BiHeart, label: t("favourites"), route: `/user/favourites?lang=${lang}` },
     ];
 
+    const accountActions = [
+        { icon: BiLogOut, label: t("logout"), onClick: handleLogout },
+        { icon: BiUserX, label: t("deleteAccount"), onClick: handleDeleteAccount, danger: true },
+    ];
+
+    const isActiveRoute = (route) => pathname?.includes(route.split("?")[0]);
+
+    const navigate = (item) => {
+        if (item.onClick) {
+            item.onClick();
+            return;
+        }
+        router.push(item.route);
+    };
+
     return (
-        <div className="w-1/4 max-w-[318px] rounded-2xl border newBorderColor bg-white hidden xl:block h-full">
-            <div className="p-4 gap-2 border-b newBorderColor">
-                <div className="p-6 gap-4 rounded-lg primaryBgLight08 flex flex-col items-center justify-center">
-                    {user?.profile ? (
-                        <ImageWithPlaceholder
-                            src={user?.profile}
-                            alt={user?.name}
-                            width={64}
-                            height={64}
-                            sizes="64px"
-                            quality={95}
-                            unoptimized
-                            className="rounded-full border flex-shrink-0 h-16 w-16 aspect-[64/64] object-cover"
-                        />
-                    ) : (
-                        <div className="rounded-full h-16 w-16 flex items-center justify-center primaryBg text-white text-xl font-bold uppercase border  shrink-0">
-                            {user?.name?.charAt(0)}
-                        </div>
-                    )}
-                    <div className="flex w-full min-w-0 flex-col gap-1 items-center justify-center">
-                        <p className="w-full flex items-center justify-center font-bold text-xl brandColor">
-                            <span className="inline-flex items-center gap-1 min-w-0 max-w-full">
-                                <span className="min-w-0 truncate" title={user?.name}>
-                                    {user?.name}
-                                </span>
-                                {user?.is_user_verified ? (
-                                    <VerifiedUserBadge color={webSettings?.system_color} width={20} height={20} />
-                                ) : null}
-                            </span>
+        <>
+            <div className="mb-4 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_16px_45px_rgba(15,23,42,0.09)] backdrop-blur-xl xl:hidden">
+                <div className="flex items-center gap-3 border-b border-slate-100 p-3.5">
+                    <UserAvatar user={user} webSettings={webSettings} compact />
+                    <div className="min-w-0 flex-1">
+                        <p className="flex min-w-0 items-center gap-1.5 font-extrabold text-slate-900">
+                            <span className="truncate">{user?.name}</span>
+                            {user?.is_user_verified ? (
+                                <VerifiedUserBadge color={webSettings?.system_color} width={17} height={17} />
+                            ) : null}
                         </p>
-                        <p className="w-full min-w-0 truncate text-center text-base leadColor" title={user?.email}>{user?.email}</p>
+                        <p className="truncate text-xs text-slate-500">{user?.email}</p>
+                    </div>
+                </div>
+                <nav aria-label="User navigation" className="flex gap-2 overflow-x-auto p-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    {menuItems.map((item) => {
+                        const Icon = item.icon;
+                        const active = isActiveRoute(item.route);
+                        return (
+                            <button
+                                key={item.route}
+                                type="button"
+                                onClick={() => navigate(item)}
+                                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-3.5 text-sm font-bold transition-all ${active ? "primaryBg primaryBorderColor text-white shadow-md" : "border-slate-200 bg-white text-slate-700"}`}
+                            >
+                                <Icon className="h-5 w-5" />
+                                <span>{item.label}</span>
+                            </button>
+                        );
+                    })}
+                    {accountActions.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <button
+                                key={item.label}
+                                type="button"
+                                onClick={() => navigate(item)}
+                                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-3.5 text-sm font-bold ${item.danger ? "border-red-100 bg-red-50 text-red-600" : "border-slate-200 bg-white text-slate-700"}`}
+                            >
+                                <Icon className="h-5 w-5" />
+                                <span>{item.label}</span>
+                            </button>
+                        );
+                    })}
+                </nav>
+            </div>
+
+            <aside className="sticky top-24 hidden w-full overflow-hidden rounded-[30px] bg-[#071426] text-white shadow-[0_28px_75px_rgba(15,23,42,0.2)] xl:block">
+                <div className="relative overflow-hidden p-5">
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-30 blur-3xl"
+                        style={{ backgroundColor: "var(--primary-color)" }}
+                    />
+                    <div className="relative rounded-[22px] border border-white/10 bg-white/[0.07] p-4 backdrop-blur">
+                        <div className="flex items-center gap-3">
+                            <UserAvatar user={user} webSettings={webSettings} />
+                            <div className="min-w-0 flex-1">
+                                <p className="flex min-w-0 items-center gap-1.5 text-base font-extrabold">
+                                    <span className="truncate" title={user?.name}>{user?.name}</span>
+                                    {user?.is_user_verified ? (
+                                        <VerifiedUserBadge color={webSettings?.system_color} width={18} height={18} />
+                                    ) : null}
+                                </p>
+                                <p className="mt-1 truncate text-xs text-slate-400" title={user?.email}>{user?.email}</p>
+                            </div>
+                        </div>
+                        <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
+                            <div className="h-full w-2/3 rounded-full primaryBg" />
+                        </div>
                     </div>
                 </div>
 
-            </div>
-            <div className="px-4 py-4 flex flex-col gap-4">
-                {menuItems.map((item, index) => {
-                    const isActive = pathname?.includes(item.route?.split("?")[0] || "");
+                <nav aria-label="User navigation" className="relative px-3 pb-3">
+                    <div className="flex flex-col gap-1">
+                        {menuItems.map((item) => {
+                            const Icon = item.icon;
+                            const active = isActiveRoute(item.route);
+                            return (
+                                <button
+                                    key={item.route}
+                                    type="button"
+                                    onClick={() => navigate(item)}
+                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3.5 text-left text-sm font-semibold transition-all duration-200 ${active ? "primaryBg translate-x-1 text-white shadow-lg" : "text-slate-300 hover:translate-x-1 hover:bg-white/[0.08] hover:text-white"}`}
+                                >
+                                    <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${active ? "bg-white/15" : "bg-white/[0.06] group-hover:bg-white/10"}`}>
+                                        <Icon className="h-[19px] w-[19px]" />
+                                    </span>
+                                    <span className="min-w-0 truncate">{item.label}</span>
+                                    {active ? <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white" /> : null}
+                                </button>
+                            );
+                        })}
+                    </div>
 
-                    return (
-                        <div key={index} onClick={() => {
-                            if (item?.onClick) {
-                                item.onClick();
-                            } else {
-                                router.push(item.route);
-                            }
-                        }} className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-all ${isActive ? "primaryBg text-white" : ""}`}>
-                            <span className="shrink-0">{item.icon}</span>
-                            <span className="text-nowrap truncate text-sm lg:text-base font-medium">{item.label}</span>
-                        </div>
-                    )
-                })}
-            </div>
-        </div>
-    )
-}
+                    <div className="my-3 h-px bg-white/10" />
 
-export default UserSidebar
+                    <div className="flex flex-col gap-1">
+                        {accountActions.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <button
+                                    key={item.label}
+                                    type="button"
+                                    onClick={() => navigate(item)}
+                                    className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3.5 text-left text-sm font-semibold transition-all ${item.danger ? "text-red-300 hover:bg-red-500/10 hover:text-red-200" : "text-slate-300 hover:bg-white/[0.08] hover:text-white"}`}
+                                >
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06]">
+                                        <Icon className="h-[19px] w-[19px]" />
+                                    </span>
+                                    <span className="truncate">{item.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </nav>
+            </aside>
+        </>
+    );
+};
+
+export default UserSidebar;
