@@ -21,6 +21,7 @@ import withAuth from "../HOC/withAuth";
 import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
 import toast from "react-hot-toast";
 import { applyWebTheme } from "@/utils/applyWebTheme";
+import FullScreenSpinLoader from "@/components/ui/loaders/FullScreenSpinLoader";
 
 const VerticleLayout = ({ children }) => {
     const { signOut } = FirebaseData();
@@ -290,6 +291,18 @@ const VerticleLayout = ({ children }) => {
         isUserDataRefreshing,
         hasRefreshedUserData,
     ]);
+
+    const hasLoadedAdminTranslations = Boolean(
+        isLanguageLoaded &&
+        currentLang?.file_name &&
+        Object.keys(currentLang.file_name).length
+    );
+
+    // The admin-managed translation file is the single source of truth.
+    // Do not render fallback labels while it is still loading on refresh.
+    if (!hasLoadedAdminTranslations) {
+        return <FullScreenSpinLoader />;
+    }
 
     return (
         <SidebarProvider>
