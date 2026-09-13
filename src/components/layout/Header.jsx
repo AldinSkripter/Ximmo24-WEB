@@ -721,12 +721,12 @@ const Header = () => {
                       </button>
 
                       {openMenu === menu.name && (
-                        <div className="dropdown-content absolute left-0 top-full z-20 mt-2 w-[250px] rounded-md cardBg shadow-lg newBorder">
-                          <ul className="py-1 [&>li:last-child>button]:border-b-0">
+                        <div className="dropdown-content absolute left-0 top-full z-20 mt-3 w-[280px] overflow-hidden rounded-[22px] border border-white/25 bg-[rgba(15,23,42,0.36)] p-2 text-white shadow-[0_24px_70px_rgba(2,8,23,0.32)] backdrop-blur-[24px] backdrop-saturate-150">
+                          <ul className="space-y-1">
                             {menu?.links?.map((link) => (
                               <li key={link.name}>
                                 <button
-                                  className="hover:primaryColor hover:primaryBorderColor group block w-full cursor-pointer border-b-2 border-dashed px-3 py-2 text-left transition-all duration-150"
+                                  className={`group block min-h-11 w-full cursor-pointer rounded-xl px-4 py-2.5 text-left text-sm font-semibold text-white transition-all duration-200 hover:bg-white/[0.13] hover:text-white ${router.pathname.includes(link.route) && link.route !== '/' ? "bg-white/[0.14] ring-1 ring-inset ring-white/15" : ""}`}
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
@@ -738,8 +738,8 @@ const Header = () => {
                                     setOpenMenu(null);
                                   }}
                                 >
-                                  <span className="transition-all duration-150 group-hover:ml-2">
-                                    {truncate(t(link.name), 26)}
+                                  <span className="block truncate [text-shadow:0_1px_8px_rgba(0,0,0,0.72)] transition-transform duration-200 group-hover:translate-x-1">
+                                    {truncate(t(link.name), 30)}
                                   </span>
                                 </button>
                               </li>
@@ -764,12 +764,12 @@ const Header = () => {
                     {languages?.length > 1 && <FaChevronDown size={10} />}
                   </button>
                   {showLangDropdown && (
-                    <div className="absolute right-0 top-full z-[9999] mt-2 w-32 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 text-slate-900 shadow-2xl">
+                    <div className="absolute right-0 top-full z-[9999] mt-3 w-44 overflow-hidden rounded-[20px] border border-white/25 bg-[rgba(15,23,42,0.36)] p-2 text-white shadow-[0_24px_70px_rgba(2,8,23,0.32)] backdrop-blur-[24px] backdrop-saturate-150">
                       {(languages || []).map((item) => (
                         <button
                           type="button"
                           key={item.code}
-                          className="block w-full px-4 py-2 text-left text-sm font-medium transition-colors hover:bg-slate-100"
+                          className={`block min-h-11 w-full rounded-xl px-4 py-2.5 text-left text-sm font-semibold text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.72)] transition-all hover:bg-white/[0.13] ${item.code === currentLang ? "bg-white/[0.14] ring-1 ring-inset ring-white/15" : ""}`}
                           onClick={() => {
                             handleLanguageChange(item.code);
                             setShowLangDropdown(false);
