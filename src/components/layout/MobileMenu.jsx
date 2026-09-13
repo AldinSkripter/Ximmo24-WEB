@@ -164,7 +164,8 @@ const MobileMenu = ({
           </button>
         </SheetTrigger>
         <SheetContent
-          className="flex h-full flex-col justify-between overflow-y-auto border-l border-white/25 bg-[rgba(15,23,42,0.82)] p-0 text-white shadow-[-24px_0_70px_rgba(2,8,23,0.30)] backdrop-blur-[24px] backdrop-saturate-150 [&>button]:hidden"
+          className="flex h-full flex-col justify-between overflow-y-auto border-l border-white/30 bg-[rgba(15,23,42,0.36)] p-0 text-white shadow-[-24px_0_70px_rgba(2,8,23,0.24)] backdrop-blur-[28px] backdrop-saturate-150 [&>button]:hidden"
+          overlayClassName="bg-slate-950/30 backdrop-blur-[2px]"
           aria-describedby={"mobile-menu"}
           side={isRtl ? "left" : "right"}
         >
@@ -173,7 +174,7 @@ const MobileMenu = ({
           <div>
             <div className="flex items-center justify-between border-b border-white/10 p-3 md:p-4">
               <div
-                className="h-full max-w-[160px] w-full flex items-center cursor-pointer"
+                className="flex h-full min-w-0 max-w-[155px] cursor-pointer items-center rounded-2xl border border-white/25 bg-white/[0.22] px-2.5 py-2 shadow-[0_8px_24px_rgba(2,8,23,0.12)] backdrop-blur-xl"
                 onClick={handleLogoClick}
               >
                 {webSettings?.web_logo ? (
@@ -185,7 +186,7 @@ const MobileMenu = ({
                     sizes="160px"
                     quality={95}
                     loading="eager"
-                    className="h-auto w-full object-contain"
+                    className="h-auto w-full object-contain drop-shadow-[0_1px_5px_rgba(255,255,255,0.75)]"
                   />
                 ) : (
                   <Ximmo24Brand className="scale-90 origin-left" />
