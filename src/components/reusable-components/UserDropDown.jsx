@@ -162,89 +162,130 @@ export default function UserDropDown({ user, handleLogout, onClose }) {
 
 
 
+    const isActiveRoute = (route) => router?.asPath?.includes(route?.split("?")[0]);
+
     return (
-        <div className="dropdown-content absolute right-[-30px] md:right-0 rtl:-right-[150px] md:rtl:-right-[220px] xl:rtl:-right-[120px] top-full z-50 mt-3 min-w-[250px] w-full md:min-w-[300px] rounded-b-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden">
-            {/* User Info Section */}
-            <div className={`flex items-center gap-3 p-3 md:p-4 ${!isMobileAndTabletScreen && !showSwitchToAgentButton ? "border-b" : "border-b-0"} newBorderColor`}>
-                <div className=" border border-leadBorder p-0.5 flex-shrink-0 rounded-full">
+        <div className="dropdown-content fixed inset-x-3 top-[76px] z-[100] flex max-h-[calc(100dvh-92px)] flex-col overflow-hidden rounded-[24px] border border-white/15 bg-[#071426]/[0.94] text-white shadow-[0_28px_90px_rgba(2,8,23,0.48)] backdrop-blur-2xl xl:absolute xl:inset-x-auto xl:right-0 xl:top-full xl:mt-3 xl:w-[390px]">
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-30 blur-3xl"
+                style={{ backgroundColor: "var(--primary-color)" }}
+            />
+
+            <div className="relative flex items-center gap-3 border-b border-white/10 p-4 sm:p-5">
+                <div className="shrink-0 rounded-[18px] border border-white/15 bg-white/10 p-1 shadow-xl">
                     {user?.profile ? (
                         <ImageWithPlaceholder
-                            src={user?.profile}
-                            alt={user?.name}
-                            className="rounded-full border aspect-[44/44] md:aspect-[56/56] h-11 w-11 md:h-14 md:w-14"
+                            src={user.profile}
+                            alt={user?.name || t("user")}
+                            width={58}
+                            height={58}
+                            sizes="58px"
+                            quality={95}
+                            unoptimized
+                            className="h-[54px] w-[54px] rounded-[14px] object-cover"
                         />
                     ) : (
-                        <div className="rounded-full md:h-14 md:w-14 h-10 w-10 flex items-center justify-center primaryBg text-white text-xl font-bold uppercase border  shrink-0">
+                        <div className="primaryBg flex h-[54px] w-[54px] items-center justify-center rounded-[14px] text-xl font-black uppercase text-white">
                             {(user?.name || user?.email)?.charAt(0)}
                         </div>
                     )}
                 </div>
-                <div className={`flex min-w-0 flex-col overflow-hidden`}>
-                    <p className="flex w-full min-w-0 items-center gap-1 font-bold text-lg brandColor">
-                        <span className="min-w-0 flex-1 truncate" title={user?.name}>
+                <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-center gap-1.5">
+                        <p className="min-w-0 truncate text-base font-black text-white sm:text-lg" title={user?.name}>
                             {user?.name}
-                        </span>
-                        {userData?.is_user_verified ? <VerifiedUserBadge color={webSettings?.system_color || "#087C7C"} width={20} height={20} /> : null}
-                    </p>
-                    <p className="text-sm leadColor truncate">{user?.email}</p>
+                        </p>
+                        {userData?.is_user_verified ? (
+                            <VerifiedUserBadge color={webSettings?.system_color || "#0aa8e8"} width={18} height={18} />
+                        ) : null}
+                    </div>
+                    <p className="truncate text-xs text-slate-400 sm:text-sm" title={user?.email}>{user?.email}</p>
                 </div>
+                <span className="primaryBg h-2.5 w-2.5 shrink-0 rounded-full shadow-[0_0_16px_var(--primary-color)]" />
             </div>
 
-
             {showSwitchToAgentButton ? (
-                <div className="px-3 md:px-4 pb-3 md:pb-4 border-b newBorderColor">
-                    <button className="w-full border leadBorder rounded-lg py-1 md:py-2 font-bold secondryTextColor" onClick={handleSwitchToAgentClick}>
-                        {t("switchToAgent")}
+                <div className="relative border-b border-white/10 p-3 sm:px-4">
+                    <button
+                        type="button"
+                        className="group flex min-h-11 w-full items-center justify-between rounded-xl border border-white/15 bg-white/[0.08] px-4 text-sm font-extrabold text-white transition-all hover:bg-white/[0.14]"
+                        onClick={handleSwitchToAgentClick}
+                    >
+                        <span>{t("switchToAgent")}</span>
+                        <span className="primaryBg flex h-7 w-7 items-center justify-center rounded-lg transition-transform group-hover:translate-x-0.5">
+                            <BiTachometer className="h-4 w-4" />
+                        </span>
                     </button>
-                </div>) : null}
+                </div>
+            ) : null}
 
             {isMobileAndTabletScreen && isAgentVerificationNotApplied && !isBecomeAgentPage ? (
-                <div className="px-3 md:px-4 pb-3 md:pb-4 border-b newBorderColor">
-                    <button className="w-full flex justify-center items-center gap-2 border leadBorder rounded-lg py-2 md:py-2 font-bold secondryTextColor hover:brandBg hover:text-white" onClick={handleSwitchToAgentClick}>
-                        <MdOutlineVerifiedUser className="w-5 h-5" />
+                <div className="relative border-b border-white/10 p-3 sm:px-4">
+                    <button
+                        type="button"
+                        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.08] px-4 text-sm font-extrabold text-white transition-all hover:bg-white/[0.14]"
+                        onClick={handleSwitchToAgentClick}
+                    >
+                        <MdOutlineVerifiedUser className="h-5 w-5 primaryColor" />
                         {t("becomeAgent")}
                     </button>
                 </div>
-            ) : isMobileAndTabletScreen && isAgentVerificationRejected && !isBecomeAgentPage ?
-                (
-                    <div className="px-3 md:px-4 pb-3 md:pb-4 border-b newBorderColor">
-                        <button className="w-full flex justify-center items-center gap-2 border leadBorder rounded-lg py-2 md:py-2 font-bold secondryTextColor hover:brandBg hover:text-white" onClick={() => router?.push(`/become-agent/?lang=${lang}`)}>
-                            <FaExclamation className="w-5 h-5" />
-                            {t("requestRejected")}
-                        </button>
-                    </div>
-                ) : null}
-
-            <div className={`px-4 py-2 max-h-[400px] overflow-y-auto ${isMobileAndTabletScreen && !isAgent && isBecomeAgentPage ? "border-t" : ""} newBorderColor`}>
-                {activeMenuItems.map((item, index) => (
+            ) : isMobileAndTabletScreen && isAgentVerificationRejected && !isBecomeAgentPage ? (
+                <div className="relative border-b border-white/10 p-3 sm:px-4">
                     <button
-                        key={index}
-                        onClick={() => {
-                            onClose?.();
-
-                            if (item.onClick) {
-                                item.onClick();
-                            } else {
-                                router.push(item.route);
-                            }
-                        }}
-                        className="w-full flex items-center gap-1 md:gap-2 p-2 md:p-3 brandColor rounded-lg hover:primaryBg hover:text-white transition-colors font-medium"
+                        type="button"
+                        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-red-400/20 bg-red-500/10 px-4 text-sm font-extrabold text-red-200"
+                        onClick={() => router.push(`/become-agent/?lang=${lang}`)}
                     >
-                        {item.icon}
-                        <span className="text-base md:text-lg">{item.label}</span>
+                        <FaExclamation className="h-4 w-4" />
+                        {t("requestRejected")}
                     </button>
-                ))}
-            </div>
+                </div>
+            ) : null}
 
+            <nav className="relative min-h-0 flex-1 overflow-y-auto p-2.5 sm:p-3 [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
+                <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
+                    {activeMenuItems.map((item, index) => {
+                        const active = isActiveRoute(item.route);
+                        return (
+                            <button
+                                key={item.route || index}
+                                type="button"
+                                aria-current={active ? "page" : undefined}
+                                onClick={() => {
+                                    onClose?.();
+                                    if (item.onClick) {
+                                        item.onClick();
+                                    } else {
+                                        router.push(item.route);
+                                    }
+                                }}
+                                className={`group flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold transition-all ${active ? "primaryBg text-white shadow-lg" : "text-slate-200 hover:bg-white/[0.09] hover:text-white"}`}
+                            >
+                                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${active ? "bg-white/15" : "bg-white/[0.07] text-slate-300 group-hover:bg-white/10 group-hover:text-white"}`}>
+                                    {item.icon}
+                                </span>
+                                <span className="min-w-0 truncate">{item.label}</span>
+                                {active ? <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white" /> : null}
+                            </button>
+                        );
+                    })}
+                </div>
+            </nav>
 
             {!showAgentOwnListingMenu ? (
-                <div className="p-4 pt-2 border-t newBorderColor">
-                    <button className="w-full flex items-center text-white gap-2 rounded-lg p-2 md:p-3 bgRed font-bold" onClick={() => {
-                        onClose?.();
-                        handleLogout();
-                    }}>
-                        <BiLogIn className="size-4 md:size-5" />
-                        <span className="text-base md:text-lg">{t("logout")}</span>
+                <div className="relative border-t border-white/10 p-3 sm:p-4">
+                    <button
+                        type="button"
+                        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-red-400/20 bg-red-500/10 px-4 text-sm font-extrabold text-red-200 transition-all hover:bg-red-500/20 hover:text-white"
+                        onClick={() => {
+                            onClose?.();
+                            handleLogout();
+                        }}
+                    >
+                        <BiLogIn className="h-5 w-5" />
+                        <span>{t("logout")}</span>
                     </button>
                 </div>
             ) : null}
