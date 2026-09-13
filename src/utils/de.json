@@ -110,19 +110,5 @@
   "loadMore": "Mehr laden",
   "enterLocation": "Standort eingeben",
   "filters": "Filter",
-  "smartFilters": "Intelligente Filter",
-  "addProperty": "Immobilie hinzufügen",
-  "manageYourProfileAndViewProperty": "Verwalten Sie Ihr Profil und Ihre Immobilien",
-  "thisMonth": "Diesen Monat",
-  "propertyViews": "Immobilienaufrufe",
-  "today": "Heute",
-  "appointments": "Termine",
-  "hy": "Hallo",
-  "agentPanel": "Maklerbereich",
-  "userPanel": "Nutzerbereich",
-  "main": "Übersicht",
-  "myStories": "Meine Storys",
-  "watermarkSettings": "Wasserzeichen-Einstellungen",
-  "listings": "Inserate",
-  "appointmentSettings": "Termineinstellungen"
+  "smartFilters": "Intelligente Filter"
 }
