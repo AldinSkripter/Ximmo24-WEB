@@ -15,7 +15,7 @@ import FirebaseData from "@/utils/Firebase";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const UserAvatar = ({ user, webSettings, compact = false }) => {
+const UserAvatar = ({ user, compact = false }) => {
     const sizeClass = compact ? "h-12 w-12" : "h-20 w-20";
 
     if (user?.profile) {
@@ -210,7 +210,7 @@ const UserSidebar = ({ isLoading }) => {
         <>
             <div className="mb-4 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_16px_45px_rgba(15,23,42,0.09)] backdrop-blur-xl xl:hidden">
                 <div className="flex items-center gap-3 border-b border-slate-100 p-3.5">
-                    <UserAvatar user={user} webSettings={webSettings} compact />
+                    <UserAvatar user={user} compact />
                     <div className="min-w-0 flex-1">
                         <p className="flex min-w-0 items-center gap-1.5 font-extrabold text-slate-900">
                             <span className="truncate">{user?.name}</span>
@@ -263,7 +263,7 @@ const UserSidebar = ({ isLoading }) => {
                     />
                     <div className="relative rounded-[22px] border border-white/10 bg-white/[0.07] p-4 backdrop-blur">
                         <div className="flex items-center gap-3">
-                            <UserAvatar user={user} webSettings={webSettings} />
+                            <UserAvatar user={user} />
                             <div className="min-w-0 flex-1">
                                 <p className="flex min-w-0 items-center gap-1.5 text-base font-extrabold">
                                     <span className="truncate" title={user?.name}>{user?.name}</span>
