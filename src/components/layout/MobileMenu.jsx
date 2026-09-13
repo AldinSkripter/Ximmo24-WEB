@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import Ximmo24Brand from "@/components/brand/Ximmo24Brand";
 import {
@@ -7,7 +7,6 @@ import {
   MdOutlineVerifiedUser
 } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { BiMapPin } from "react-icons/bi";
 import {
   Sheet,
   SheetTrigger,
@@ -20,9 +19,6 @@ import { setLockedFilter } from "@/redux/slices/propertyListSlice";
 import { useRouter } from "next/router";
 import { isRTL, showLoginSwal } from "@/utils/helperFunction";
 import { useTranslation } from "../context/TranslationContext";
-import LocationSearchWithRadius from "../location-search/LocationSearchWithRadius";
-import { setLocationAction } from "@/redux/slices/locationSlice";
-import toast from "react-hot-toast";
 
 const MobileMenu = ({
   isMenuOpen,
@@ -42,7 +38,6 @@ const MobileMenu = ({
   const dispatch = useDispatch();
   const [openSubMenu, setOpenSubMenu] = useState("");
   const [activeMenu, setActiveMenu] = useState(""); // Track the active menu
-  const [isLocationDialogOpen, setIsLocationDialogOpen] = useState(false);
 
   const defaultLang = useSelector(
     (state) => state.LanguageSettings?.default_language,
@@ -66,35 +61,7 @@ const MobileMenu = ({
     toggleMenu();
   };
 
-  const userSelectedLocation = useSelector((state) => state.location);
   const webSettings = useSelector((state) => state.WebSetting?.data);
-
-  // Location state management
-  const isUserLocationSet =
-    userSelectedLocation?.city !== "" &&
-    userSelectedLocation?.state !== "" &&
-    userSelectedLocation?.country !== "";
-
-  const [location, setLocation] = useState(
-    isUserLocationSet
-      ? [
-        userSelectedLocation?.city,
-        userSelectedLocation?.state,
-        userSelectedLocation?.country,
-      ]
-      : [],
-  );
-
-  // Update location when Redux state changes
-  useEffect(() => {
-    if (isUserLocationSet) {
-      setLocation([
-        userSelectedLocation?.city,
-        userSelectedLocation?.state,
-        userSelectedLocation?.country,
-      ]);
-    }
-  }, [userSelectedLocation]);
 
   const toggleSubMenu = (menuName) => {
     setOpenSubMenu((prev) => (prev === menuName ? "" : menuName));
@@ -125,29 +92,7 @@ const MobileMenu = ({
     toggleMenu();
   };
 
-  // Handle location selection
-  const handleLocationClick = () => {
-    setIsLocationDialogOpen(true);
-    toggleMenu(); // Close mobile menu when opening location dialog
-  };
 
-  const handlePlaceSelected = (place) => {
-    if (place && place.formatted_address) {
-      const address = place.formatted_address;
-      const latitude = place.geometry?.location?.lat();
-      const longitude = place.geometry?.location?.lng();
-
-      setLocation(address); // Update local state
-      dispatch(
-        setLocationAction({ formatted_address: address, latitude, longitude }),
-      ); // Update Redux
-      setIsLocationDialogOpen(false); // Close dialog
-      toast.success(t("locationUpdated"));
-    } else {
-      console.error("Invalid place selected:", place);
-      toast.error(t("invalidLocationSelected"));
-    }
-  };
 
   return (
     <>
@@ -164,7 +109,7 @@ const MobileMenu = ({
           </button>
         </SheetTrigger>
         <SheetContent
-          className="flex h-full flex-col justify-between overflow-y-auto border-l border-white/30 bg-[rgba(15,23,42,0.36)] p-0 text-white shadow-[-24px_0_70px_rgba(2,8,23,0.24)] backdrop-blur-[28px] backdrop-saturate-150 [&>button]:hidden"
+          className="flex h-[100dvh] flex-col justify-between overflow-y-auto overscroll-contain border-l border-white/30 bg-[rgba(15,23,42,0.36)] p-0 pb-[max(1rem,env(safe-area-inset-bottom))] text-white shadow-[-24px_0_70px_rgba(2,8,23,0.24)] backdrop-blur-[28px] backdrop-saturate-150 [&>button]:hidden"
           overlayClassName="bg-slate-950/30 backdrop-blur-[2px]"
           aria-describedby={"mobile-menu"}
           side={isRtl ? "left" : "right"}
@@ -200,30 +145,7 @@ const MobileMenu = ({
             </div>
             <ul className="flex flex-col ">
 
-              {/* Location Selection */}
-              <li
-                className="m-2 cursor-pointer rounded-xl border border-white/10 bg-white/[0.06] p-4 font-medium text-white transition-all hover:bg-white/[0.13]"
-                onClick={handleLocationClick}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-white/10 p-2">
-                    <BiMapPin size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-1 text-white/80">
-                      <span className="text-sm font-medium">{t("location")}</span>
-                    </div>
-                    <div className="mt-0.5 text-xs text-white/65">
-                      {location && location?.length > 0
-                        ? location?.join(", ")
-                        : t("selectLocation")}
-                    </div>
-                  </div>
-                  <div>
-                    <MdKeyboardArrowRight size={18} className="brandColor rtl:rotate-180" />
-                  </div>
-                </div>
-              </li>
+
 
               <li
                 className={`mx-2 cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition-all ${activeMenu === "home" ? "bg-white/[0.14] ring-1 ring-inset ring-white/15" : ""} hover:bg-white/[0.10]`}
@@ -248,10 +170,7 @@ const MobileMenu = ({
                     </div>
                   </li>
                   <ul
-                    className={`overflow-hidden transition-all duration-300 ${openSubMenu === menu.name
-                      ? "max-h-96 opacity-100"
-                      : "max-h-0 opacity-0"
-                      }`}
+                    className={`transition-all duration-300 ${openSubMenu === menu.name ? "max-h-[60dvh] overflow-y-auto overscroll-contain pb-2 opacity-100 [scrollbar-width:thin]" : "max-h-0 overflow-hidden opacity-0"}`}
                   >
                     {menu.links.map((link) => (
                       <li
@@ -288,10 +207,7 @@ const MobileMenu = ({
                   />
                 </div>
                 <ul
-                  className={`overflow-hidden transition-all duration-300 ${openSubMenu === "language"
-                    ? "max-h-96 opacity-100"
-                    : "max-h-0 opacity-0"
-                    }`}
+                  className={`transition-all duration-300 ${openSubMenu === "language" ? "max-h-[50dvh] overflow-y-auto overscroll-contain pb-2 opacity-100 [scrollbar-width:thin]" : "max-h-0 overflow-hidden opacity-0"}`}
                 >
                   {languages &&
                     languages.map((lang) => (
@@ -323,12 +239,6 @@ const MobileMenu = ({
         </SheetContent>
       </Sheet>
 
-      {/* Location Search Dialog */}
-      <LocationSearchWithRadius
-        isOpen={isLocationDialogOpen}
-        onClose={() => setIsLocationDialogOpen(false)}
-        onPlaceSelected={handlePlaceSelected}
-      />
     </>
   );
 };
