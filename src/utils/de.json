@@ -25,7 +25,7 @@
   "locationUpdated": "Standort aktualisiert",
   "invalidLocationSelected": "Ungültiger Standort",
   "properties": "Eigenschaften",
-  "allProperties": "Alle Eigenschaften",
+  "allProperties": "Alle Immobilien",
   "featuredProperties": "Empfohlene Eigenschaften",
   "propertiesOnMap": "Eigenschaften auf der Karte",
   "mostViewedProperties": "Meistgesehene Eigenschaften",
@@ -110,5 +110,16 @@
   "loadMore": "Mehr laden",
   "enterLocation": "Standort eingeben",
   "filters": "Filter",
-  "smartFilters": "Intelligente Filter"
+  "smartFilters": "Intelligente Filter",
+  "propertyLoadError": "Immobilien konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+  "tryAgain": "Erneut versuchen",
+  "showing": "Anzeige",
+  "of": "von",
+  "results": "Ergebnissen",
+  "filter": "Filter",
+  "noResultsFound": "Keine Ergebnisse gefunden",
+  "loadingMore": "Wird geladen…",
+  "sortBy": "Sortieren nach",
+  "gridView": "Rasteransicht",
+  "listView": "Listenansicht"
 }
