@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setLockedFilter } from "@/redux/slices/propertyListSlice";
 import Layout from "../layout/Layout";
@@ -11,10 +11,9 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import NewBreadcrumb from "../breadcrumb/NewBreadCrumb";
 import { useRouter } from "next/router";
 import { VerticlePropertyCardSkeleton } from "../skeletons";
-import FilterTopBarSkeleton from "../skeletons/FilterTopBarSkeleton";
 import FilterTopBar from "../reusable-components/FilterTopBar";
 import { isRTL, generateBase64FilterUrl, getPostedSinceString, buildPropertyApiParams } from "@/utils/helperFunction";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import ImageWithPlaceholder from "../image-with-placeholder/ImageWithPlaceholder";
 import StoriesRail from "../stories/StoriesRail";
 
@@ -23,6 +22,7 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
   const t = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const { lang, slug } = router?.query || {};
   const isRtl = isRTL();
 
@@ -37,50 +37,25 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
 
   // Get location data from Redux store
   const locationData = useSelector((state) => state.location);
+  const userId = useSelector((state) => state.User?.data?.id);
 
   const citySlug = slug;
   const categorySlug = slug;
   // --- Local State for Data & UI ---
-  const [filteredProperties, setFilteredProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
-  const [offset, setOffset] = useState(0);
   const [viewType, setViewType] = useState("grid");
-  const [hasMore, setHasMore] = useState(true);
   const [sortBy, setSortBy] = useState("newest");
-  const limit = 9;
+  const limit = 12;
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
-  const [prevFilters, setPrevFilters] = useState(null); // Track previous filters to prevent duplicate fetches
-  const [adBanners, setAdBanners] = useState([]);
-  // null = not yet resolved (only relevant on category pages); "" = not applicable
-  const [categoryId, setCategoryId] = useState(isCategoryPage ? null : "");
-
-  // Resolve the numeric category id from the category slug for the stories rail.
-  // StoriesRail is only rendered once this resolves, so it fires a single
-  // get-stories call with the correct category_id instead of once with "" and
-  // again once the id comes back.
-  useEffect(() => {
-    if (!isCategoryPage || !categorySlug) {
-      setCategoryId("");
-      return;
-    }
-
-    setCategoryId(null);
-
-    const resolveCategoryId = async () => {
-      try {
-        const res = await getCategoriesApi({ slug_id: categorySlug });
-        if (res && !res?.error) {
-          setCategoryId(res?.data?.[0]?.id || "");
-        }
-      } catch (error) {
-        console.error("Error resolving category id:", error);
-      }
-    };
-
-    resolveCategoryId();
-  }, [isCategoryPage, categorySlug]);
+  // Resolve the category once; the stories rail waits for the correct ID.
+  const { data: categoryId = null } = useQuery({
+    queryKey: ["propertyListingCategory", categorySlug],
+    enabled: Boolean(isCategoryPage && categorySlug),
+    queryFn: async () => {
+      const response = await getCategoriesApi({ slug_id: categorySlug });
+      return response?.data?.[0]?.id || "";
+    },
+    staleTime: 10 * 60 * 1000,
+  });
 
   // Helper function to decode base64 filter URL
   const decodeBase64FilterUrl = (string) => {
@@ -150,36 +125,23 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
   }, [router?.query, citySlug, categorySlug, isCityPage, isCategoryPage, locationData, lockedFilter]);
 
   const [filters, setFilters] = useState(initializeFiltersFromQuery);
+  const [filtersReady, setFiltersReady] = useState(false);
   // Sync filters with router.query changes
   useEffect(() => {
     if (router?.isReady) {
       const newFilters = initializeFiltersFromQuery();
+      // URL changes originate outside this component as well (back/forward and search).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFilters(newFilters);
-      setOffset(0); // Reset offset when filters change from URL
+      setFiltersReady(true);
     }
   }, [router?.isReady, initializeFiltersFromQuery]);
 
-  // --- Breadcrumb Title State (Derived from props) ---
-  const [breadcrumbTitle, setBreadcrumbTitle] = useState(() => {
-    if (isCityPage)
-      return `${t("propertiesIn")} ${citySlug?.charAt(0)?.toUpperCase() + citySlug?.slice(1)}`;
-    if (isCategoryPage)
-      return `${t("category")}: ${categorySlug?.charAt(0)?.toUpperCase() + categorySlug?.slice(1)}`;
-    return t("allProperties");
-  });
-
-  // Update breadcrumb if props change after initial load
-  useEffect(() => {
-    if (isCityPage)
-      setBreadcrumbTitle(
-        `${t("propertiesIn")} ${citySlug?.charAt(0)?.toUpperCase() + citySlug?.slice(1)}`,
-      );
-    else if (isCategoryPage)
-      setBreadcrumbTitle(
-        `${categorySlug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} ${t("properties")}`,
-      );
-    else setBreadcrumbTitle(t("allProperties"));
-  }, [isCityPage, isCategoryPage, citySlug, categorySlug, t]);
+  const breadcrumbTitle = isCityPage
+    ? `${t("propertiesIn")} ${citySlug?.charAt(0)?.toUpperCase() + citySlug?.slice(1)}`
+    : isCategoryPage
+      ? `${categorySlug?.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())} ${t("properties")}`
+      : t("allProperties");
 
   // Check if filters are active (excluding context-based filters)
   const hasActiveFilters = (() => {
@@ -192,6 +154,7 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
       filters.posted_since !== "" ||
       filters.promoted ||
       (filters.amenities && filters.amenities.length > 0) ||
+      ((filters.nearbyPlaces || filters.nearby_places || []).length > 0) ||
       (filters.city && filters.city !== citySlug) ||
       filters.state !== "" ||
       filters.country !== "" ||
@@ -234,126 +197,65 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
       if (sortedAmenities1[i] !== sortedAmenities2[i]) return false;
     }
 
-    return true;
+    const nearby1 = filters1.nearbyPlaces || filters1.nearby_places || [];
+    const nearby2 = filters2.nearbyPlaces || filters2.nearby_places || [];
+    return JSON.stringify(nearby1) === JSON.stringify(nearby2);
   };
 
-  // Fetch data function
-  const fetchData = useCallback(
-    async (isLoadMore = false, isFilterChange = false) => {
-      try {
-        // Skip fetch if filters haven't changed and it's not a load more request
-        if (!isLoadMore && !isFilterChange && areFiltersEqual(filters, prevFilters)) {
-          return;
-        }
-
-        isLoadMore ? setLoadingMore(true) : setLoading(true);
-
-        // If it's a filter change, reset the offset
-        if (isFilterChange && !isLoadMore) {
-          setOffset(0);
-        }
-
-        // Use the current offset value from state for API call
-        const currentOffset = isLoadMore ? offset + limit : offset;
-
-        /**
-         * NEW API FORMAT - Structured object approach
-         * {
-         *   property_type: 0|1, // 0 = Sell, 1 = Rent
-         *   category_id: number,
-         *   category_slug_id: string,
-         *   parameters: [{ id: number, value: string }],
-         *   nearby_places: [{ id: number, value: number }],
-         *   location: { country, state, city, place_id, latitude, longitude, range },
-         *   price: { min_price: number, max_price: number },
-         *   posted_since: 0|1|2|3|4,
-         *   search: string,
-         *   flags: { promoted: 0|1, get_all_premium_properties: 0|1, most_views: 0|1, most_liked: 0|1 }
-         * }
-         */
-
-        const apiParams = buildPropertyApiParams(filters, {
-          isCityPage,
-          citySlug,
-          isCategoryPage,
-          categorySlug,
-          sortBy,
-          limit,
-          offset: currentOffset,
-        });
-
-        const res = await getPropertyListApi(apiParams);
-
-        if (!res?.error) {
-          if (isLoadMore) {
-            setFilteredProperties((prevProperties) => [
-              ...prevProperties,
-              ...res?.data,
-            ]);
-            // Only update offset after successful load more
-            setOffset(currentOffset);
-          } else {
-            setFilteredProperties(res?.data || []);
-            // When filter changes, reset offset
-            if (isFilterChange) {
-              setOffset(0);
-            }
-          }
-
-          setTotalCount(res?.total || 0);
-          setHasMore(res?.total > currentOffset + (res?.data?.length || 0));
-
-          // Store current filters to prevent duplicate fetches
-          setPrevFilters({ ...filters });
-        } else {
-          console.error("API returned an error:", res?.error);
-        }
-      } catch (error) {
-        console.error("Error fetching property data:", error);
-        // Set empty data to avoid UI issues when error occurs
-        if (!isLoadMore) {
-          setFilteredProperties([]);
-          setTotalCount(0);
-          setHasMore(false);
-        }
-      } finally {
-        isLoadMore ? setLoadingMore(false) : setLoading(false);
-      }
+  // The API request itself is the cache key. Changing filters or the page context
+  // switches to a separate result set; an old response cannot overwrite it.
+  const requestParams = useMemo(() => buildPropertyApiParams(filters, {
+    isCityPage,
+    citySlug,
+    isCategoryPage,
+    categorySlug,
+    sortBy,
+    limit,
+    offset: 0,
+  }), [filters, isCityPage, citySlug, isCategoryPage, categorySlug, sortBy]);
+  const propertyQueryKey = ["propertyListing", requestParams, lang, userId];
+  const {
+    data: propertyPages,
+    isPending: loading,
+    isFetchingNextPage: loadingMore,
+    hasNextPage: hasMore,
+    fetchNextPage,
+    isError,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: propertyQueryKey,
+    enabled: Boolean(router?.isReady && filtersReady),
+    initialPageParam: 0,
+    queryFn: async ({ pageParam }) => {
+      const response = await getPropertyListApi({ ...requestParams, offset: String(pageParam) });
+      if (response?.error) throw new Error(response?.message || "Property request failed");
+      return { items: response?.data || [], total: Number(response?.total) || 0, offset: pageParam };
     },
-    [filters, offset, categorySlug, citySlug, sortBy, limit, prevFilters],
+    getNextPageParam: (lastPage) =>
+      lastPage.items.length > 0 && lastPage.offset + limit < lastPage.total
+        ? lastPage.offset + limit
+        : undefined,
+    staleTime: 2 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+  const filteredProperties = useMemo(
+    () => propertyPages?.pages.flatMap((page) => page.items) || [],
+    [propertyPages],
   );
+  const totalCount = propertyPages?.pages[0]?.total || 0;
 
-  useEffect(() => {
-    if (router?.isReady) {
-      // Only fetch data for initial load or filter changes, not for loadMore
-      // The offset state is intentionally excluded from dependencies
-      fetchData(false, true);
-    }
-
-  }, [filters, router?.isReady, sortBy]);
-
-
-
-  // Helper function to check if filters have any active values (excluding context-based defaults)
-  const hasActiveFiltersForUrl = (filters) => {
-    return (
-      filters.keywords !== "" ||
-      filters.property_type !== "" ||
-      filters.category_id !== "" ||
-      filters.min_price !== "" ||
-      filters.max_price !== "" ||
-      filters.posted_since !== "" ||
-      filters.promoted ||
-      (filters.amenities && filters.amenities.length > 0) ||
-      (filters.city && filters.city !== citySlug) ||
-      filters.state !== "" ||
-      filters.country !== "" ||
-      filters.is_premium ||
-      (filters.latitude !== undefined && filters.latitude !== locationData?.latitude) ||
-      (filters.longitude !== undefined && filters.longitude !== locationData?.longitude) ||
-      (filters.radius !== undefined && filters.radius !== (locationData?.radius ? parseInt(locationData.radius) : undefined))
-    );
-  };
+  const handlePropertyLike = useCallback((propertyId, isLiked) => {
+    queryClient.setQueryData(propertyQueryKey, (previous) => previous && ({
+      ...previous,
+      pages: previous.pages.map((page) => ({
+        ...page,
+        items: page.items.map((property) => property.id === propertyId
+          ? { ...property, is_favourite: isLiked ? 1 : 0 }
+          : property),
+      })),
+    }));
+  }, [queryClient, propertyQueryKey]);
 
   // Handle filter apply
   const handleFilterApply = (newFilters) => {
@@ -420,6 +322,8 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
       promoted: locked === "featured" ? filters.promoted : false,
       keywords: "",
       amenities: [],
+      nearby_places: [],
+      nearbyPlaces: [],
       is_premium: locked === "premium" ? filters.is_premium : false,
       latitude: (isCityPage || locked !== "location") ? undefined : (filters.latitude || locationData?.latitude),
       longitude: (isCityPage || locked !== "location") ? undefined : (filters.longitude || locationData?.longitude),
@@ -464,13 +368,8 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
     }
   }, [router, citySlug, categorySlug, filters, lang, isCityPage, isCategoryPage, generateBase64FilterUrl, sortBy, lockedFilter]);
 
-  const loadMore = () => {
-    if (loadingMore || !hasMore) return;
-    fetchData(true);
-  };
-
   const handleLoadMore = () => {
-    loadMore();
+    if (hasMore && !loadingMore) fetchNextPage();
   };
 
   const handleSetViewType = (newViewType) => {
@@ -492,7 +391,7 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
   const adBannersQuery = useQuery({
     queryKey: ['propertyListAdBanners'],
     queryFn: fetchPropertyListAdBanners,
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
   })
 
   const belowBreadcrumbAdBanner = adBannersQuery?.data?.find(banner => banner?.placement === 'below_breadcrumb');
@@ -512,7 +411,7 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
         ]}
       />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-12 pt-6 md:pt-10">
         {belowBreadcrumbAdBanner && (
           <div
             onClick={() => {
@@ -534,11 +433,29 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
         )}
         {/* <NewBreadcrumb title={breadcrumbTitle} /> */}
 
-        {(!isCategoryPage || categoryId !== null) && (
+        {(!isCategoryPage || (categorySlug && categoryId !== null)) && (
           <StoriesRail category_id={isCategoryPage ? categoryId : ""} />
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
+        <div className="mb-7 mt-8 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-teal-50/60 px-5 py-6 shadow-sm md:px-8 md:py-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">{breadcrumbTitle}</h1>
+              <p className="mt-2 text-sm text-slate-600" aria-live="polite">
+                {loading ? t("loadingMore") : `${totalCount.toLocaleString()} ${t("results")}`}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsFilterSheetOpen(true)}
+              className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-teal-400 hover:shadow-md xl:hidden"
+            >
+              {t("filter")}{hasActiveFilters ? " · ●" : ""}
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-12 xl:gap-8">
           {/* Mobile Filter Button - Only visible on mobile */}
           <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
             <SheetContent
@@ -593,11 +510,8 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
           </div>
 
           {/* Main Content Area */}
-          <div className="col-span-12 xl:col-span-9">
+          <main className="min-w-0 xl:col-span-9">
             {/* Filter Top Bar */}
-            {loading ? (
-              <FilterTopBarSkeleton />
-            ) : (
               <FilterTopBar
                 itemCount={filteredProperties.length}
                 totalItems={totalCount}
@@ -606,43 +520,50 @@ const PropertyList = ({ isCategoryPage, isCityPage }) => {
                 sortBy={sortBy}
                 setSortBy={setSortBy}
                 onOpenFilters={() => setIsFilterSheetOpen(true)}
-                showFilterButton={true}
                 showSortBy={false}
+                showFilterButton={false}
+                isLoading={loading}
               />
+
+            {isError && filteredProperties.length === 0 && (
+              <div className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 p-5 text-center">
+                <p className="text-sm text-rose-800">{t("propertyLoadError")}</p>
+                <button type="button" onClick={() => refetch()} className="mt-3 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-800 shadow-sm">{t("tryAgain")}</button>
+              </div>
             )}
 
             {/* Property Listings */}
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                {[...Array(9)].map((_, index) => (
+              <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {[...Array(6)].map((_, index) => (
                   <VerticlePropertyCardSkeleton key={index} />
                 ))}
               </div>
-            ) : (
+            ) : !isError || filteredProperties.length > 0 ? (
               <PropertyListing
                 properties={filteredProperties}
-                setFilteredProperties={setFilteredProperties}
+                onPropertyLike={handlePropertyLike}
                 totalCount={totalCount}
                 onOpenFilters={() => setIsFilterSheetOpen(true)}
                 hasActiveFilters={hasActiveFilters}
                 viewType={viewType}
                 setViewType={handleSetViewType}
               />
-            )}
+            ) : null}
 
             {/* Load More Button */}
             {hasMore && !loading && (
-              <div className="flex justify-center mt-8">
+              <div className="mt-8 flex justify-center">
                 <button
                   onClick={handleLoadMore}
                   disabled={loadingMore}
-                  className="brandColor brandBorder hover:border-transparent hover:primaryBg hover:text-white my-5 rounded-lg border bg-transparent px-4 py-3"
+                  className="brandColor brandBorder my-5 rounded-xl border bg-white px-8 py-3 font-semibold shadow-sm transition hover:border-transparent hover:primaryBg hover:text-white disabled:opacity-60"
                 >
                   {loadingMore ? t("loadingMore") : t("loadMore")}
                 </button>
               </div>
             )}
-          </div>
+          </main>
         </div>
         {aboveFooterAdBanner && (
           <div className="col-span-12 my-3 lg:mt-3 lg:mb-4"
