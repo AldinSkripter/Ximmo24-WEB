@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from '@/components/context/TranslationContext';
 import PropertyHorizontalCard from '../cards/PropertyHorizontalCard';
 import PropertyVerticalCard from '../cards/PropertyVerticalCard';
@@ -8,7 +8,7 @@ import NoDataFound from '../no-data-found/NoDataFound';
 
 const PropertyListing = ({
     properties = [],
-    setFilteredProperties = () => { },
+    onPropertyLike = () => { },
     totalCount = 0,
     onOpenFilters,
     hasActiveFilters,
@@ -16,23 +16,8 @@ const PropertyListing = ({
     setViewType
 }) => {
     const t = useTranslation();
-    const [sortBy, setSortBy] = useState('newest');
-
-    const handlePropertyLike = (propertyId, isLiked = false) => {
-        const updatedProperties = properties.map((property) => {
-            if (property.id === propertyId) {
-                return {
-                    ...property,
-                    is_favourite: isLiked ? 1 : 0,
-                };
-            }
-            return property;
-        });
-        setFilteredProperties(updatedProperties);
-    };
-
     const gridClassName = viewType === 'grid'
-        ? 'grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+        ? 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6'
         : properties.length > 0
             ? 'grid grid-cols-1 gap-6'
             : 'grid place-items-center grid-cols-3';
@@ -42,16 +27,16 @@ const PropertyListing = ({
             <div className={gridClassName}>
                 {properties.length > 0 ? (
                     properties.map((property) => (
-                        <div key={`property-${property.id}`} className='w-full'>
+                        <div key={`property-${property.id}`} className='w-full min-w-0'>
                             {viewType === 'list' ? (
                                 <PropertyHorizontalCard
                                     property={property}
-                                    handlePropertyLike={handlePropertyLike}
+                                    handlePropertyLike={onPropertyLike}
                                 />
                             ) : (
                                 <PropertyVerticalCard
                                     property={property}
-                                    handlePropertyLike={handlePropertyLike}
+                                    handlePropertyLike={onPropertyLike}
                                 />
                             )}
                         </div>

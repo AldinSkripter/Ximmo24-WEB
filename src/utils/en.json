@@ -1632,5 +1632,7 @@
   "kiSearchDescription": "Simply describe the property you are looking for",
   "kiSearchPlaceholder": "e.g. House in Achern or apartment 77855 up to €350,000",
   "kiSearchButton": "AI Search",
-  "tryForExample": "Try an example:"
+  "tryForExample": "Try an example:",
+  "propertyLoadError": "Properties could not be loaded. Please try again.",
+  "tryAgain": "Try again"
 }
